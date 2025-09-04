@@ -10,6 +10,7 @@ import { PillarsSection } from "@/components/landing/pillars-section";
 import { FeaturesSectionDemo1 } from "@/components/landing/features-section-demo-1";
 import { FeaturesSectionDemo2 } from "@/components/landing/features-section-demo-2";
 import { FeaturesSectionDemo3 } from "@/components/landing/features-section-demo-3";
+import { OurStorySection } from "@/components/landing/our-story-section";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
         <HeroSection />
         <TrustSection />
         <PillarsSection />
+        <OurStorySection />
         <HowItWorksSection />
         <FeaturesSection />
         <ReviewsSection />
