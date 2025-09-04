@@ -1,55 +1,69 @@
-import Image from "next/image";
-import { SectionWrapper } from "./section-wrapper";
-import { Card } from "@/components/ui/card";
-
-const pillars = [
-  {
-    title: "Documents in minutes",
-    desc: "RAMS, method statements and risk assessments generated fast.",
-    media: "https://picsum.photos/600/400?random=1",
-    aiHint: "document icons"
-  },
-  {
-    title: "Editable outputs",
-    desc: "Export DOCX/PDF and tweak with your site specifics.",
-    media: "https://picsum.photos/600/400?random=2",
-    aiHint: "editing software"
-  },
-  {
-    title: "Built for compliance",
-    desc: "CDM/HSE-aware templates and sensible defaults.",
-    media: "https://picsum.photos/600/400?random=3",
-    aiHint: "compliance checklist"
-  },
-  {
-    title: "Share & track",
-    desc: "Simple handoff and version history (future feature).",
-    media: "https://picsum.photos/600/400?random=4",
-    aiHint: "team collaboration"
-  }
-];
+import React from 'react';
+import {
+  BentoGrid,
+  BentoGridItem,
+} from '@/components/ui/bento-grid';
+import {
+  ClipboardList,
+  FileText,
+  ShieldCheck,
+  Share2,
+} from 'lucide-react';
+import { SectionWrapper } from './section-wrapper';
 
 export function PillarsSection() {
   return (
     <SectionWrapper>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {pillars.map((pillar) => (
-          <Card key={pillar.title} className="overflow-hidden bg-card border-white/10 shadow-e1 rounded-lg">
-            <div className="p-8">
-              <h3 className="font-headline text-2xl font-bold">{pillar.title}</h3>
-              <p className="mt-2 text-muted-foreground">{pillar.desc}</p>
-            </div>
-            <Image
-              src={pillar.media}
-              alt={pillar.title}
-              data-ai-hint={pillar.aiHint}
-              width={600}
-              height={400}
-              className="w-full object-cover"
-            />
-          </Card>
+      <BentoGrid className="mx-auto md:auto-rows-[20rem]">
+        {items.map((item, i) => (
+          <BentoGridItem
+            key={i}
+            title={item.title}
+            description={item.description}
+            header={item.header}
+            className={item.className}
+            icon={item.icon}
+          />
         ))}
-      </div>
+      </BentoGrid>
     </SectionWrapper>
   );
 }
+
+const Skeleton = ({ className }: { className?: string }) => (
+  <div
+    className={`flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 ${className}`}
+  ></div>
+);
+
+const items = [
+  {
+    title: 'Documents in minutes',
+    description:
+      'RAMS, method statements and risk assessments generated fast.',
+    header: <Skeleton />,
+    className: 'md:col-span-2',
+    icon: <FileText className="h-4 w-4 text-neutral-500" />,
+  },
+  {
+    title: 'Editable outputs',
+    description: 'Export DOCX/PDF and tweak with your site specifics.',
+    header: <Skeleton />,
+    className: 'md:col-span-1',
+    icon: <ClipboardList className="h-4 w-4 text-neutral-500" />,
+  },
+  {
+    title: 'Built for compliance',
+    description: 'CDM/HSE-aware templates and sensible defaults.',
+    header: <Skeleton />,
+    className: 'md:col-span-1',
+    icon: <ShieldCheck className="h-4 w-4 text-neutral-500" />,
+  },
+  {
+    title: 'Share & track',
+    description: 'Simple handoff and version history (future feature).',
+    header: <Skeleton />,
+    className: 'md:col-span-2',
+    icon: <Share2 className="h-4 w-4 text-neutral-500" />,
+  },
+];
