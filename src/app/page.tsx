@@ -5,6 +5,7 @@ import { PartnersSection } from "@/components/landing/partners-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { PillarsSection } from "@/components/landing/pillars-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
+import { SolutionsSection } from "@/components/landing/solutions-section";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
           <main>
             <HeroSection />
             <PartnersSection />
+            <SolutionsSection />
             <HowItWorksSection />
             <PillarsSection />
             <ReviewsSection />
