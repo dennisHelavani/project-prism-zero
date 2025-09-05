@@ -45,6 +45,7 @@
   border-radius: 999px;
   z-index: 1;
   transition: background 0.2s;
+  border: 1px solid hsl(var(--primary) / 0.5);
 }
 
 .star-border-container:hover .inner-content {
