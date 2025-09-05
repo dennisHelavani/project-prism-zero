@@ -33,6 +33,7 @@ export default function Home() {
             <PartnersSection />
             <SolutionsSection />
             <PillarsSection />
+            <HowItWorksSection />
             <OurStorySection />
             <ReviewsSection />
             <CtaSection />
