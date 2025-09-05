@@ -1,6 +1,7 @@
 import { PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
+import { CtaButton } from "../ui/cta-button";
 
 export function HeroSection() {
   return (
@@ -23,9 +24,9 @@ export function HeroSection() {
               AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <StarBorder as={Link} href="#">
-                Get started for free
-              </StarBorder>
+              <CtaButton asChild>
+                <Link href="#">Get started for free</Link>
+              </CtaButton>
               <StarBorder as={Link} href="#">
                   <PlayCircle className="mr-2" />
                   Watch demo

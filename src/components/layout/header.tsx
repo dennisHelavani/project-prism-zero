@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { StarBorder } from "../ui/star-border";
+import { CtaButton } from "../ui/cta-button";
 
 const navLinks = [
   { name: "Our story", href: "#our-story" },
@@ -44,9 +45,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-           <StarBorder as={Link} href="#cta" className="hidden sm:inline-flex">
-              Get my documents
-          </StarBorder>
+           <CtaButton asChild className="hidden sm:inline-flex">
+              <Link href="#cta">Get my documents</Link>
+          </CtaButton>
         </div>
       </div>
     </header>
