@@ -32,9 +32,8 @@ export default function Home() {
             <HeroSection />
             <PartnersSection />
             <SolutionsSection />
-            <HowItWorksSection />
-            <OurStorySection />
             <PillarsSection />
+            <OurStorySection />
             <ReviewsSection />
             <CtaSection />
           </main>
