@@ -11,7 +11,11 @@ const solutions = [
   {
     title: 'Compliant Documents',
     description: 'Generate fully compliant Risk Assessments, Method Statements, and CDM documents tailored to your project specifics.',
-    visual: <DataFlowVisual />,
+    visual: (
+      <div className="rounded-xl border border-white/10 p-4">
+        <DataFlowVisual />
+      </div>
+    ),
   },
   {
     title: 'Instant Generation',
