@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,17 +41,20 @@ export function SolutionsSection() {
       </div>
 
       <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
-        {solutions.map((solution) => (
-          <Card key={solution.title} className="flex flex-col overflow-hidden bg-card border-white/10 shadow-e1 rounded-xl">
-            <div className="relative h-48 w-full flex items-center justify-center bg-secondary/30">
-              {solution.visual}
-            </div>
-            <CardHeader>
+        {solutions.map((solution, index) => (
+          <Card key={solution.title} className="flex flex-col overflow-hidden bg-card border-white/10 shadow-e1 rounded-xl p-6">
+             <Badge variant="outline" className="border-primary/50 text-primary mb-4 w-fit">
+                Step {index + 1}
+            </Badge>
+            <CardHeader className="p-0">
               <CardTitle className="font-headline text-xl font-bold">{solution.title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0 mt-2 flex-grow">
               <p className="text-muted-foreground">{solution.description}</p>
             </CardContent>
+             <div className="relative h-48 w-full flex items-center justify-center bg-transparent mt-4">
+              {solution.visual}
+            </div>
           </Card>
         ))}
       </div>
