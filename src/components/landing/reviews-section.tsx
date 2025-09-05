@@ -1,34 +1,45 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SectionWrapper } from "./section-wrapper";
 import { AnimatedTestimonials } from "../ui/animated-testimonials";
+import { Star } from "lucide-react";
 
 const reviews = [
   {
     quote: "The fastest way to produce RAMS. This tool has genuinely saved our team countless hours of tedious work. The outputs are clean, professional, and easy to edit.",
     name: "Alex Thompson",
     title: "Project Lead, Tier 1 Construction",
+    image: "https://picsum.photos/100/100",
+    rating: 5,
   },
   {
     quote: "Clean, simple, and surprisingly accurate. I was skeptical about an AI generating these docs, but the quality is impressive. It's a game-changer for our ops.",
     name: "Samantha Carter",
     title: "Operations Manager",
+    image: "https://picsum.photos/100/100",
+    rating: 5,
   },
   {
     quote: "As a site manager, paperwork is my least favorite part of the job. Hard Hat AI has streamlined our entire process. Documentation in minutes is no exaggeration.",
     name: "Ben Williams",
     title: "Site Manager",
+    image: "https://picsum.photos/100/100",
+    rating: 5,
   },
   {
     quote: "A must-have for any serious construction firm in the UK. The time and cost savings on compliance are massive.",
     name: "Richard Davis",
     title: "Director, Regional Building Co.",
+    image: "https://picsum.photos/100/100",
+    rating: 5,
   },
   {
     quote: "The interface is intuitive and the generated documents are top-notch. It has become an indispensable tool for our site safety planning.",
     name: "Emily White",
-    title: "HSE Manager"
+    title: "HSE Manager",
+    image: "https://picsum.photos/100/100",
+    rating: 5,
   }
 ];
 
