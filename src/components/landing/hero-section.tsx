@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { PlayCircle, Star } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
+import { StarBorder } from "../ui/star-border";
 
 export function HeroSection() {
   return (
@@ -25,17 +23,13 @@ export function HeroSection() {
               AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button asChild size="lg" className="rounded-lg bg-primary font-semibold text-primary-foreground shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                <Link href="#">
-                  Get started for free
-                </Link>
-              </Button>
-              <Button asChild variant="ghost" size="lg" className="rounded-lg font-semibold leading-6 text-foreground">
-                <Link href="#">
+              <StarBorder as={Link} href="#">
+                Get started for free
+              </StarBorder>
+              <StarBorder as={Link} href="#">
                   <PlayCircle className="mr-2" />
                   Watch demo
-                </Link>
-              </Button>
+              </StarBorder>
             </div>
           </div>
         </div>

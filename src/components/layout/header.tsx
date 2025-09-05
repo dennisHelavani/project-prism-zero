@@ -1,9 +1,9 @@
 'use client';
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { StarBorder } from "../ui/star-border";
 
 const navLinks = [
   { name: "Our story", href: "#our-story" },
@@ -44,9 +44,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-           <Button asChild className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:inline-flex">
-            <Link href="#cta">Get my documents</Link>
-          </Button>
+           <StarBorder as={Link} href="#cta" className="hidden sm:inline-flex">
+              Get my documents
+          </StarBorder>
         </div>
       </div>
     </header>
