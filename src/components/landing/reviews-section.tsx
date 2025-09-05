@@ -27,6 +27,12 @@ const reviews = [
     author: "Ben Williams",
     title: "Site Manager",
     avatar: "BW",
+  },
+  {
+    quote: "A must-have for any serious construction firm in the UK. The time and cost savings on compliance are massive.",
+    author: "Richard Davis",
+    title: "Director, Regional Building Co.",
+    avatar: "RD",
   }
 ];
 
@@ -48,9 +54,9 @@ export function ReviewsSection() {
         <CarouselContent>
           {reviews.map((review, index) => (
             <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <div className="p-1">
-                <Card className="h-full bg-card border-white/10">
-                  <CardContent className="flex flex-col items-start gap-6 p-6">
+              <div className="p-1 h-full">
+                <Card className="h-full bg-card border-white/10 flex flex-col">
+                  <CardContent className="flex flex-col items-start justify-between flex-grow gap-6 p-6">
                     <p className="text-foreground">"{review.quote}"</p>
                     <div className="flex items-center gap-4">
                       <Avatar>
