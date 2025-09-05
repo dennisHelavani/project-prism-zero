@@ -2,10 +2,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { name: "How it Works", href: "#how-it-works" },
-  { name: "Use Cases", href: "#" },
+  { name: "Our story", href: "#our-story" },
   { name: "Pricing", href: "#" },
-  { name: "Company", href: "#" },
+  { name: "How It Works", href: "#how-it-works" },
+  { name: "Reviews", href: "#reviews" },
+  { name: "Contact Us", href: "#" },
 ];
 
 export function Header() {
@@ -23,11 +24,8 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-           <Button asChild variant="outline" className="hidden rounded-lg px-5 py-2.5 text-sm font-semibold sm:inline-flex">
-            <Link href="#">Sign in</Link>
-          </Button>
            <Button asChild className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:inline-flex">
-            <Link href="#">Get Started</Link>
+            <Link href="#cta">Get my documents</Link>
           </Button>
         </div>
       </div>

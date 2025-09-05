@@ -38,7 +38,7 @@ const reviews = [
 
 export function ReviewsSection() {
   return (
-    <SectionWrapper className="py-24">
+    <SectionWrapper id="reviews" className="py-24">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="font-headline text-4xl font-bold text-foreground">Loved by industry professionals</h2>
         <p className="mt-4 text-lg text-muted-foreground">
