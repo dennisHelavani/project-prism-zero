@@ -1,53 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Zap, Share2, FileCheck2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-
-const Document = ({ label, position, rotation, zIndex }: { label: string; position: { x: number; y: number }; rotation: number; zIndex: number }) => (
-  <motion.div
-    className="absolute flex flex-col items-center justify-center bg-secondary p-2 rounded-md border border-border"
-    initial={{ scale: 0, opacity: 0, ...position, rotate: 0 }}
-    animate={{ scale: 1, opacity: 1, x: 0, y: 0, rotate: rotation, transition: { duration: 0.5, delay: 0.2 } }}
-    exit={{ scale: 0, opacity: 0, x: position.x, y: position.y, rotate: 0, transition: { duration: 0.5 } }}
-    style={{ zIndex }}
-  >
-    <FileText className="w-6 h-6 text-primary" />
-    <span className="text-xs mt-1">{label}</span>
-  </motion.div>
-);
-
-export function CompliantDocumentsVisual() {
-  const [isCombined, setIsCombined] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsCombined(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <AnimatePresence>
-        {!isCombined ? (
-          <>
-            <Document label="RAMS" position={{ x: -80, y: 0 }} rotation={-15} zIndex={1} />
-            <Document label="Method" position={{ x: 0, y: -60 }} rotation={0} zIndex={2} />
-            <Document label="CDM" position={{ x: 80, y: 0 }} rotation={15} zIndex={1} />
-          </>
-        ) : (
-          <motion.div
-            className="flex flex-col items-center justify-center text-center"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, transition: { duration: 0.5 } }}
-          >
-            <FileCheck2 className="w-16 h-16 text-primary" />
-            <p className="mt-2 text-sm font-bold">Tailored Documents</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+import { motion } from 'framer-motion';
+import { Zap, Share2 } from 'lucide-react';
+import { DataFlowVisual } from './data-flow-visual';
 
 export function InstantGenerationVisual() {
     return (
@@ -57,7 +12,7 @@ export function InstantGenerationVisual() {
                 animate={{ scale: 1, transition: { delay: 0.2, type: 'spring', stiffness: 150 } }}
                 className="relative"
             >
-                <FileText className="w-20 h-20 text-primary" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
                 <motion.div
                     className="absolute -top-2 -right-2"
                     animate={{ 
@@ -81,7 +36,7 @@ export function EditableShareableVisual() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
             >
-                <FileText className="w-20 h-20 text-primary" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
                 <motion.div
                     className="absolute -top-4 -right-4"
                     initial={{ scale: 0 }}

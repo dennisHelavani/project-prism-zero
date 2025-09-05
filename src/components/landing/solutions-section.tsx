@@ -3,13 +3,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { CompliantDocumentsVisual, InstantGenerationVisual, EditableShareableVisual } from './solution-visuals';
+import { InstantGenerationVisual, EditableShareableVisual } from './solution-visuals';
+import { DataFlowVisual } from './data-flow-visual';
 
 const solutions = [
   {
     title: 'Compliant Documents',
     description: 'Generate fully compliant Risk Assessments, Method Statements, and CDM documents tailored to your project specifics.',
-    visual: <CompliantDocumentsVisual />,
+    visual: <DataFlowVisual />,
   },
   {
     title: 'Instant Generation',
