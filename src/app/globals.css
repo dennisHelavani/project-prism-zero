@@ -2,59 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 220 8% 93%;
-    --card: 240 7% 5%;
-    --card-foreground: 220 8% 93%;
-    --popover: 240 7% 5%;
-    --popover-foreground: 220 8% 93%;
-    --primary: 221 89% 81%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 221 83% 78%;
     --primary-foreground: 221 22% 21%;
-    --secondary: 240 5% 6%;
-    --secondary-foreground: 220 8% 93%;
-    --muted: 220 3% 68%;
-    --muted-foreground: 220 3% 68%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     --accent: 219 91% 73%;
     --accent-foreground: 221 22% 21%;
-    --destructive: 0 63% 31%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 221 89% 81%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 221 83% 78%;
     --radius: 14px;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Font Sizes & Line Heights */
+    --hero-title-fs: 70px;
+    --hero-title-lh: 1.1;
+    --h2-fs: 3.125rem;
+    --h2-lh: 1.1;
+    --subtitle-fs: 1.1rem;
+    --subtitle-lh: 1.5;
+    --primary-fs: 0.97rem;
+    --primary-lh: 1.4;
+    --secondary-fs: 0.9rem;
+    --nav-fs: 0.87rem;
+    --header-subtitle-fs: 1.25rem;
+    --text-subtitle-fs: 1.4rem;
+    --tag-fs: 0.9rem;
+
+    /* Font Weights */
+    --hero-title-fw: 700;
+    --h2-fw: 600;
+    --subtitle-fw: 300;
+    --primary-fw: 300;
+    --nav-fw: 500;
+    --text-subtitle-fw: 500;
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 220 8% 93%;
-    --card: 240 7% 5%;
-    --card-foreground: 220 8% 93%;
-    --popover: 240 7% 5%;
-    --popover-foreground: 220 8% 93%;
-    --primary: 221 89% 81%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 221 83% 78%;
     --primary-foreground: 221 22% 21%;
-    --secondary: 240 5% 6%;
-    --secondary-foreground: 220 8% 93%;
-    --muted: 220 3% 68%;
-    --muted-foreground: 220 3% 68%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     --accent: 219 91% 73%;
     --accent-foreground: 221 22% 21%;
-    --destructive: 0 63% 31%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 221 89% 81%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 221 83% 78%;
   }
 }
 
@@ -64,5 +83,49 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  :root {
+    --hero-title-fs: 55px;
+    --h2-fs: 2.5rem;
+    --subtitle-fs: 1.0rem;
+    --primary-fs: 0.95rem;
+    --secondary-fs: 0.85rem;
+    --nav-fs: 0.8rem;
+    --header-subtitle-fs: 1.1rem;
+    --text-subtitle-fs: 1.2rem;
+    --tag-fs: 0.85rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --hero-title-fs: 40px;
+    --h2-fs: 2rem;
+    --subtitle-fs: 0.95rem;
+    --primary-fs: 0.9rem;
+    --secondary-fs: 0.8rem;
+    --header-subtitle-fs: 1rem;
+    --text-subtitle-fs: 1.1rem;
+    --tag-fs: 0.8rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  :root {
+    --hero-title-fs: 32px;
+    --h2-fs: 1.75rem;
+    --subtitle-fs: 0.9rem;
+    --primary-fs: 0.875rem;
+    --secondary-fs: 0.75rem;
+    --header-subtitle-fs: 0.9rem;
+    --text-subtitle-fs: 1rem;
+    --tag-fs: 0.75rem;
   }
 }
