@@ -1,20 +1,20 @@
 import Link from "next/link";
-import { CtaButton } from "@/components/ui/cta-button";
+import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { name: "Our story", href: "/our-story" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "How It Works", href: "/how-it-works" },
-  { name: "Reviews", href: "/reviews" },
-  { name: "Contact Us", href: "/contact" },
+  { name: "Solutions", href: "#" },
+  { name: "Case studies", href: "#" },
+  { name: "How it works", href: "#" },
+  { name: "Careers", href: "#" },
+  { name: "Contact", href: "#" },
 ];
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 backdrop-blur-lg">
+    <header className="absolute inset-x-0 top-0 z-50">
       <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6">
-        <Link href="/" className="font-headline text-xl font-bold text-foreground">
-          Hard Hat AI
+        <Link href="/" className="font-headline text-2xl font-bold text-foreground tracking-tighter">
+          INFLATE
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
@@ -24,9 +24,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-          <CtaButton asChild className="hidden px-5 py-2.5 text-sm sm:inline-flex">
-            <Link href="#cta">Get my documents</Link>
-          </CtaButton>
+           <Button asChild className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:inline-flex">
+            <Link href="#">Book a Discovery</Link>
+          </Button>
         </div>
       </div>
     </header>

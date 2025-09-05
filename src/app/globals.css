@@ -29,29 +29,6 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-
-    /* Font Sizes & Line Heights */
-    --hero-title-fs: 70px;
-    --hero-title-lh: 1.1;
-    --h2-fs: 3.125rem;
-    --h2-lh: 1.1;
-    --subtitle-fs: 1.1rem;
-    --subtitle-lh: 1.5;
-    --primary-fs: 0.97rem;
-    --primary-lh: 1.4;
-    --secondary-fs: 0.9rem;
-    --nav-fs: 0.87rem;
-    --header-subtitle-fs: 1.25rem;
-    --text-subtitle-fs: 1.4rem;
-    --tag-fs: 0.9rem;
-
-    /* Font Weights */
-    --hero-title-fw: 700;
-    --h2-fw: 600;
-    --subtitle-fw: 300;
-    --primary-fw: 300;
-    --nav-fw: 500;
-    --text-subtitle-fw: 500;
   }
 
   .dark {
@@ -84,48 +61,5 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
-  }
-}
-
-/* Tablet */
-@media (max-width: 992px) {
-  :root {
-    --hero-title-fs: 55px;
-    --h2-fs: 2.5rem;
-    --subtitle-fs: 1.0rem;
-    --primary-fs: 0.95rem;
-    --secondary-fs: 0.85rem;
-    --nav-fs: 0.8rem;
-    --header-subtitle-fs: 1.1rem;
-    --text-subtitle-fs: 1.2rem;
-    --tag-fs: 0.85rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  :root {
-    --hero-title-fs: 40px;
-    --h2-fs: 2rem;
-    --subtitle-fs: 0.95rem;
-    --primary-fs: 0.9rem;
-    --secondary-fs: 0.8rem;
-    --header-subtitle-fs: 1rem;
-    --text-subtitle-fs: 1.1rem;
-    --tag-fs: 0.8rem;
-  }
-}
-
-/* Small Mobile */
-@media (max-width: 480px) {
-  :root {
-    --hero-title-fs: 32px;
-    --h2-fs: 1.75rem;
-    --subtitle-fs: 0.9rem;
-    --primary-fs: 0.875rem;
-    --secondary-fs: 0.75rem;
-    --header-subtitle-fs: 0.9rem;
-    --text-subtitle-fs: 1rem;
-    --tag-fs: 0.75rem;
   }
 }
