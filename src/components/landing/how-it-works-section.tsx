@@ -1,19 +1,19 @@
+
 import { SectionWrapper } from "./section-wrapper";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "../ui/badge";
+import { DataFlowVisual } from "./data-flow-visual";
 
 const steps = [
   {
-    icon: "1",
     title: "Tell us the basics",
     description: "Answer a few simple questions about your site and project scope. No prior expertise is needed.",
   },
   {
-    icon: "2",
     title: "AI drafts your docs",
     description: "Our system generates compliant RAMS and CDM documents tailored to your specific inputs in seconds.",
   },
   {
-    icon: "3",
     title: "Review & download",
     description: "Get editable Word (.doc) or PDF files, ready for final review and sharing with your team.",
   },
@@ -29,16 +29,25 @@ export function HowItWorksSection() {
         </p>
       </div>
       <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-        {steps.map((step) => (
-          <div key={step.title} className="relative">
-            <Card className="flex h-full flex-col gap-4 p-8 bg-card border-white/10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
-                {step.icon}
-              </div>
-              <h3 className="font-headline text-xl font-semibold">{step.title}</h3>
+        {steps.map((step, index) => (
+          <Card key={step.title} className="flex flex-col overflow-hidden bg-card border-white/10 shadow-e1 rounded-xl p-6">
+            <Badge variant="outline" className="border-primary/50 text-primary mb-4 w-fit">
+              Step {index + 1}
+            </Badge>
+            <CardHeader className="p-0">
+              <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 mt-2 flex-grow">
               <p className="text-muted-foreground">{step.description}</p>
-            </Card>
-          </div>
+            </CardContent>
+            {index === 1 && (
+              <div className="relative h-48 w-full flex items-center justify-center bg-transparent mt-4">
+                <div className="rounded-xl border border-white/10 p-4">
+                  <DataFlowVisual />
+                </div>
+              </div>
+            )}
+          </Card>
         ))}
       </div>
     </SectionWrapper>
