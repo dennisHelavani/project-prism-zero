@@ -1,10 +1,9 @@
+
 'use client';
 
 import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateDocumentsAction } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,15 +14,15 @@ import { CtaButton } from '../ui/cta-button';
 import { Command, Loader2 } from 'lucide-react';
 import type { GenerateHseCdmDocumentsOutput } from '@/ai/flows/generate-hse-cdm-documents';
 
-const FormSchema = z.object({
-  siteDescription: z.string().min(20, { message: "Please provide a more detailed site description (min. 20 characters)." }),
-  projectScope: z.string().min(20, { message: "Please provide a more detailed project scope (min. 20 characters)." }),
-  keyRisks: z.string().min(10, { message: "Please identify at least one key risk." }),
-  mitigationMeasures: z.string().min(10, { message: "Please describe at least one mitigation measure." }),
-  regulatoryRequirements: z.string().min(10, { message: "Please list relevant regulatory requirements." }),
-});
-
-type FormValues = z.infer<typeof FormSchema>;
+// This type can be inferred from the server-side schema if needed,
+// but for simplicity, we define it here on the client.
+type FormValues = {
+  siteDescription: string;
+  projectScope: string;
+  keyRisks: string;
+  mitigationMeasures: string;
+  regulatoryRequirements: string;
+};
 
 interface DocumentFormProps {
   onSuccess: (data: GenerateHseCdmDocumentsOutput) => void;
@@ -53,7 +52,6 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
   const [state, formAction] = useFormState(generateDocumentsAction, { message: '' });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(FormSchema),
     defaultValues: {
       siteDescription: '',
       projectScope: '',
@@ -91,9 +89,18 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
     }
   }, [state, toast, onSuccess, form]);
   
+  // This function is needed to connect react-hook-form with the form action
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const formData = new FormData();
+    (Object.keys(data) as Array<keyof FormValues>).forEach(key => {
+        formData.append(key, data[key]);
+    })
+    formAction(formData);
+  }
+
   return (
     <Form {...form}>
-      <form action={formAction} className="mt-8 space-y-6 text-left">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6 text-left">
         <FormField
           control={form.control}
           name="siteDescription"
