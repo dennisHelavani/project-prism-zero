@@ -6,10 +6,17 @@ import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { PillarsSection } from "@/components/landing/pillars-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
 import { SolutionsSection } from "@/components/landing/solutions-section";
+import { OurStorySection } from "@/components/landing/our-story-section";
+import { FeaturesSectionDemo1 } from "@/components/landing/features-section-demo-1";
+import { FeaturesSectionDemo2 } from "@/components/landing/features-section-demo-2";
+import { FeaturesSectionDemo3 } from "@/components/landing/features-section-demo-3";
+import { CtaSection } from "@/components/landing/cta-section";
+
 
 export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
+      <Header />
       <div className="flex-1">
         <div className="relative isolate">
           <div
@@ -24,14 +31,18 @@ export default function Home() {
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#555555] to-[#111111] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <Header />
           <main>
             <HeroSection />
             <PartnersSection />
             <SolutionsSection />
             <HowItWorksSection />
+            <OurStorySection />
             <PillarsSection />
             <ReviewsSection />
+            <FeaturesSectionDemo1 />
+            <FeaturesSectionDemo2 />
+            <FeaturesSectionDemo3 />
+            <CtaSection />
           </main>
           <div
             aria-hidden="true"

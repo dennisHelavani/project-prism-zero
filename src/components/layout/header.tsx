@@ -1,5 +1,9 @@
+'use client';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { name: "Our story", href: "#our-story" },
@@ -10,8 +14,24 @@ const navLinks = [
 ];
 
 export function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header className={cn(
+      "sticky top-0 inset-x-0 z-50 transition-all duration-300",
+      { "bg-background/80 backdrop-blur-sm border-b border-white/10": scrolled }
+    )}>
       <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6">
         <Link href="/" className="font-headline text-2xl font-bold text-foreground tracking-tighter">
           Hard Hat AI
