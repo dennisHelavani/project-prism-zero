@@ -7,9 +7,7 @@ import { PillarsSection } from "@/components/landing/pillars-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
 import { SolutionsSection } from "@/components/landing/solutions-section";
 import { OurStorySection } from "@/components/landing/our-story-section";
-import { FeaturesSectionDemo1 } from "@/components/landing/features-section-demo-1";
 import { FeaturesSectionDemo2 } from "@/components/landing/features-section-demo-2";
-import { FeaturesSectionDemo3 } from "@/components/landing/features-section-demo-3";
 import { CtaSection } from "@/components/landing/cta-section";
 
 
@@ -39,9 +37,7 @@ export default function Home() {
             <OurStorySection />
             <PillarsSection />
             <ReviewsSection />
-            <FeaturesSectionDemo1 />
             <FeaturesSectionDemo2 />
-            <FeaturesSectionDemo3 />
             <CtaSection />
           </main>
           <div
