@@ -6,7 +6,7 @@ export function OurStorySection() {
     <SectionWrapper id="our-story" className="bg-card rounded-xl shadow-e1">
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
         <div>
-          <h2 className="font-headline text-4xl font-bold text-foreground">
+          <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">
             From the Ground Up
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

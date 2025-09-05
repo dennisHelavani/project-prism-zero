@@ -8,7 +8,7 @@ export function HeroSection() {
     <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-4xl py-24 sm:py-32">
           <div className="text-center">
-            <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl" style={{lineHeight: 1.2}}>
+            <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text" style={{lineHeight: 1.2}}>
               Generate HSE & CDM documents in minutes
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">

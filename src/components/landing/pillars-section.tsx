@@ -19,7 +19,7 @@ export function PillarsSection() {
   return (
     <SectionWrapper>
         <div className="text-center mb-16">
-            <h2 className="font-headline text-4xl font-bold text-foreground">A new era of documentation</h2>
+            <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">A new era of documentation</h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                 Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.
             </p>

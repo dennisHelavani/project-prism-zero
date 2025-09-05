@@ -47,7 +47,7 @@ export function DocumentDisplay({ documents, onReset }: DocumentDisplayProps) {
   return (
     <div className="space-y-8 text-left">
       <div className="text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground md:text-5xl">Your Documents Are Ready</h2>
+        <h2 className="font-headline text-4xl font-bold text-foreground md:text-5xl glowing-text">Your Documents Are Ready</h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           Review your generated documents below. You can copy the content or download them as .doc files for editing.
         </p>

@@ -23,7 +23,7 @@ export function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
       <div className="text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground">How It Works</h2>
+        <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">How It Works</h2>
         <p className="mt-4 text-lg text-muted-foreground">
           Generate your construction documents in three simple steps.
         </p>
