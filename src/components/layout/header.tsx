@@ -12,6 +12,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { CtaButton } from "../ui/cta-button";
 
 const navLinks = [
   { name: "Our story", href: "#our-story" },
@@ -126,9 +127,9 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
-           <StarBorder asChild>
-             <Link href="#cta">Generate my documents</Link>
-           </StarBorder>
+           <CtaButton asChild>
+             <Link href="#contact">Generate my documents</Link>
+           </CtaButton>
         </div>
         <div className="md:hidden">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -162,9 +163,9 @@ export function Header() {
                         ))}
                     </nav>
                     <div className="mt-auto p-4 border-t">
-                        <StarBorder asChild>
-                            <Link href="#cta" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
-                        </StarBorder>
+                        <CtaButton asChild>
+                            <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
+                        </CtaButton>
                     </div>
                  </div>
               </SheetContent>

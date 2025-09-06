@@ -6,52 +6,66 @@ import { SectionWrapper } from './section-wrapper';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
+import { Badge } from '../ui/badge';
+import Link from 'next/link';
 
-const safetyPack = [
-  { title: 'RAMS', description: 'Comprehensive Risk Assessment Method Statements.' },
-  { title: 'Method Statements', description: 'Detailed, step-by-step safe work procedures.' },
-  { title: 'Risk Assessments', description: 'Identify and mitigate hazards effectively.' },
-  { title: 'COSHH', description: 'Manage hazardous substances with compliant assessments.' },
+const liveTemplates = [
+  { 
+    name: 'RAMS', 
+    desc: 'Comprehensive Risk Assessment Method Statements generated from a short form.',
+    cta_label: "See sample",
+    href: "#sample-rams"
+  },
+  { 
+    name: 'Construction Phase Plan (CPP)', 
+    desc: 'Full plan drafted from your inputs and delivered branded by email.',
+    cta_label: "See sample",
+    href: "#sample-cpp"
+  },
 ];
 
-const sitePack = [
-  { title: 'Daily Briefings', description: 'Automate daily safety meeting documentation.' },
-  { title: 'Toolbox Talks', description: 'Generate engaging, relevant safety talks in minutes.' },
-  { title: 'Safety Checklists', description: 'Ensure all safety checks are completed and logged.' },
-  { title: 'ITPs', description: 'Create Inspection and Test Plans for quality assurance.' },
+const comingSoonTemplates = [
+  { name: 'Method Statements', desc: 'Step-by-step safe work procedures.', cta_label: "See sample", href: "#sample-ms" },
+  { name: 'Risk Assessments', desc: 'Identify and mitigate hazards effectively.', cta_label: "See sample", href: "#sample-ra" },
+  { name: 'COSHH', desc: 'Compliant assessments for hazardous substances.', cta_label: "See sample", href: "#sample-coshh" },
+  { name: 'Daily Briefings', desc: 'Automate daily safety meeting documentation.', cta_label: "See sample", href: "#sample-dbrief" },
+  { name: 'Toolbox Talks', desc: 'Generate relevant safety talks in minutes.', cta_label: "See sample", href: "#sample-tbt" },
+  { name: 'Safety Checklists', desc: 'Ensure key checks are completed and logged.', cta_label: "See sample", href: "#sample-checks" },
+  { name: 'ITPs', desc: 'Inspection & Test Plans for quality assurance.', cta_label: "See sample", href: "#sample-itp" }
 ];
 
 export function UseCasesSection() {
   return (
-    <SectionWrapper id="solutions">
-      <div className="mx-auto max-w-2xl text-center">
+    <SectionWrapper id="templates">
+      <div className="mx-auto max-w-3xl text-center">
         <BlurText
           as="h2"
           className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text justify-center"
           text="Templates & Use-Cases"
         />
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
-          From safety compliance to daily site operations, we've got you covered.
+          From safety compliance to daily site operations—we’ve got you covered.
         </p>
       </div>
 
       <div className="mt-12 md:mt-16 space-y-16">
         <div>
-          <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Safety Pack</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {safetyPack.map((item) => (
-              <Card key={item.title} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
+            {liveTemplates.map((item) => (
+              <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
                 background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
               }}>
                 <CardHeader className="p-0">
-                  <CardTitle className="font-headline text-xl font-bold">{item.title}</CardTitle>
+                  <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0 mt-2 flex-grow">
-                  <p className="text-muted-foreground">{item.description}</p>
+                  <p className="text-muted-foreground">{item.desc}</p>
                 </CardContent>
                 <div className="mt-4">
-                  <Button variant="ghost" className="p-0 h-auto text-primary">
-                    See sample <ArrowRight className="ml-2 w-4 h-4" />
+                  <Button asChild variant="ghost" className="p-0 h-auto text-primary">
+                    <Link href={item.href}>
+                      {item.cta_label} <ArrowRight className="ml-2 w-4 h-4" />
+                    </Link>
                   </Button>
                 </div>
               </Card>
@@ -60,23 +74,16 @@ export function UseCasesSection() {
         </div>
         
         <div>
-          <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Site Pack</h3>
+          <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Coming Soon</h3>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {sitePack.map((item) => (
-              <Card key={item.title} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
-                background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
-              }}>
+            {comingSoonTemplates.map((item) => (
+              <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6 bg-card/50">
                 <CardHeader className="p-0">
-                  <CardTitle className="font-headline text-xl font-bold">{item.title}</CardTitle>
+                  <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0 mt-2 flex-grow">
-                  <p className="text-muted-foreground">{item.description}</p>
+                  <p className="text-muted-foreground text-sm">{item.desc}</p>
                 </CardContent>
-                 <div className="mt-4">
-                  <Button variant="ghost" className="p-0 h-auto text-primary">
-                    See sample <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </div>
               </Card>
             ))}
           </div>

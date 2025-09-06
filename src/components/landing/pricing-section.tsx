@@ -1,26 +1,29 @@
 
-import { Check } from "lucide-react";
+import { Check, Clock } from "lucide-react";
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { CtaButton } from "../ui/cta-button";
 import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
 import BlurText from "../ui/blur-text";
+import { Badge } from "../ui/badge";
 
 const tiers = [
   {
-    name: "Starter",
-    price: "$49",
-    features: ["5 Templates", "10 Users", "Basic Integrations", "Email Support"],
+    name: "Per-document (RAMS/CPP)",
+    description: "Contact us for pricing (email invoice; Stripe coming soon).",
     cta: "Try with your template",
+    href: "#upload",
     ctaVariant: "cta",
+    comingSoon: false,
   },
   {
-    name: "Growth",
-    price: "$99",
-    features: ["50 Templates", "50 Users", "Advanced Integrations", "Priority Support"],
+    name: "Pro subscription",
+    description: "Coming soon — includes template library and integrations.",
     cta: "Book a 15-min demo",
+    href: "#book-demo",
     ctaVariant: "star",
+    comingSoon: true,
   },
 ];
 
@@ -31,10 +34,10 @@ export function PricingSection() {
         <BlurText
           as="h2"
           className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-          text="Pricing Plans"
+          text="Pricing"
         />
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Choose a plan that scales with your projects and team.
+          During the MVP, generation is available by request.
         </p>
       </div>
 
@@ -43,25 +46,18 @@ export function PricingSection() {
           <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
             <CardHeader className="p-6">
               <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
-              <CardDescription className="text-4xl font-bold text-primary glowing-text">{tier.price}<span className="text-sm font-normal text-muted-foreground">/mo</span></CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow p-6">
-              <ul className="space-y-4">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <Check className="w-5 h-5 text-green-500" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+            <CardContent className="flex-grow p-6 pt-0">
+              <p className="text-muted-foreground">{tier.description}</p>
             </CardContent>
-            <CardFooter className="p-6 mt-4">
+            <CardFooter className="p-6 mt-auto">
               {tier.ctaVariant === "cta" ? (
                 <CtaButton asChild className="w-full">
-                  <Link href="#cta">{tier.cta}</Link>
+                  <Link href={tier.href}>{tier.cta}</Link>
                 </CtaButton>
               ) : (
-                <StarBorder as={Link} href="#" className="w-full">
+                <StarBorder as={Link} href={tier.href} className="w-full">
+                  {tier.comingSoon && <Clock className="mr-2" />}
                   {tier.cta}
                 </StarBorder>
               )}

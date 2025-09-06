@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'node-fetch': 'isomorphic-fetch',
+    };
+    return config;
+  },
 };
 
 export default nextConfig;

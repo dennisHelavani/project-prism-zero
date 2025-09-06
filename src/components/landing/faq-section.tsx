@@ -11,27 +11,27 @@ import BlurText from "../ui/blur-text";
 const faqs = [
   {
     question: "Can I use my own custom templates?",
-    answer: "Yes, our Growth and Scale plans allow you to ingest your own Word, Excel, or PDF templates. Our AI will map the fields to your data sources.",
+    answer: "In MVP we use a standardized branded template. Uploading your own templates is planned for Phase 2.",
   },
   {
     question: "How do you handle legacy forms?",
-    answer: "We can digitize and integrate your legacy paper or PDF forms into the system, making them fully interactive and data-driven.",
+    answer: "We map the MVP sections to a consistent structure. Contract- or client-specific forms are part of Phase 2.",
   },
   {
-    question: "How does the approval and e-signature process work?",
-    answer: "You can define custom approval workflows. Once a document is approved, it can be routed for e-signature via our integrations with platforms like DocuSign.",
+    question: "How does approval and e-signature work?",
+    answer: "MVP delivers documents by email for review. E-signature and routing (e.g., DocuSign/SharePoint) are planned for Phase 2.",
   },
   {
     question: "Where is our data stored?",
-    answer: "Your data is securely stored in your chosen region to comply with data residency requirements like GDPR. We connect to your existing systems like SharePoint, we don't store your documents.",
+    answer: "Form submissions are processed via Make.com and the output is emailed. Minimal run metadata is retained for troubleshooting and quality.",
   },
   {
     question: "What is the onboarding time?",
-    answer: "For our Starter plan, you can get going in minutes. For Growth and Scale plans with custom templates, onboarding typically takes 3-5 business days.",
+    answer: "Zero install. Submit the short form and you’ll typically receive your document within ~60 seconds.",
   },
   {
-    question: "Who maintains the data mappings?",
-    answer: "You have full control. Our intuitive interface allows your team to manage and update data mappings without needing IT support. We also provide full support.",
+    question: "Who maintains data mappings?",
+    answer: "Not required in MVP. Field mapping to systems like SharePoint/Procore arrives in Phase 2.",
   },
 ];
 
@@ -45,9 +45,6 @@ export function FaqSection() {
           className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
           text="Frequently Asked Questions"
         />
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Answers to common questions about our platform.
-        </p>
       </div>
 
       <div className="mt-12 md:mt-16 max-w-3xl mx-auto">

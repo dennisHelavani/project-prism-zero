@@ -12,7 +12,7 @@ export function HeroSection() {
           <div className="text-center lg:text-left">
             <BlurText
               as="h1"
-              className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text"
+              className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text justify-center lg:justify-start"
               style={{lineHeight: 1.2}}
               text="Generate HSE & CDM documents in minutes—error-free."
             />
@@ -21,14 +21,14 @@ export function HeroSection() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
               <CtaButton asChild>
-                <Link href="#cta">Try with your template</Link>
+                <Link href="#upload">Try with your template</Link>
               </CtaButton>
-              <StarBorder as={Link} href="#">
+              <StarBorder as={Link} href="#book-demo">
                   Book a 15-min demo
               </StarBorder>
             </div>
              <p className="mt-6 text-sm text-muted-foreground">
-              GDPR-ready • Works with SharePoint • Used on 1,200+ projects.
+              GDPR-ready • Deterministic structure (JSON schema) • Branded PDF via email (~60 s)
             </p>
           </div>
           <div className="flex justify-center">

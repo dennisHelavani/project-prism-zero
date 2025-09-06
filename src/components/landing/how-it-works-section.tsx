@@ -1,13 +1,11 @@
-
 import { SectionWrapper } from "./section-wrapper";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
 import BlurText from "../ui/blur-text";
 import { ClipboardEdit, Cpu, FileCheck2 } from "lucide-react";
 import { CtaButton } from "../ui/cta-button";
 import { StarBorder } from "../ui/star-border";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 const steps = [
   {
@@ -16,12 +14,12 @@ const steps = [
     description: "Answer ~4 questions. We only send 2–3 AI inputs.",
     icon: <ClipboardEdit className="w-10 h-10 text-primary" />,
     chips: ["Tally on Framer", "Inputs: context • hazards • site"],
-    note: "Other fields (company, email, project ID) are used for the cover & email—not for AI.",
+    note: "Company, email, and project ID populate the cover & email—not the AI.",
   },
   {
     step: 2,
     title: "Deterministic generation",
-    description: "Make.com validates, then calls OpenAI with a JSON schema.",
+    description: "Make.com validates, then calls OpenAI with a JSON schema for consistent sectioning.",
     icon: <Cpu className="w-10 h-10 text-primary" />,
     chips: ["JSON schema", "Consistent sections"],
     note: "Sections: Cover → Exec Summary → Scope → Risks → Controls → Responsibilities → Emergency → Sign-off.",
@@ -39,13 +37,13 @@ const steps = [
 export function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
-      <div className="text-center">
+      <div className="text-center max-w-4xl mx-auto">
         <BlurText
           as="h2"
           className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
           text="How it works (MVP)"
         />
-        <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+        <p className="mt-4 text-lg text-muted-foreground">
           Short Tally form → Make.com automation → OpenAI → branded PDF by email (≈ 60 s)
         </p>
          <p className="mt-2 text-sm text-muted-foreground/80">
@@ -80,9 +78,9 @@ export function HowItWorksSection() {
       </div>
        <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
           <CtaButton asChild>
-            <Link href="#cta">Generate a sample RAMS</Link>
+            <Link href="#upload">Try with your template</Link>
           </CtaButton>
-          <StarBorder as={Link} href="#">
+          <StarBorder as={Link} href="#book-demo">
               Book a 15-min demo
           </StarBorder>
         </div>
