@@ -27,7 +27,7 @@ export function UseCasesSection() {
       <div className="mx-auto max-w-2xl text-center">
         <BlurText
           as="h2"
-          className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text"
+          className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text justify-center"
           text="Templates & Use-Cases"
         />
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
@@ -35,10 +35,10 @@ export function UseCasesSection() {
         </p>
       </div>
 
-      <div className="mt-16 space-y-16">
+      <div className="mt-12 md:mt-16 space-y-16">
         <div>
           <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Safety Pack</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {safetyPack.map((item) => (
               <Card key={item.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
                 <CardHeader className="p-0">
@@ -59,7 +59,7 @@ export function UseCasesSection() {
         
         <div>
           <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Site Pack</h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {sitePack.map((item) => (
               <Card key={item.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
                 <CardHeader className="p-0">

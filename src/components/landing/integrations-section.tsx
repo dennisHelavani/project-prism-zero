@@ -1,3 +1,4 @@
+
 'use client';
 import { SectionWrapper } from "./section-wrapper";
 import { Share2, Zap, PenSquare, HardHat, Building } from "lucide-react";
@@ -17,7 +18,7 @@ export function IntegrationsSection() {
       <div className="text-center">
         <BlurText
           as="h2"
-          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
           text="Integrations & Compliance"
         />
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
