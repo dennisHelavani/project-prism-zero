@@ -44,14 +44,14 @@ const reviews = [
 
 export function ReviewsSection() {
   return (
-    <SectionWrapper id="reviews" className="py-24">
+    <SectionWrapper id="reviews" className="py-16 md:py-24">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">Loved by industry professionals</h2>
+        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Loved by industry professionals</h2>
         <p className="mt-4 text-lg text-muted-foreground">
           Don't just take our word for it. Here's what managers and leads are saying.
         </p>
       </div>
-      <div className="mt-16 flex justify-center">
+      <div className="mt-12 md:mt-16 flex justify-center">
          <AnimatedTestimonials
           items={reviews}
           direction="right"

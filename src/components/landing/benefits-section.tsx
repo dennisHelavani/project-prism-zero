@@ -5,28 +5,25 @@ import {
 } from '@/components/ui/bento-grid';
 import {
   ClipboardList,
-  FileText,
   ShieldCheck,
   Share2,
   Clock,
   KeyRound,
   GitBranch,
-  Users
 } from 'lucide-react';
 import { SectionWrapper } from './section-wrapper';
-import { Card } from '../ui/card';
 import { cn } from '@/lib/utils';
 
 export function BenefitsSection() {
   return (
     <SectionWrapper id="benefits">
-        <div className="text-center mb-16">
-            <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">A new era of documentation</h2>
+        <div className="text-center mb-12 md:mb-16">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">A new era of documentation</h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                 Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.
             </p>
         </div>
-      <BentoGrid className="mx-auto md:auto-rows-[20rem]">
+      <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
         {items.map((item, i) => (
           <BentoGridItem
             key={i}

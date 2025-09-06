@@ -28,7 +28,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="flex justify-center">
-             <Card className="p-4 bg-card/50 border-primary/20 max-w-md">
+             <Card className="p-4 bg-card/50 border-primary/20 max-w-md w-full">
                 <div className="aspect-video bg-secondary rounded-md flex items-center justify-center">
                     <PlayCircle className="w-16 h-16 text-primary" />
                 </div>

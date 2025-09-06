@@ -2,6 +2,7 @@
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
+import { DataFlowVisual } from "./data-flow-visual";
 
 const steps = [
   {
@@ -11,6 +12,7 @@ const steps = [
   {
     title: "Map fields to your data source",
     description: "Generate: SharePoint, Procore",
+    visual: <DataFlowVisual />,
   },
   {
     title: "Generate & route for approvals",
@@ -22,7 +24,7 @@ export function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
       <div className="text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">How It Works</h2>
+        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">How It Works</h2>
         <p className="mt-4 text-lg text-muted-foreground">
           A data-mapping flow that connects your documents to your systems.
         </p>
@@ -39,6 +41,11 @@ export function HowItWorksSection() {
             <CardContent className="p-0 mt-2 flex-grow">
               <p className="text-muted-foreground">{step.description}</p>
             </CardContent>
+             {step.visual && (
+               <div className="relative h-48 w-full flex items-center justify-center bg-transparent mt-4 rounded-xl border border-white/10 p-4">
+                  {step.visual}
+              </div>
+            )}
           </Card>
         ))}
       </div>

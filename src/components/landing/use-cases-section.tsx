@@ -3,7 +3,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 
@@ -25,7 +24,7 @@ export function UseCasesSection() {
   return (
     <SectionWrapper id="solutions">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-5xl glowing-text">
+        <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text">
           Templates & Use-Cases
         </h2>
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
@@ -47,7 +46,7 @@ export function UseCasesSection() {
                 </CardContent>
                 <div className="mt-4">
                   <Button variant="ghost" className="p-0 h-auto text-primary">
-                    See sample <ArrowRight className="ml-2" />
+                    See sample <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </Card>
@@ -68,7 +67,7 @@ export function UseCasesSection() {
                 </CardContent>
                  <div className="mt-4">
                   <Button variant="ghost" className="p-0 h-auto text-primary">
-                    See sample <ArrowRight className="ml-2" />
+                    See sample <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </Card>

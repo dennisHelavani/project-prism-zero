@@ -18,11 +18,11 @@ export function CtaSection() {
   };
 
   return (
-    <SectionWrapper id="cta" className="bg-secondary rounded-xl shadow-e2 my-24">
+    <SectionWrapper id="cta" className="bg-secondary rounded-xl shadow-e2 my-12 md:my-24">
       <div className="mx-auto max-w-3xl text-center">
         {!generatedDocs ? (
           <>
-            <h2 className="font-headline text-4xl font-bold text-foreground md:text-5xl glowing-text">
+            <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text">
               Ready to cut paperwork time?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">

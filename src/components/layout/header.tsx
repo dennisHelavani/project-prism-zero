@@ -5,6 +5,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { StarBorder } from "../ui/star-border";
+import { Button } from "../ui/button";
+import { Menu, X } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 const navLinks = [
   { name: "Our story", href: "#our-story" },
@@ -89,6 +96,7 @@ const HardHatLogo = () => (
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,10 +125,50 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
            <StarBorder asChild>
              <Link href="#cta">Generate my documents</Link>
            </StarBorder>
+        </div>
+        <div className="md:hidden">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background">
+                 <div className="flex h-full flex-col">
+                    <div className="flex items-center justify-between p-4 border-b">
+                         <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                            <HardHatLogo />
+                        </Link>
+                         <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(false)}>
+                            <X className="h-6 w-6" />
+                            <span className="sr-only">Close menu</span>
+                        </Button>
+                    </div>
+                    <nav className="flex flex-col gap-4 p-4">
+                        {navLinks.map((link) => (
+                            <Link 
+                                key={link.name} 
+                                href={link.href} 
+                                className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                            {link.name}
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="mt-auto p-4 border-t">
+                        <StarBorder asChild>
+                            <Link href="#cta" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
+                        </StarBorder>
+                    </div>
+                 </div>
+              </SheetContent>
+            </Sheet>
         </div>
       </div>
     </header>

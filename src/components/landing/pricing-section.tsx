@@ -25,15 +25,15 @@ const tiers = [
 
 export function PricingSection() {
   return (
-    <SectionWrapper id="pricing" className="py-24">
+    <SectionWrapper id="pricing" className="py-16 md:py-24">
       <div className="text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground glowing-text">Pricing Plans</h2>
+        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Pricing Plans</h2>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
           Choose a plan that scales with your projects and team.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-3xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-3xl mx-auto">
         {tiers.map((tier) => (
           <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
             <CardHeader className="p-6">
