@@ -27,7 +27,7 @@ export function HowItWorksSection() {
       <div className="text-center">
         <BlurText
           as="h2"
-          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
           text="How It Works"
         />
         <p className="mt-4 text-lg text-muted-foreground">

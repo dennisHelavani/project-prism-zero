@@ -43,7 +43,7 @@ export function RoiSection() {
        <div className="text-center mb-12 md:mb-16">
             <BlurText
               as="h2"
-              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
               text="ROI Snapshot"
             />
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
