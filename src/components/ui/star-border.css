@@ -10,7 +10,7 @@
   position: absolute;
   width: 300%;
   height: 50%;
-  opacity: 0.7;
+  opacity: 1; /* Increased opacity */
   bottom: -12px;
   right: -250%;
   border-radius: 50%;
@@ -20,7 +20,7 @@
 
 .border-gradient-top {
   position: absolute;
-  opacity: 0.7;
+  opacity: 1; /* Increased opacity */
   width: 300%;
   height: 50%;
   top: -12px;
