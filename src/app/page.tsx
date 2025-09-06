@@ -1,12 +1,16 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing/hero-section";
-import { PartnersSection } from "@/components/landing/partners-section";
+import { ProofSection } from "@/components/landing/proof-section";
+import { UseCasesSection } from "@/components/landing/use-cases-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
-import { PillarsSection } from "@/components/landing/pillars-section";
+import { RoiSection } from "@/components/landing/roi-section";
+import { BenefitsSection } from "@/components/landing/benefits-section";
+import { IntegrationsSection } from "@/components/landing/integrations-section";
+import { CaseStudySection } from "@/components/landing/case-study-section";
+import { PricingSection } from "@/components/landing/pricing-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
-import { SolutionsSection } from "@/components/landing/solutions-section";
-import { OurStorySection } from "@/components/landing/our-story-section";
+import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
 
 
@@ -30,12 +34,16 @@ export default function Home() {
           </div>
           <main>
             <HeroSection />
-            <PartnersSection />
-            <SolutionsSection />
-            <PillarsSection />
+            <ProofSection />
+            <UseCasesSection />
             <HowItWorksSection />
-            <OurStorySection />
+            <RoiSection />
+            <BenefitsSection />
+            <IntegrationsSection />
+            <CaseStudySection />
+            <PricingSection />
             <ReviewsSection />
+            <FaqSection />
             <CtaSection />
           </main>
           <div

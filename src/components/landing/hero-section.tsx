@@ -2,27 +2,38 @@ import { PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
 import { CtaButton } from "../ui/cta-button";
+import { Card } from "../ui/card";
 
 export function HeroSection() {
   return (
-    <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="mx-auto max-w-4xl py-24 sm:py-32">
-          <div className="text-center">
+    <div className="relative isolate px-6 pt-14 lg:px-8" id="hero">
+        <div className="mx-auto max-w-7xl py-24 sm:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
             <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text" style={{lineHeight: 1.2}}>
-              Generate HSE & CDM documents in minutes
+              Generate HSE & CDM documents in minutes—error-free.
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
               AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
               <CtaButton asChild>
-                <Link href="#">Get started for free</Link>
+                <Link href="#cta">Try with your template</Link>
               </CtaButton>
               <StarBorder as={Link} href="#">
-                  <PlayCircle className="mr-2" />
-                  Watch demo
+                  Book a 15-min demo
               </StarBorder>
             </div>
+             <p className="mt-6 text-sm text-muted-foreground">
+              GDPR-ready • Works with SharePoint • Used on 1,200+ projects.
+            </p>
+          </div>
+          <div className="flex justify-center">
+             <Card className="p-4 bg-card/50 border-primary/20 max-w-md">
+                <div className="aspect-video bg-secondary rounded-md flex items-center justify-center">
+                    <PlayCircle className="w-16 h-16 text-primary" />
+                </div>
+                <p className="text-center font-bold mt-4 text-foreground">LIVE DEMO — Generate RAMS in 60s</p>
+            </Card>
           </div>
         </div>
       </div>

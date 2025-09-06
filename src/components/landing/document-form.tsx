@@ -5,17 +5,14 @@ import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateDocumentsAction } from '@/app/actions';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { CtaButton } from '../ui/cta-button';
-import { Command, Loader2 } from 'lucide-react';
+import { Loader2, UploadCloud } from 'lucide-react';
 import type { GenerateHseCdmDocumentsOutput } from '@/ai/flows/generate-hse-cdm-documents';
 
-// This type can be inferred from the server-side schema if needed,
-// but for simplicity, we define it here on the client.
 type FormValues = {
   siteDescription: string;
   projectScope: string;
@@ -39,8 +36,8 @@ function SubmitButton() {
         </>
       ) : (
         <>
-          <Command />
-          Get my documents
+          <UploadCloud />
+          Try with your template
         </>
       )}
     </CtaButton>
@@ -59,7 +56,6 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
       mitigationMeasures: '',
       regulatoryRequirements: '',
     },
-    // To display server-side errors
     errors: state.errors ? Object.fromEntries(Object.entries(state.errors).map(([key, value]) => [key, { type: 'server', message: value?.[0] }])) : {},
   });
   
@@ -77,7 +73,6 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
           description: state.message,
           variant: "destructive",
         });
-        // Update form errors from server validation
         if (state.errors) {
             Object.entries(state.errors).forEach(([key, value]) => {
                 if (value) {
@@ -89,7 +84,6 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
     }
   }, [state, toast, onSuccess, form]);
   
-  // This function is needed to connect react-hook-form with the form action
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const formData = new FormData();
     (Object.keys(data) as Array<keyof FormValues>).forEach(key => {
@@ -169,7 +163,7 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
         <div className="text-center pt-4">
           <SubmitButton />
           <p className="mt-4 text-xs text-muted-foreground">
-            By generating, you agree to our Terms. AI-generated — review before use.
+            AI-generated — review before use.
           </p>
         </div>
       </form>
