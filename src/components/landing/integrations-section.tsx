@@ -4,12 +4,12 @@ import { SectionWrapper } from "./section-wrapper";
 import { SiSharepoint, SiProcore } from 'react-icons/si';
 import { CgFileDocument } from "react-icons/cg";
 import { GrPower } from "react-icons/gr";
-import { RiDocusignLine } from "react-icons/ri";
+import { PenSquare } from "lucide-react";
 
 const integrations = [
   { node: <SiSharepoint size="48"/>, title: "SharePoint" },
   { node: <GrPower size="48"/>, title: "Power Automate" },
-  { node: <RiDocusignLine size="48"/>, title: "DocuSign" },
+  { node: <PenSquare size="48"/>, title: "DocuSign" },
   { node: <SiProcore size="48"/>, title: "Procore" },
   { node: <CgFileDocument size="48"/>, title: "Autodesk" },
 ];
