@@ -40,7 +40,9 @@ export function UseCasesSection() {
           <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Safety Pack</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {safetyPack.map((item) => (
-              <Card key={item.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
+              <Card key={item.title} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
+                background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+              }}>
                 <CardHeader className="p-0">
                   <CardTitle className="font-headline text-xl font-bold">{item.title}</CardTitle>
                 </CardHeader>
@@ -61,7 +63,9 @@ export function UseCasesSection() {
           <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Site Pack</h3>
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {sitePack.map((item) => (
-              <Card key={item.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
+              <Card key={item.title} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
+                background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+              }}>
                 <CardHeader className="p-0">
                   <CardTitle className="font-headline text-xl font-bold">{item.title}</CardTitle>
                 </CardHeader>

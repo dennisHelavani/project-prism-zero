@@ -25,7 +25,7 @@ export function CtaSection() {
           <>
             <BlurText
               as="h2"
-              className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text"
+              className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
               text="Ready to cut paperwork time?"
             />
             <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
