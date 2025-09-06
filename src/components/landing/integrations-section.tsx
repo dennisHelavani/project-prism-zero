@@ -1,17 +1,13 @@
-
 'use client';
 import { SectionWrapper } from "./section-wrapper";
-import { SiSharepoint, SiProcore } from 'react-icons/si';
-import { CgFileDocument } from "react-icons/cg";
-import { GrPower } from "react-icons/gr";
-import { PenSquare } from "lucide-react";
+import { Share2, Zap, PenSquare, HardHat, Building } from "lucide-react";
 
 const integrations = [
-  { node: <SiSharepoint size="48"/>, title: "SharePoint" },
-  { node: <GrPower size="48"/>, title: "Power Automate" },
+  { node: <Share2 size="48"/>, title: "SharePoint" },
+  { node: <Zap size="48"/>, title: "Power Automate" },
   { node: <PenSquare size="48"/>, title: "DocuSign" },
-  { node: <SiProcore size="48"/>, title: "Procore" },
-  { node: <CgFileDocument size="48"/>, title: "Autodesk" },
+  { node: <HardHat size="48"/>, title: "Procore" },
+  { node: <Building size="48"/>, title: "Autodesk" },
 ];
 
 export function IntegrationsSection() {
