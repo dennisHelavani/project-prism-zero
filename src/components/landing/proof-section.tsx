@@ -4,8 +4,16 @@ import { SectionWrapper } from "./section-wrapper";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 import { AnimatedCounter } from "../ui/animated-counter";
+import { LogoLoop } from '../ui/logo-loop';
+import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiGithub } from 'react-icons/si';
 
-const partners = ["Acme Rail", "Tier 1 Build", "CityWorks", "Northline"];
+const techLogos = [
+  { node: <p className="text-xl font-bold text-muted-foreground">Acme Rail</p>, title: "Acme Rail" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Tier 1 Build</p>, title: "Tier 1 Build" },
+  { node: <p className="text-xl font-bold text-muted-foreground">CityWorks</p>, title: "CityWorks" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Northline</p>, title: "Northline" },
+];
+
 const chips = ["Used across UK projects", "Built with Tally + Make.com + OpenAI"];
 const stats = [
     { value: 92, label: "Hours Saved", unit: "k" },
@@ -21,10 +29,15 @@ export function ProofSection() {
             <h2 className="text-lg font-semibold leading-8 text-foreground mb-8">
                 Partners we work with
             </h2>
-            <div className="flex justify-center lg:justify-start items-center flex-wrap gap-x-8 gap-y-4 md:gap-x-12">
-                {partners.map(partner => (
-                    <p key={partner} className="text-xl font-bold text-muted-foreground">{partner}</p>
-                ))}
+            <div style={{ height: '48px', position: 'relative', overflow: 'hidden'}}>
+              <LogoLoop
+                  logos={techLogos}
+                  speed={80}
+                  direction="left"
+                  logoHeight={24}
+                  gap={40}
+                  pauseOnHover
+              />
             </div>
             <div className="flex justify-center lg:justify-start flex-wrap gap-2 mt-8">
                 {chips.map(chip => (
@@ -33,16 +46,16 @@ export function ProofSection() {
             </div>
         </div>
          <Card className="bg-transparent border-none shadow-none">
-          <div className="grid grid-cols-3 gap-px rounded-lg bg-white/5 ring-1 ring-white/10">
+          <div className="grid grid-cols-3 gap-px rounded-lg">
             {stats.map((stat) => (
-              <div key={stat.label} className="bg-card/80 px-4 py-6 rounded-lg">
-                <p className="text-sm font-medium leading-6 text-muted-foreground">{stat.label}</p>
-                <p className="mt-2 flex items-baseline gap-x-2">
-                  <span className="text-4xl font-bold tracking-tight text-foreground">
+              <div key={stat.label} className="px-4 py-6 text-center">
+                <p className="mt-2 flex items-baseline justify-center gap-x-2">
+                  <span className="text-4xl font-bold tracking-tight text-foreground glowing-text">
                     <AnimatedCounter from={0} to={stat.value} />
                     {stat.unit}
                   </span>
                 </p>
+                 <p className="text-sm font-medium leading-6 text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>

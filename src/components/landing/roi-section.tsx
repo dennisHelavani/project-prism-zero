@@ -30,7 +30,7 @@ export function RoiSection() {
             />
         </div>
       <Card className="max-w-4xl mx-auto p-8 bg-secondary/50">
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <CardContent className="p-0">
                 <ul className="space-y-4">
                     {bullets.map((bullet) => (
@@ -41,11 +41,11 @@ export function RoiSection() {
                     ))}
                 </ul>
             </CardContent>
-            <div className="grid grid-cols-3 gap-px rounded-lg">
+            <div className="grid grid-cols-3 gap-4">
                 {metrics.map((stat) => (
-                <div key={stat.label} className="bg-card/50 px-4 py-6 rounded-lg text-center">
+                <div key={stat.label} className="px-4 py-6 rounded-lg text-center">
                     <p className="mt-2 flex items-baseline justify-center gap-x-2">
-                    <span className="text-4xl font-bold tracking-tight text-foreground">
+                    <span className="text-4xl font-bold tracking-tight text-foreground glowing-text">
                         <AnimatedCounter from={0} to={stat.value} />
                         {stat.unit}
                     </span>
