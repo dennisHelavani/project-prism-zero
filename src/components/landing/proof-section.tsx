@@ -4,6 +4,7 @@ import { SectionWrapper } from "./section-wrapper";
 import { LogoLoop } from '../ui/logo-loop';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiVercel, SiGithub } from 'react-icons/si';
 import { Card } from "../ui/card";
+import { AnimatedCounter } from "../ui/animated-counter";
 
 const techLogos = [
   { node: <SiReact size="48"/>, title: "React", href: "https://react.dev" },
@@ -15,9 +16,9 @@ const techLogos = [
 ];
 
 const stats = [
-    { value: '90%', label: 'Faster approvals' },
-    { value: '75%', label: 'Fewer reworks' },
-    { value: '5k+', label: 'Docs/month automated' },
+    { value: 90, unit: '%', label: 'Faster approvals' },
+    { value: 75, unit: '%', label: 'Fewer reworks' },
+    { value: 5000, unit: '+', label: 'Docs/month automated' },
 ]
 
 export function ProofSection() {
@@ -45,7 +46,10 @@ export function ProofSection() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {stats.map(stat => (
                 <Card key={stat.label} className="p-4 text-center bg-card/50 border-white/10">
-                    <p className="text-4xl font-bold text-primary glowing-text">{stat.value}</p>
+                    <p className="text-4xl font-bold text-primary glowing-text">
+                        <AnimatedCounter from={0} to={stat.value} />
+                        {stat.unit}
+                    </p>
                     <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Card>
             ))}

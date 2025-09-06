@@ -21,13 +21,6 @@ const tiers = [
     cta: "Book a 15-min demo",
     ctaVariant: "star",
   },
-  {
-    name: "Scale",
-    price: "Custom",
-    features: ["Unlimited Templates", "Unlimited Users", "Custom Integrations", "Dedicated SLA"],
-    cta: "Book a 15-min demo",
-    ctaVariant: "star",
-  },
 ];
 
 export function PricingSection() {
@@ -40,7 +33,7 @@ export function PricingSection() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-3xl mx-auto">
         {tiers.map((tier) => (
           <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
             <CardHeader className="p-6">

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -118,7 +119,7 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-4">
            <StarBorder asChild>
-             <Link href="#">Book a 15-min demo</Link>
+             <Link href="#cta">Generate my documents</Link>
            </StarBorder>
         </div>
       </div>

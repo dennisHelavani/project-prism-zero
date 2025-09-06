@@ -1,27 +1,37 @@
 
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SectionWrapper } from "./section-wrapper";
 import { TrendingUp, Zap, ShieldCheck, CheckCircle } from "lucide-react";
+import { AnimatedCounter } from "../ui/animated-counter";
 
 const stats = [
     { 
         icon: <TrendingUp className="w-10 h-10 text-primary" />,
-        value: "+400",
+        value: 400,
+        prefix: "+",
         label: "Hours Saved/Month" 
     },
     { 
         icon: <Zap className="w-10 h-10 text-primary" />,
-        value: "-48%",
+        value: 48,
+        prefix: "-",
+        suffix: "%",
         label: "Cycle Time" 
     },
     { 
         icon: <ShieldCheck className="w-10 h-10 text-primary" />,
-        value: "-90%",
+        value: 90,
+        prefix: "-",
+        suffix: "%",
         label: "Error Rate"
     },
     { 
         icon: <CheckCircle className="w-10 h-10 text-primary" />,
-        value: "+85%",
+        value: 85,
+        prefix: "+",
+        suffix: "%",
         label: "First-Pass Approvals" 
     },
 ]
@@ -39,7 +49,11 @@ export function RoiSection() {
         {stats.map((stat, index) => (
           <Card key={index} className="flex flex-col items-center justify-center p-8 text-center bg-card border-white/10 shadow-e1 rounded-lg">
             <div className="mb-4">{stat.icon}</div>
-            <p className="font-headline text-5xl font-bold text-foreground glowing-text">{stat.value}</p>
+            <p className="font-headline text-5xl font-bold text-foreground glowing-text">
+                {stat.prefix}
+                <AnimatedCounter from={0} to={stat.value} />
+                {stat.suffix}
+            </p>
             <p className="mt-2 text-muted-foreground">{stat.label}</p>
           </Card>
         ))}
