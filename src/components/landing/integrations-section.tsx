@@ -1,13 +1,13 @@
 
 'use client';
 import { SectionWrapper } from "./section-wrapper";
-import { Share2, Zap, PenSquare, HardHat, Building, Mail, BrainCircuit } from "lucide-react";
+import { Share2, Zap, PenSquare, HardHat, Building, Mail, BrainCircuit, ClipboardList } from "lucide-react";
 import BlurText from "../ui/blur-text";
 import { Badge } from "../ui/badge";
 
 const liveIntegrations = [
   { node: <ClipboardList className="w-8 h-8 md:w-12 md:h-12"/>, title: "Tally (form)" },
-  { node: <Zap className="w-8 h-8 md:w-12 md:h-12"/>, title: "Make.com (automation)" },
+  { node: <Zap className="w-8 h_8 md:w-12 md:h-12"/>, title: "Make.com (automation)" },
   { node: <BrainCircuit className="w-8 h-8 md:w-12 md:h-12"/>, title: "OpenAI (drafting)" },
   { node: <Mail className="w-8 h-8 md:w-12 md:h-12"/>, title: "Email (delivery)" },
 ];
