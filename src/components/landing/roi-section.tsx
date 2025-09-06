@@ -5,12 +5,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { SectionWrapper } from "./section-wrapper";
 import { Check } from "lucide-react";
 import BlurText from "../ui/blur-text";
+import { AnimatedCounter } from "../ui/animated-counter";
 
 const bullets = [
     "Fewer reworks through consistent structure",
     "Faster internal approvals with ready-to-send drafts",
     "Hours saved weekly on paperwork preparation"
 ];
+
+const metrics = [
+    { value: 80, label: "Time Savings", unit:"%" },
+    { value: 50, label: "Cost Reduction", unit:"%" },
+    { value: 100, label: "Compliance Score", unit:"%" },
+]
 
 export function RoiSection() {
   return (
@@ -22,17 +29,32 @@ export function RoiSection() {
               text="ROI Snapshot"
             />
         </div>
-      <Card className="max-w-2xl mx-auto p-8 bg-secondary/50">
-        <CardContent className="p-0">
-          <ul className="space-y-4">
-            {bullets.map((bullet) => (
-              <li key={bullet} className="flex items-start gap-3">
-                <Check className="w-6 h-6 text-primary mt-1 shrink-0" />
-                <span className="text-lg text-muted-foreground">{bullet}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
+      <Card className="max-w-4xl mx-auto p-8 bg-secondary/50">
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <CardContent className="p-0">
+                <ul className="space-y-4">
+                    {bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-3">
+                        <Check className="w-6 h-6 text-primary mt-1 shrink-0" />
+                        <span className="text-lg text-muted-foreground">{bullet}</span>
+                    </li>
+                    ))}
+                </ul>
+            </CardContent>
+            <div className="grid grid-cols-3 gap-px rounded-lg">
+                {metrics.map((stat) => (
+                <div key={stat.label} className="bg-card/50 px-4 py-6 rounded-lg text-center">
+                    <p className="mt-2 flex items-baseline justify-center gap-x-2">
+                    <span className="text-4xl font-bold tracking-tight text-foreground">
+                        <AnimatedCounter from={0} to={stat.value} />
+                        {stat.unit}
+                    </span>
+                    </p>
+                    <p className="text-sm font-medium leading-6 text-muted-foreground">{stat.label}</p>
+                </div>
+                ))}
+          </div>
+        </div>
       </Card>
     </SectionWrapper>
   );

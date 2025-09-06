@@ -12,7 +12,7 @@ import { PricingSection } from "@/components/landing/pricing-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
-
+import { FormSection } from "@/components/landing/form-section";
 
 export default function Home() {
   return (
@@ -43,6 +43,7 @@ export default function Home() {
             <CaseStudySection />
             <PricingSection />
             <ReviewsSection />
+            <FormSection />
             <FaqSection />
             <CtaSection />
           </main>

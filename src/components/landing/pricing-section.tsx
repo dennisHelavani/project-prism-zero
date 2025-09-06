@@ -1,4 +1,3 @@
-
 import { Check, Clock } from "lucide-react";
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
