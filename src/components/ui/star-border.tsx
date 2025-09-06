@@ -14,7 +14,7 @@ interface StarBorderProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 export const StarBorder = ({
   as: Component = 'button',
   className = '',
-  color = '#A3BFFA',
+  color = '#C0C0C0', // Stronger silver color
   speed = '6s',
   thickness = 1,
   children,
