@@ -1,5 +1,6 @@
 import { SectionWrapper } from "./section-wrapper";
 import Image from "next/image";
+import BlurText from "../ui/blur-text";
 
 export function CaseStudySection() {
   return (
@@ -15,9 +16,11 @@ export function CaseStudySection() {
           />
         </div>
         <div>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">
-            From the Ground Up
-          </h2>
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+            text="From the Ground Up"
+          />
           <p className="mt-4 text-muted-foreground">
             After more than a decade on construction sites, rail projects, and major infrastructure, Aaron Lazenby (CMIOSH) kept seeing the same drag on progress: safety documents—RAMS and Construction Phase Plans—were slow to produce, inconsistent between teams, and too often not truly site-specific. Time that should’ve gone to the build went into formatting, re-keying, and chasing edits.
           </p>

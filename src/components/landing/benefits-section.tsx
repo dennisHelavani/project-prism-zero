@@ -13,12 +13,17 @@ import {
 } from 'lucide-react';
 import { SectionWrapper } from './section-wrapper';
 import { cn } from '@/lib/utils';
+import BlurText from '../ui/blur-text';
 
 export function BenefitsSection() {
   return (
     <SectionWrapper id="benefits">
         <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">A new era of documentation</h2>
+            <BlurText
+              as="h2"
+              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+              text="A new era of documentation"
+            />
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                 Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.
             </p>

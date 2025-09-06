@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import BlurText from "../ui/blur-text";
 
 const faqs = [
   {
@@ -39,7 +40,11 @@ export function FaqSection() {
   return (
     <SectionWrapper id="faq" className="py-16 md:py-24">
       <div className="text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Frequently Asked Questions</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          text="Frequently Asked Questions"
+        />
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
           Answers to common questions about our platform.
         </p>

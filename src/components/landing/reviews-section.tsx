@@ -3,6 +3,7 @@
 import React from "react";
 import { SectionWrapper } from "./section-wrapper";
 import { AnimatedTestimonials } from "../ui/animated-testimonials";
+import BlurText from "../ui/blur-text";
 
 const reviews = [
   {
@@ -46,7 +47,11 @@ export function ReviewsSection() {
   return (
     <SectionWrapper id="reviews" className="py-16 md:py-24">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Loved by industry professionals</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          text="Loved by industry professionals"
+        />
         <p className="mt-4 text-lg text-muted-foreground">
           Don't just take our word for it. Here's what managers and leads are saying.
         </p>

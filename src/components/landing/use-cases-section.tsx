@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import BlurText from '../ui/blur-text';
 
 const safetyPack = [
   { title: 'RAMS', description: 'Comprehensive Risk Assessment Method Statements.' },
@@ -24,9 +25,11 @@ export function UseCasesSection() {
   return (
     <SectionWrapper id="solutions">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text">
-          Templates & Use-Cases
-        </h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text"
+          text="Templates & Use-Cases"
+        />
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
           From safety compliance to daily site operations, we've got you covered.
         </p>

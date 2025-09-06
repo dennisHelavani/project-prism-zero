@@ -3,6 +3,7 @@ import { SectionWrapper } from "./section-wrapper";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
 import { DataFlowVisual } from "./data-flow-visual";
+import BlurText from "../ui/blur-text";
 
 const steps = [
   {
@@ -24,7 +25,11 @@ export function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
       <div className="text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">How It Works</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          text="How It Works"
+        />
         <p className="mt-4 text-lg text-muted-foreground">
           A data-mapping flow that connects your documents to your systems.
         </p>

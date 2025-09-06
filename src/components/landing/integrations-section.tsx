@@ -1,6 +1,7 @@
 'use client';
 import { SectionWrapper } from "./section-wrapper";
 import { Share2, Zap, PenSquare, HardHat, Building } from "lucide-react";
+import BlurText from "../ui/blur-text";
 
 const integrations = [
   { node: <Share2 className="w-8 h-8 md:w-12 md:h-12"/>, title: "SharePoint" },
@@ -14,7 +15,11 @@ export function IntegrationsSection() {
   return (
     <SectionWrapper id="integrations" className="py-16 bg-secondary rounded-xl">
       <div className="text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Integrations & Compliance</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          text="Integrations & Compliance"
+        />
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
           Connect seamlessly with your existing tools and workflows.
         </p>

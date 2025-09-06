@@ -3,15 +3,19 @@ import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
 import { CtaButton } from "../ui/cta-button";
 import { Card } from "../ui/card";
+import BlurText from "../ui/blur-text";
 
 export function HeroSection() {
   return (
     <div className="relative isolate px-6 pt-14 lg:px-8" id="hero">
         <div className="mx-auto max-w-7xl py-24 sm:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
-            <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text" style={{lineHeight: 1.2}}>
-              Generate HSE & CDM documents in minutes—error-free.
-            </h1>
+            <BlurText
+              as="h1"
+              className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text"
+              style={{lineHeight: 1.2}}
+              text="Generate HSE & CDM documents in minutes—error-free."
+            />
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
               AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.
             </p>

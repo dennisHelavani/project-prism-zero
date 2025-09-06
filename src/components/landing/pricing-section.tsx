@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CtaButton } from "../ui/cta-button";
 import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
+import BlurText from "../ui/blur-text";
 
 const tiers = [
   {
@@ -27,7 +28,11 @@ export function PricingSection() {
   return (
     <SectionWrapper id="pricing" className="py-16 md:py-24">
       <div className="text-center">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">Pricing Plans</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+          text="Pricing Plans"
+        />
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
           Choose a plan that scales with your projects and team.
         </p>

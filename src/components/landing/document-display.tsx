@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Check, Copy, Download, RotateCcw } from 'lucide-react';
 import type { GenerateHseCdmDocumentsOutput } from '@/ai/flows/generate-hse-cdm-documents';
 import { useState } from 'react';
+import BlurText from '../ui/blur-text';
 
 interface DocumentDisplayProps {
   documents: GenerateHseCdmDocumentsOutput;
@@ -47,7 +48,11 @@ export function DocumentDisplay({ documents, onReset }: DocumentDisplayProps) {
   return (
     <div className="space-y-8 text-left">
       <div className="text-center">
-        <h2 className="font-headline text-4xl font-bold text-foreground md:text-5xl glowing-text">Your Documents Are Ready</h2>
+        <BlurText
+          as="h2"
+          className="font-headline text-4xl font-bold text-foreground md:text-5xl glowing-text"
+          text="Your Documents Are Ready"
+        />
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           Review your generated documents below. You can copy the content or download them as .doc files for editing.
         </p>

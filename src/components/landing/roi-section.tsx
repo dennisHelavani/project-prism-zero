@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { SectionWrapper } from "./section-wrapper";
 import { TrendingUp, Zap, ShieldCheck, CheckCircle } from "lucide-react";
 import { AnimatedCounter } from "../ui/animated-counter";
+import BlurText from "../ui/blur-text";
 
 const stats = [
     { 
@@ -40,7 +41,11 @@ export function RoiSection() {
   return (
     <SectionWrapper id="roi">
        <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text">ROI Snapshot</h2>
+            <BlurText
+              as="h2"
+              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text"
+              text="ROI Snapshot"
+            />
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                 Measurable impact on your project's efficiency and bottom line.
             </p>
