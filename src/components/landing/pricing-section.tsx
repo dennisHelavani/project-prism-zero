@@ -43,24 +43,6 @@ const tiers = [
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
   },
-  {
-    name: "Enterprise",
-    price: "$1999",
-    priceSuffix: "/project",
-    description: "Tailored solutions for large-scale operations and complex needs.",
-    features: [
-      "Custom page count",
-      "Comprehensive SEO strategy",
-      "Custom integrations",
-      "Dedicated account manager",
-      "24/7 Premium support",
-      "Scalability consulting",
-    ],
-    cta: "Get Started",
-    href: "#",
-    icon: <Crown className="w-6 h-6 text-primary" />,
-    highlighted: false,
-  },
 ];
 
 export function PricingSection() {
@@ -80,11 +62,11 @@ export function PricingSection() {
       </MotionDiv>
 
       <MotionDiv delay={0.2}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 md:mt-16 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-4xl mx-auto">
           {tiers.map((tier) => (
             <Card key={tier.name} className={cn(
                 "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6",
-                {"border-purple-500": tier.highlighted}
+                {"border-[#FABE2C]": tier.highlighted}
             )}>
               <CardHeader className="p-0">
                 <div className="flex items-center gap-2">
@@ -98,7 +80,7 @@ export function PricingSection() {
                  <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow p-0 pt-6">
-                <Button asChild className="w-full bg-purple-gradient text-white">
+                <Button asChild className="w-full bg-cta-gradient text-black font-bold">
                   <Link href={tier.href}>{tier.cta}</Link>
                 </Button>
                 <div className="mt-6 space-y-3">
