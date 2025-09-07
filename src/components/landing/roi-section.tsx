@@ -33,7 +33,9 @@ export function RoiSection() {
           </div>
         </MotionDiv>
       <MotionDiv delay={0.2} variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}>
-        <Card className="max-w-4xl mx-auto p-8 bg-secondary/50">
+        <Card className="max-w-4xl mx-auto p-8" style={{
+          background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+        }}>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <CardContent className="p-0">
                   <ul className="space-y-4">
