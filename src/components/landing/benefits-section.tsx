@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   BentoGrid,
@@ -14,7 +15,6 @@ import {
 import { SectionWrapper } from './section-wrapper';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
-import { motion } from 'framer-motion';
 import { MotionDiv } from '../ui/motion-div';
 
 const benefits = [
@@ -61,11 +61,12 @@ const Skeleton = () => (
 );
 
 const itemVariants = {
-  fromLeft: { opacity: 0, x: -50 },
-  fromRight: { opacity: 0, x: 50 },
-  fadeIn: { opacity: 0, y: 50 },
-  inView: { opacity: 1, x: 0, y: 0 }
+  hiddenLeft: { opacity: 0, x: -50 },
+  hiddenRight: { opacity: 0, x: 50 },
+  hiddenFade: { opacity: 0, y: 50 },
+  visible: { opacity: 1, x: 0, y: 0 }
 };
+
 
 export function BenefitsSection() {
   return (
@@ -86,16 +87,16 @@ export function BenefitsSection() {
         <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
           {benefits.map((item, i) => {
             const getInitial = () => {
-              if (i % 3 === 0) return itemVariants.fromLeft;
-              if (i % 3 === 2) return itemVariants.fromRight;
-              return itemVariants.fadeIn;
+              if (i % 3 === 0) return 'hiddenLeft';
+              if (i % 3 === 2) return 'hiddenRight';
+              return 'hiddenFade';
             }
 
             return (
-               <motion.div
+               <MotionDiv
                 key={i}
                 initial={getInitial()}
-                whileInView="inView"
+                whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.15 }}
                 variants={itemVariants}
@@ -107,7 +108,7 @@ export function BenefitsSection() {
                   className="md:col-span-1 h-full"
                   icon={item.icon}
                 />
-              </motion.div>
+              </MotionDiv>
             )
           })}
         </BentoGrid>

@@ -1,3 +1,6 @@
+
+'use client';
+
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
@@ -6,7 +9,6 @@ import { ClipboardEdit, Cpu, FileCheck2 } from "lucide-react";
 import { CtaButton } from "../ui/cta-button";
 import { StarBorder } from "../ui/star-border";
 import Link from "next/link";
-import { motion } from 'framer-motion';
 import { MotionDiv } from "../ui/motion-div";
 
 const steps = [
@@ -63,14 +65,14 @@ export function HowItWorksSection() {
       
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((step, index) => (
-             <motion.div
+             <MotionDiv
               key={step.title}
               variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               style={{ transformStyle: 'preserve-3d' }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
               <Card className="flex flex-col bg-card border-[#FABE2C]/50 shadow-e1 rounded-xl p-6 h-full" style={{ backfaceVisibility: 'hidden' }}>
                 <div className="flex justify-between items-start mb-4">
@@ -94,7 +96,7 @@ export function HowItWorksSection() {
                   {step.note && <p className="text-xs text-muted-foreground/70">{step.note}</p>}
                 </CardFooter>
               </Card>
-            </motion.div>
+            </MotionDiv>
           ))}
         </div>
       
