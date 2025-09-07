@@ -105,4 +105,18 @@
     .nav-link[data-active='true'] {
         @apply text-foreground;
     }
+
+    .flip-text-wrapper {
+      perspective: 1000px;
+    }
+    
+    .flip-text-inner {
+      display: inline-block;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    .flip-text-wrapper:hover .flip-text-inner {
+      transform: rotateX(360deg);
+    }
 }

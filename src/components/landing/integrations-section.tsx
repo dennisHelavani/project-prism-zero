@@ -3,7 +3,6 @@
 import { SectionWrapper } from "./section-wrapper";
 import { Share2, Zap, PenSquare, HardHat, Building, Mail, BrainCircuit, ClipboardList } from "lucide-react";
 import BlurText from "../ui/blur-text";
-import { Badge } from "../ui/badge";
 import { MotionDiv } from "../ui/motion-div";
 
 const liveIntegrations = [
@@ -23,7 +22,9 @@ const plannedIntegrations = [
 
 export function IntegrationsSection() {
   return (
-    <SectionWrapper id="integrations" className="py-16 bg-secondary rounded-xl">
+    <SectionWrapper id="integrations" className="py-16 rounded-xl" style={{
+      background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+    }}>
       <MotionDiv>
         <div className="text-center">
           <BlurText

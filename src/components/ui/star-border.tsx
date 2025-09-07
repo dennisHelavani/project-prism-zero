@@ -22,7 +22,7 @@ export const StarBorder = ({
 }: StarBorderProps) => {
   return (
     <Component
-      className={`star-border-container ${className}`}
+      className={`star-border-container flip-text-wrapper ${className}`}
       style={{
         padding: `${thickness}px`,
         ...rest.style,
@@ -43,7 +43,9 @@ export const StarBorder = ({
           animationDuration: speed,
         }}
       ></div>
-      <div className="inner-content">{children}</div>
+      <div className="inner-content">
+        <span className="flip-text-inner">{children}</span>
+      </div>
     </Component>
   );
 };

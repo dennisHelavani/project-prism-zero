@@ -16,11 +16,12 @@ export function CtaButton({ children, className, asChild = false, ...props }: Ct
         "hover:-translate-y-0.5 hover:shadow-e2 hover:from-white hover:to-[#C0C0C0]",
         "active:translate-y-0 active:shadow-e1",
         "disabled:pointer-events-none disabled:opacity-50",
+        "flip-text-wrapper",
         className
       )}
       {...props}
     >
-      {children}
+      <span className="flip-text-inner">{children}</span>
     </Comp>
   );
 }
