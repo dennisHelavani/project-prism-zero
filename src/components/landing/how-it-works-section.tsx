@@ -46,7 +46,7 @@ const cardVariants = {
 
 export function HowItWorksSection() {
   return (
-    <SectionWrapper id="how-it-works">
+    <SectionWrapper id="how-it-works" className="scroll-m-24">
       <MotionDiv>
         <div className="text-center max-w-4xl mx-auto">
           <BlurText

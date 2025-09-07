@@ -48,7 +48,7 @@ const tiers = [
 
 export function PricingSection() {
   return (
-    <SectionWrapper id="pricing" className="py-16 md:py-24">
+    <SectionWrapper id="pricing" className="py-16 md:py-24 scroll-m-24">
       <MotionDiv>
         <div className="text-center">
           <BlurText

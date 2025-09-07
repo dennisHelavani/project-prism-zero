@@ -5,7 +5,7 @@ import { MotionDiv } from "../ui/motion-div";
 
 export function CaseStudySection() {
   return (
-    <SectionWrapper id="our-story" className="bg-card rounded-xl shadow-e1">
+    <SectionWrapper id="our-story" className="bg-card rounded-xl shadow-e1 scroll-m-24">
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
         <MotionDiv>
           <div className="relative h-96 w-full lg:h-[500px]">

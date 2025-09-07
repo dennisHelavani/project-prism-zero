@@ -46,7 +46,7 @@ const reviews = [
 
 export function ReviewsSection() {
   return (
-    <SectionWrapper id="reviews" className="py-16 md:py-24">
+    <SectionWrapper id="reviews" className="py-16 md:py-24 scroll-m-24">
       <MotionDiv>
         <div className="mx-auto max-w-2xl text-center">
           <BlurText

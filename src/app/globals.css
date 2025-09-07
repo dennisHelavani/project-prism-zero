@@ -60,7 +60,6 @@
   }
   html {
     @apply scroll-smooth;
-    scroll-padding-top: 5rem; /* 80px */
   }
   body {
     @apply bg-background text-foreground;
@@ -72,6 +71,9 @@
       0 0 5px hsl(var(--primary) / 0.5),
       0 0 10px hsl(var(--primary) / 0.4),
       0 0 20px hsl(var(--primary) / 0.2);
+  }
+  .scroll-m-24 {
+    scroll-margin-top: 6rem; /* 96px */
   }
 }
 
