@@ -61,11 +61,9 @@ const Skeleton = () => (
 );
 
 const itemVariants = {
-  hidden: (direction: 'left' | 'right' | 'fade') => {
-    if (direction === 'left') return { opacity: 0, x: -50 };
-    if (direction === 'right') return { opacity: 0, x: 50 };
-    return { opacity: 0, y: 50 };
-  },
+  hiddenLeft: { opacity: 0, x: -50 },
+  hiddenRight: { opacity: 0, x: 50 },
+  hiddenFade: { opacity: 0, y: 50 },
   visible: { opacity: 1, x: 0, y: 0 }
 };
 
@@ -88,17 +86,17 @@ export function BenefitsSection() {
       
         <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
           {benefits.map((item, i) => {
-            const getDirection = () => {
-              if (i % 3 === 0) return 'left';
-              if (i % 3 === 2) return 'right';
-              return 'fade';
+            const getInitial = () => {
+              const col = i % 3;
+              if (col === 0) return "hiddenLeft";
+              if (col === 2) return "hiddenRight";
+              return "hiddenFade";
             }
 
             return (
                <MotionDiv
                 key={i}
-                custom={getDirection()}
-                initial="hidden"
+                initial={getInitial()}
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.15 }}
