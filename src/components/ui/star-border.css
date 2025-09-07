@@ -38,7 +38,7 @@
   position: relative;
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-align: center;
   padding: 12px 24px;
