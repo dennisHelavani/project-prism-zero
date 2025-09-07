@@ -37,10 +37,19 @@ export function CaseStudySection() {
             </blockquote>
             <div className="mt-6">
               <h3 className="font-headline text-xl font-bold text-foreground">Why we’re different</h3>
-              <ul className="mt-2 list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Built by practitioners, not just technologists</li>
-                  <li>Tuned for UK HSE/CDM expectations</li>
-                  <li>Designed for real-world editing, reviews, and hand-off</li>
+              <ul className="mt-2 space-y-1 text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#FABE2C] mt-1.5 shrink-0">●</span>
+                    <span>Built by practitioners, not just technologists</span>
+                  </li>
+                   <li className="flex items-start gap-2">
+                    <span className="text-[#FABE2C] mt-1.5 shrink-0">●</span>
+                    <span>Tuned for UK HSE/CDM expectations</span>
+                  </li>
+                   <li className="flex items-start gap-2">
+                    <span className="text-[#FABE2C] mt-1.5 shrink-0">●</span>
+                    <span>Designed for real-world editing, reviews, and hand-off</span>
+                  </li>
               </ul>
             </div>
           </div>

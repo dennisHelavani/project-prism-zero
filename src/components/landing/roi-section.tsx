@@ -39,7 +39,7 @@ export function RoiSection() {
                   <ul className="space-y-4">
                       {bullets.map((bullet) => (
                       <li key={bullet} className="flex items-start gap-3">
-                          <Check className="w-6 h-6 text-primary mt-1 shrink-0" />
+                          <Check className="w-6 h-6 text-green-500 mt-1 shrink-0" />
                           <span className="text-lg text-muted-foreground">{bullet}</span>
                       </li>
                       ))}

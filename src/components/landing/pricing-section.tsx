@@ -1,11 +1,12 @@
 import { Check, Crown, Rocket, Zap } from "lucide-react";
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import BlurText from "../ui/blur-text";
 import { MotionDiv } from "../ui/motion-div";
 import { cn } from "@/lib/utils";
+import { CtaButton } from "../ui/cta-button";
+import { StarBorder } from "../ui/star-border";
 
 const tiers = [
   {
@@ -24,6 +25,7 @@ const tiers = [
     href: "#",
     icon: <Rocket className="w-6 h-6 text-primary" />,
     highlighted: false,
+    ctaComponent: CtaButton,
   },
   {
     name: "Pro",
@@ -42,6 +44,7 @@ const tiers = [
     href: "#",
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
+    ctaComponent: CtaButton,
   },
 ];
 
@@ -65,7 +68,7 @@ export function PricingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-4xl mx-auto">
           {tiers.map((tier) => (
             <Card key={tier.name} className={cn(
-                "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6",
+                "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6 transition-transform duration-300 ease-in-out hover:scale-105",
                 {"border-[#FABE2C]": tier.highlighted}
             )}>
               <CardHeader className="p-0">
@@ -80,9 +83,9 @@ export function PricingSection() {
                  <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow p-0 pt-6">
-                <Button asChild className="w-full bg-cta-gradient text-black font-bold">
+                <CtaButton asChild className="w-full">
                   <Link href={tier.href}>{tier.cta}</Link>
-                </Button>
+                </CtaButton>
                 <div className="mt-6 space-y-3">
                     <p className="font-semibold">What's included:</p>
                     <ul className="space-y-2">
