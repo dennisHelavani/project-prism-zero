@@ -6,6 +6,7 @@ import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
 import BlurText from "../ui/blur-text";
 import { Badge } from "../ui/badge";
+import { MotionDiv } from "../ui/motion-div";
 
 const tiers = [
   {
@@ -29,41 +30,45 @@ const tiers = [
 export function PricingSection() {
   return (
     <SectionWrapper id="pricing" className="py-16 md:py-24">
-      <div className="text-center">
-        <BlurText
-          as="h2"
-          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-          text="Pricing"
-        />
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          During the MVP, generation is available by request.
-        </p>
-      </div>
+      <MotionDiv>
+        <div className="text-center">
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+            text="Pricing"
+          />
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            During the MVP, generation is available by request.
+          </p>
+        </div>
+      </MotionDiv>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-3xl mx-auto">
-        {tiers.map((tier) => (
-          <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
-            <CardHeader className="p-6">
-              <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow p-6 pt-0">
-              <p className="text-muted-foreground">{tier.description}</p>
-            </CardContent>
-            <CardFooter className="p-6 mt-auto">
-              {tier.ctaVariant === "cta" ? (
-                <CtaButton asChild className="w-full">
-                  <Link href={tier.href}>{tier.cta}</Link>
-                </CtaButton>
-              ) : (
-                <StarBorder as={Link} href={tier.href} className="w-full">
-                  {tier.comingSoon && <Clock className="mr-2" />}
-                  {tier.cta}
-                </StarBorder>
-              )}
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+      <MotionDiv delay={0.2}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-3xl mx-auto">
+          {tiers.map((tier) => (
+            <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
+              <CardHeader className="p-6">
+                <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow p-6 pt-0">
+                <p className="text-muted-foreground">{tier.description}</p>
+              </CardContent>
+              <CardFooter className="p-6 mt-auto">
+                {tier.ctaVariant === "cta" ? (
+                  <CtaButton asChild className="w-full">
+                    <Link href={tier.href}>{tier.cta}</Link>
+                  </CtaButton>
+                ) : (
+                  <StarBorder as={Link} href={tier.href} className="w-full">
+                    {tier.comingSoon && <Clock className="mr-2" />}
+                    {tier.cta}
+                  </StarBorder>
+                )}
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </MotionDiv>
     </SectionWrapper>
   );
 }

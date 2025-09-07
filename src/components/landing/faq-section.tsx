@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import BlurText from "../ui/blur-text";
+import { MotionDiv } from "../ui/motion-div";
 
 const faqs = [
   {
@@ -39,26 +40,30 @@ const faqs = [
 export function FaqSection() {
   return (
     <SectionWrapper id="faq" className="py-16 md:py-24">
-      <div className="text-center">
-        <BlurText
-          as="h2"
-          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-          text="Frequently Asked Questions"
-        />
-      </div>
+      <MotionDiv>
+        <div className="text-center">
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+            text="Frequently Asked Questions"
+          />
+        </div>
+      </MotionDiv>
 
-      <div className="mt-12 md:mt-16 max-w-3xl mx-auto">
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-             <AccordionItem value={`item-${index}`} key={index}>
-                <AccordionTrigger className="text-left text-base md:text-lg font-semibold">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm md:text-base">
-                {faq.answer}
-                </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
+      <MotionDiv delay={0.2}>
+        <div className="mt-12 md:mt-16 max-w-3xl mx-auto">
+          <Accordion type="single" collapsible className="w-full">
+            {faqs.map((faq, index) => (
+               <AccordionItem value={`item-${index}`} key={index}>
+                  <AccordionTrigger className="text-left text-base md:text-lg font-semibold">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm md:text-base">
+                  {faq.answer}
+                  </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </MotionDiv>
     </SectionWrapper>
   );
 }

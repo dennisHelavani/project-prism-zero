@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
+import { MotionDiv } from '../ui/motion-div';
 
 const liveTemplates = [
   { 
@@ -37,57 +38,63 @@ const comingSoonTemplates = [
 export function UseCasesSection() {
   return (
     <SectionWrapper id="templates">
-      <div className="mx-auto max-w-3xl text-center">
-        <BlurText
-          as="h2"
-          className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text justify-center"
-          text="Templates & Use-Cases"
-        />
-        <p className="mt-6 text-lg leading-8 text-muted-foreground">
-          From safety compliance to daily site operations—we’ve got you covered.
-        </p>
-      </div>
+      <MotionDiv>
+        <div className="mx-auto max-w-3xl text-center">
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text justify-center"
+            text="Templates & Use-Cases"
+          />
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            From safety compliance to daily site operations—we’ve got you covered.
+          </p>
+        </div>
+      </MotionDiv>
 
       <div className="mt-12 md:mt-16 space-y-16">
-        <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
-            {liveTemplates.map((item) => (
-              <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
-                background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
-              }}>
-                <CardHeader className="p-0">
-                  <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0 mt-2 flex-grow">
-                  <p className="text-muted-foreground">{item.desc}</p>
-                </CardContent>
-                <div className="mt-4">
-                  <Button asChild variant="ghost" className="p-0 h-auto text-primary">
-                    <Link href={item.href}>
-                      {item.cta_label} <ArrowRight className="ml-2 w-4 h-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </Card>
-            ))}
+        <MotionDiv delay={0.2}>
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
+              {liveTemplates.map((item) => (
+                <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
+                  background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+                }}>
+                  <CardHeader className="p-0">
+                    <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 mt-2 flex-grow">
+                    <p className="text-muted-foreground">{item.desc}</p>
+                  </CardContent>
+                  <div className="mt-4">
+                    <Button asChild variant="ghost" className="p-0 h-auto text-primary">
+                      <Link href={item.href}>
+                        {item.cta_label} <ArrowRight className="ml-2 w-4 h-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        </MotionDiv>
         
-        <div>
-          <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Coming Soon</h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {comingSoonTemplates.map((item) => (
-              <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6 bg-card/50">
-                <CardHeader className="p-0">
-                  <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0 mt-2 flex-grow">
-                  <p className="text-muted-foreground text-sm">{item.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
+        <MotionDiv delay={0.4}>
+          <div>
+            <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Coming Soon</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+              {comingSoonTemplates.map((item) => (
+                <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6 bg-card/50">
+                  <CardHeader className="p-0">
+                    <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 mt-2 flex-grow">
+                    <p className="text-muted-foreground text-sm">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        </MotionDiv>
       </div>
     </SectionWrapper>
   );

@@ -4,6 +4,7 @@ import React from "react";
 import { SectionWrapper } from "./section-wrapper";
 import { AnimatedTestimonials } from "../ui/animated-testimonials";
 import BlurText from "../ui/blur-text";
+import { MotionDiv } from "../ui/motion-div";
 
 const reviews = [
   {
@@ -46,20 +47,24 @@ const reviews = [
 export function ReviewsSection() {
   return (
     <SectionWrapper id="reviews" className="py-16 md:py-24">
-      <div className="mx-auto max-w-2xl text-center">
-        <BlurText
-          as="h2"
-          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-          text="Loved by industry professionals"
-        />
-      </div>
-      <div className="mt-12 md:mt-16 flex justify-center">
-         <AnimatedTestimonials
-          items={reviews}
-          direction="right"
-          speed="slow"
-        />
-      </div>
+      <MotionDiv>
+        <div className="mx-auto max-w-2xl text-center">
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+            text="Loved by industry professionals"
+          />
+        </div>
+      </MotionDiv>
+      <MotionDiv delay={0.2}>
+        <div className="mt-12 md:mt-16 flex justify-center">
+           <AnimatedTestimonials
+            items={reviews}
+            direction="right"
+            speed="slow"
+          />
+        </div>
+      </MotionDiv>
     </SectionWrapper>
   );
 }

@@ -14,6 +14,7 @@ import {
 import { SectionWrapper } from './section-wrapper';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
+import { MotionDiv } from '../ui/motion-div';
 
 const benefits = [
   {
@@ -61,36 +62,42 @@ const Skeleton = () => (
 export function BenefitsSection() {
   return (
     <SectionWrapper id="benefits">
-        <div className="text-center mb-12 md:mb-16">
-            <BlurText
-              as="h2"
-              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-              text="A new era of documentation"
+        <MotionDiv>
+            <div className="text-center mb-12 md:mb-16">
+                <BlurText
+                  as="h2"
+                  className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+                  text="A new era of documentation"
+                />
+                <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.
+                </p>
+            </div>
+        </MotionDiv>
+      <MotionDiv delay={0.2}>
+        <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
+          {benefits.map((item, i) => (
+            <BentoGridItem
+              key={i}
+              title={item.title}
+              description={item.description}
+              header={<Skeleton />}
+              className="md:col-span-1"
+              icon={item.icon}
             />
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-                Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.
-            </p>
+          ))}
+        </BentoGrid>
+      </MotionDiv>
+      <MotionDiv delay={0.4}>
+        <div className="text-center mt-12">
+          <h3 className="font-headline text-lg font-bold text-primary mb-4">Coming Soon</h3>
+          <div className="flex justify-center flex-wrap gap-2">
+              {comingSoon.map(item => (
+                  <Badge key={item} variant="secondary">{item}</Badge>
+              ))}
+          </div>
         </div>
-      <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
-        {benefits.map((item, i) => (
-          <BentoGridItem
-            key={i}
-            title={item.title}
-            description={item.description}
-            header={<Skeleton />}
-            className="md:col-span-1"
-            icon={item.icon}
-          />
-        ))}
-      </BentoGrid>
-      <div className="text-center mt-12">
-        <h3 className="font-headline text-lg font-bold text-primary mb-4">Coming Soon</h3>
-        <div className="flex justify-center flex-wrap gap-2">
-            {comingSoon.map(item => (
-                <Badge key={item} variant="secondary">{item}</Badge>
-            ))}
-        </div>
-      </div>
+      </MotionDiv>
     </SectionWrapper>
   );
 }
