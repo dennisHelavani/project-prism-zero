@@ -4,7 +4,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { StarBorder } from "../ui/star-border";
 import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
 import {
@@ -19,7 +18,7 @@ const navLinks = [
   { name: "Pricing", href: "#pricing" },
   { name: "How It Works", href: "#how-it-works" },
   { name: "Reviews", href: "#reviews" },
-  { name: "Contact Us", href: "#contact" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const HardHatLogo = () => (
@@ -98,13 +97,30 @@ const HardHatLogo = () => (
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
+      
+      const sections = navLinks.map(link => document.querySelector(link.href));
+      let currentSection: string | null = null;
+      sections.forEach((section) => {
+        if (section) {
+          const sectionTop = section.getBoundingClientRect().top;
+          if (sectionTop < window.innerHeight / 2) {
+            currentSection = section.id;
+          }
+        }
+      });
+
+      setActiveSection(currentSection);
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -121,7 +137,7 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(1)}>
               {link.name}
             </Link>
           ))}

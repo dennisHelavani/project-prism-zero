@@ -8,7 +8,6 @@ import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { MotionDiv } from '../ui/motion-div';
 
 const liveTemplates = [
@@ -93,7 +92,7 @@ export function UseCasesSection() {
             <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Coming Soon</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
               {comingSoonTemplates.map((item) => (
-                <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6 bg-card/50">
+                <Card key={item.name} className="flex flex-col border-[#FABE2C]/50 shadow-e1 rounded-xl p-6 bg-card/50">
                   <CardHeader className="p-0">
                     <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
                   </CardHeader>

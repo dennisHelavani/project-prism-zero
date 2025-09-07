@@ -3,8 +3,8 @@ import { CtaButton } from "../ui/cta-button";
 
 const footerNav = [
   { name: "Product", items: [{name: "Templates", href: "#templates"}, {name: "Integrations", href: "#integrations"}, {name: "Pricing", href: "#pricing"}, {name: "Reviews", href: "#reviews"}] },
-  { name: "Company", items: [{name: "About", href: "#our-story"}, {name: "Contact", href: "#contact"}] },
-  { name: "Resources", items: [{name: "Help Center", href:"#faq"}] },
+  { name: "Company", items: [{name: "Our Story", href: "#our-story"}, {name: "Contact", href: "#contact"}] },
+  { name: "Resources", items: [{name: "FAQ", href:"#faq"}] },
   { name: "Legal", items: [{name: "Privacy", href:"#"}, {name: "Terms of Service", href:"#"}] },
 ];
 
