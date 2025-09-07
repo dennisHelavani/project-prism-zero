@@ -21,7 +21,9 @@ export function CtaButton({ children, className, asChild = false, ...props }: Ct
       )}
       {...props}
     >
-      <span className="flip-text-inner">{children}</span>
+      <div className="flip-text-inner flex items-center justify-center gap-3">
+        {children}
+      </div>
     </Comp>
   );
 }

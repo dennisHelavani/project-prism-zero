@@ -2,6 +2,7 @@
 
 import React from 'react';
 import './star-border.css';
+import { cn } from '@/lib/utils';
 
 interface StarBorderProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   as?: React.ElementType;
@@ -14,7 +15,7 @@ interface StarBorderProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 export const StarBorder = ({
   as: Component = 'button',
   className = '',
-  color = '#FABE2C', // Stronger silver color
+  color = '#FABE2C', 
   speed = '6s',
   thickness = 1,
   children,
@@ -22,7 +23,7 @@ export const StarBorder = ({
 }: StarBorderProps) => {
   return (
     <Component
-      className={`star-border-container flip-text-wrapper ${className}`}
+      className={cn("star-border-container flip-text-wrapper", className)}
       style={{
         padding: `${thickness}px`,
         ...rest.style,
