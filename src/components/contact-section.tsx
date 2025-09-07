@@ -1,3 +1,4 @@
+
 'use client';
 
 import { SectionWrapper } from './landing/section-wrapper';
@@ -25,8 +26,9 @@ export function ContactSection() {
   };
 
   return (
-    <SectionWrapper id="contact" className="overflow-hidden !py-0">
+    <SectionWrapper className="overflow-hidden !py-0">
         <Vortex
+            id="contact"
             backgroundColor="transparent"
             particleCount={300}
             baseHue={240}

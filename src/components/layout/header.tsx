@@ -71,14 +71,14 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(1)}>
+            <a key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(1)}>
               {link.name}
-            </Link>
+            </a>
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
            <CtaButton asChild>
-             <Link href="#upload">Generate my documents</Link>
+             <a href="#upload">Generate my documents</a>
            </CtaButton>
         </div>
         <div className="md:hidden">
@@ -102,19 +102,19 @@ export function Header() {
                     </div>
                     <nav className="flex flex-col gap-4 p-4">
                         {navLinks.map((link) => (
-                            <Link 
+                            <a
                                 key={link.name} 
                                 href={link.href} 
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                             {link.name}
-                            </Link>
+                            </a>
                         ))}
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <Link href="#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
+                            <a href="#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</a>
                         </CtaButton>
                     </div>
                  </div>

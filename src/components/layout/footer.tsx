@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { CtaButton } from "../ui/cta-button";
 
@@ -32,9 +33,9 @@ export function Footer() {
                     <ul className="mt-4 space-y-2">
                         {section.items.map(item => (
                             <li key={item.name}>
-                                <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                                <a href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
                                     {item.name}
-                                </Link>
+                                </a>
                             </li>
                         ))}
                     </ul>
@@ -43,7 +44,7 @@ export function Footer() {
         </div>
          <div className="mt-16 text-center">
             <CtaButton asChild>
-                <Link href="#upload">Try with your template</Link>
+                <a href="#upload">Try with your template</a>
             </CtaButton>
          </div>
       </div>
