@@ -1,29 +1,65 @@
-import { Check, Clock } from "lucide-react";
+import { Check, Crown, Rocket, Zap } from "lucide-react";
 import { SectionWrapper } from "./section-wrapper";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { CtaButton } from "../ui/cta-button";
+import { Button } from "../ui/button";
 import Link from "next/link";
-import { StarBorder } from "../ui/star-border";
 import BlurText from "../ui/blur-text";
-import { Badge } from "../ui/badge";
 import { MotionDiv } from "../ui/motion-div";
+import { cn } from "@/lib/utils";
 
 const tiers = [
   {
-    name: "Per-document (RAMS/CPP)",
-    description: "Contact us for pricing (email invoice; Stripe coming soon).",
-    cta: "Try with your template",
-    href: "#upload",
-    ctaVariant: "cta",
-    comingSoon: false,
+    name: "Basic",
+    price: "$299",
+    priceSuffix: "/project",
+    description: "Perfect for small businesses starting with AI automation.",
+    features: [
+      "5 pages included",
+      "Basic SEO optimization",
+      "Mobile responsive design",
+      "2 revisions",
+      "Standard support",
+    ],
+    cta: "Get Started",
+    href: "#",
+    icon: <Rocket className="w-6 h-6 text-primary" />,
+    highlighted: false,
   },
   {
-    name: "Pro subscription",
-    description: "Coming soon — includes template library and integrations.",
-    cta: "Book a 15-min demo",
-    href: "#book-demo",
-    ctaVariant: "star",
-    comingSoon: true,
+    name: "Pro",
+    price: "$799",
+    priceSuffix: "/project",
+    description: "Ideal for growing companies needing robust e-commerce features.",
+    features: [
+      "Up to 15 pages included",
+      "Advanced SEO optimization",
+      "E-commerce integration",
+      "Unlimited revisions",
+      "Priority support",
+      "Content creation assistance",
+    ],
+    cta: "Get Started",
+    href: "#",
+    icon: <Zap className="w-6 h-6 text-primary" />,
+    highlighted: true,
+  },
+  {
+    name: "Enterprise",
+    price: "$1999",
+    priceSuffix: "/project",
+    description: "Tailored solutions for large-scale operations and complex needs.",
+    features: [
+      "Custom page count",
+      "Comprehensive SEO strategy",
+      "Custom integrations",
+      "Dedicated account manager",
+      "24/7 Premium support",
+      "Scalability consulting",
+    ],
+    cta: "Get Started",
+    href: "#",
+    icon: <Crown className="w-6 h-6 text-primary" />,
+    highlighted: false,
   },
 ];
 
@@ -34,37 +70,49 @@ export function PricingSection() {
         <div className="text-center">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
             text="Pricing"
           />
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            During the MVP, generation is available by request.
+            Choose the perfect plan that fits your project needs and budget.
           </p>
         </div>
       </MotionDiv>
 
       <MotionDiv delay={0.2}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 md:mt-16 max-w-5xl mx-auto">
           {tiers.map((tier) => (
-            <Card key={tier.name} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl">
-              <CardHeader className="p-6">
-                <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
+            <Card key={tier.name} className={cn(
+                "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6",
+                {"border-purple-500": tier.highlighted}
+            )}>
+              <CardHeader className="p-0">
+                <div className="flex items-center gap-2">
+                  {tier.icon}
+                  <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
+                </div>
+                <div className="flex items-baseline gap-1 pt-4">
+                    <p className="text-4xl font-bold tracking-tight">{tier.price}</p>
+                    <span className="text-sm text-muted-foreground">{tier.priceSuffix}</span>
+                </div>
+                 <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow p-6 pt-0">
-                <p className="text-muted-foreground">{tier.description}</p>
+              <CardContent className="flex-grow p-0 pt-6">
+                <Button asChild className="w-full bg-purple-gradient text-white">
+                  <Link href={tier.href}>{tier.cta}</Link>
+                </Button>
+                <div className="mt-6 space-y-3">
+                    <p className="font-semibold">What's included:</p>
+                    <ul className="space-y-2">
+                        {tier.features.map(feature => (
+                             <li key={feature} className="flex items-center gap-2">
+                                <Check className="w-4 h-4 text-green-500" />
+                                <span className="text-sm text-muted-foreground">{feature}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
               </CardContent>
-              <CardFooter className="p-6 mt-auto">
-                {tier.ctaVariant === "cta" ? (
-                  <CtaButton asChild className="w-full">
-                    <Link href={tier.href}>{tier.cta}</Link>
-                  </CtaButton>
-                ) : (
-                  <StarBorder as={Link} href={tier.href} className="w-full">
-                    {tier.comingSoon && <Clock className="mr-2" />}
-                    {tier.cta}
-                  </StarBorder>
-                )}
-              </CardFooter>
             </Card>
           ))}
         </div>

@@ -70,3 +70,9 @@
       0 0 20px hsl(var(--primary) / 0.2);
   }
 }
+
+@layer components {
+    .bg-purple-gradient {
+        background-image: linear-gradient(to right, #8a2be2, #6a5acd);
+    }
+}
