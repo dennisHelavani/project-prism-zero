@@ -6,6 +6,7 @@ import { ClipboardEdit, Cpu, FileCheck2 } from "lucide-react";
 import { CtaButton } from "../ui/cta-button";
 import { StarBorder } from "../ui/star-border";
 import Link from "next/link";
+import { motion } from 'framer-motion';
 import { MotionDiv } from "../ui/motion-div";
 
 const steps = [
@@ -35,6 +36,12 @@ const steps = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, rotateY: -180 },
+  visible: { opacity: 1, rotateY: 0 }
+};
+
+
 export function HowItWorksSection() {
   return (
     <SectionWrapper id="how-it-works">
@@ -53,34 +60,44 @@ export function HowItWorksSection() {
           </p>
         </div>
       </MotionDiv>
-      <MotionDiv delay={0.2}>
+      
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((step, index) => (
-            <Card key={step.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
-              <div className="flex justify-between items-start mb-4">
-                <Badge variant="outline" className="border-[#FABE2C]/50 text-foreground w-fit">
-                  Step {step.step}
-                </Badge>
-                {step.icon}
-              </div>
-              <CardHeader className="p-0">
-                <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 mt-2 flex-grow">
-                <p className="text-muted-foreground">{step.description}</p>
-              </CardContent>
-              <CardFooter className="p-0 mt-6 flex-col items-start gap-4">
-                 <div className="flex flex-wrap gap-2">
-                      {step.chips.map(chip => (
-                          <Badge key={chip} variant="secondary" className="text-xs">{chip}</Badge>
-                      ))}
-                  </div>
-                {step.note && <p className="text-xs text-muted-foreground/70">{step.note}</p>}
-              </CardFooter>
-            </Card>
+             <motion.div
+              key={step.title}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <Card className="flex flex-col bg-card border-[#FABE2C]/50 shadow-e1 rounded-xl p-6 h-full" style={{ backfaceVisibility: 'hidden' }}>
+                <div className="flex justify-between items-start mb-4">
+                  <Badge variant="outline" className="border-[#FABE2C]/50 text-foreground w-fit">
+                    Step {step.step}
+                  </Badge>
+                  {step.icon}
+                </div>
+                <CardHeader className="p-0">
+                  <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 mt-2 flex-grow">
+                  <p className="text-muted-foreground">{step.description}</p>
+                </CardContent>
+                <CardFooter className="p-0 mt-6 flex-col items-start gap-4">
+                   <div className="flex flex-wrap gap-2">
+                        {step.chips.map(chip => (
+                            <Badge key={chip} variant="secondary" className="text-xs">{chip}</Badge>
+                        ))}
+                    </div>
+                  {step.note && <p className="text-xs text-muted-foreground/70">{step.note}</p>}
+                </CardFooter>
+              </Card>
+            </motion.div>
           ))}
         </div>
-      </MotionDiv>
+      
        <MotionDiv delay={0.4}>
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
             <CtaButton asChild>

@@ -11,11 +11,11 @@ interface SectionWrapperProps extends HTMLMotionProps<"section"> {
 
 export function SectionWrapper({ children, className, ...props }: SectionWrapperProps) {
   return (
-    <motion.section
+    <section
       className={cn("mx-auto w-full max-w-[1200px] px-6 py-16 sm:py-24 lg:py-32", className)}
       {...props}
     >
       {children}
-    </motion.section>
+    </section>
   )
 }

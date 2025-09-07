@@ -6,6 +6,7 @@ import { SectionWrapper } from "./section-wrapper";
 import { Check } from "lucide-react";
 import BlurText from "../ui/blur-text";
 import { AnimatedCounter } from "../ui/animated-counter";
+import { motion } from "framer-motion";
 import { MotionDiv } from "../ui/motion-div";
 
 const bullets = [
@@ -32,7 +33,7 @@ export function RoiSection() {
               />
           </div>
         </MotionDiv>
-      <MotionDiv delay={0.2}>
+      <MotionDiv delay={0.2} variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}>
         <Card className="max-w-4xl mx-auto p-8 bg-secondary/50">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <CardContent className="p-0">

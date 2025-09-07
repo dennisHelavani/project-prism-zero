@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { MotionDiv } from '../ui/motion-div';
 
 const liveTemplates = [
@@ -35,6 +36,9 @@ const comingSoonTemplates = [
   { name: 'ITPs', desc: 'Inspection & Test Plans for quality assurance.', cta_label: "See sample", href: "#sample-itp" }
 ];
 
+const fromLeft = { hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 }};
+const fromRight = { hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 }};
+
 export function UseCasesSection() {
   return (
     <SectionWrapper id="templates">
@@ -52,31 +56,37 @@ export function UseCasesSection() {
       </MotionDiv>
 
       <div className="mt-12 md:mt-16 space-y-16">
-        <MotionDiv delay={0.2}>
+        
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
-              {liveTemplates.map((item) => (
-                <Card key={item.name} className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6" style={{
-                  background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
-                }}>
-                  <CardHeader className="p-0">
-                    <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0 mt-2 flex-grow">
-                    <p className="text-muted-foreground">{item.desc}</p>
-                  </CardContent>
-                  <div className="mt-4">
-                    <Button asChild variant="ghost" className="p-0 h-auto text-primary">
-                      <Link href={item.href}>
-                        {item.cta_label} <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </Card>
+              {liveTemplates.map((item, index) => (
+                 <MotionDiv 
+                    key={item.name} 
+                    variants={index === 0 ? fromLeft : fromRight} 
+                    transition={{ duration: 0.7, delay: 0.2 }}
+                 >
+                    <Card className="flex flex-col border-white/10 shadow-e1 rounded-xl p-6 h-full" style={{
+                      background: "linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary)))",
+                    }}>
+                      <CardHeader className="p-0">
+                        <CardTitle className="font-headline text-xl font-bold">{item.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0 mt-2 flex-grow">
+                        <p className="text-muted-foreground">{item.desc}</p>
+                      </CardContent>
+                      <div className="mt-4">
+                        <Button asChild variant="ghost" className="p-0 h-auto text-primary">
+                          <Link href={item.href}>
+                            {item.cta_label} <ArrowRight className="ml-2 w-4 h-4" />
+                          </Link>
+                        </Button>
+                      </div>
+                    </Card>
+                </MotionDiv>
               ))}
             </div>
           </div>
-        </MotionDiv>
+        
         
         <MotionDiv delay={0.4}>
           <div>
