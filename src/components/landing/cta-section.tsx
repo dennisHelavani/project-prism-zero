@@ -24,7 +24,7 @@ export function CtaSection() {
             <>
               <BlurText
                 as="h2"
-                className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+                className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
                 text="Ready to cut paperwork time?"
               />
               <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -34,8 +34,8 @@ export function CtaSection() {
                   <CtaButton asChild>
                       <Link href="#upload">Try with your template</Link>
                   </CtaButton>
-                  <StarBorder as={Link} href="#book-demo">
-                      Book a 15-min demo
+                  <StarBorder asChild>
+                      <Link href="#contact">Book a 15-min demo</Link>
                   </StarBorder>
               </div>
                <p className="mt-4 text-xs text-muted-foreground">

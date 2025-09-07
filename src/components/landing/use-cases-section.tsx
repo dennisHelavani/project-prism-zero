@@ -45,7 +45,7 @@ export function UseCasesSection() {
         <div className="mx-auto max-w-3xl text-center">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-foreground glowing-text justify-center"
             text="Templates & Use-Cases"
           />
           <p className="mt-6 text-lg leading-8 text-muted-foreground">

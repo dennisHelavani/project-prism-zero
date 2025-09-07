@@ -25,7 +25,6 @@ const tiers = [
     href: "#",
     icon: <Rocket className="w-6 h-6 text-primary" />,
     highlighted: false,
-    ctaComponent: CtaButton,
   },
   {
     name: "Pro",
@@ -44,7 +43,6 @@ const tiers = [
     href: "#",
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
-    ctaComponent: CtaButton,
   },
 ];
 
@@ -55,7 +53,7 @@ export function PricingSection() {
         <div className="text-center">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
             text="Pricing"
           />
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">

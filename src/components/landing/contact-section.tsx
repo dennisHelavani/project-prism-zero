@@ -7,6 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { Vortex } from '../ui/vortex';
+import BlurText from '../ui/blur-text';
+import { MotionDiv } from '../ui/motion-div';
 
 type FormData = {
   name: string;
@@ -30,10 +32,13 @@ export function ContactSection() {
             baseHue={240}
             className="flex items-center flex-col justify-center px-4 md:px-10 py-24 md:py-32 w-full h-full"
         >
+        <MotionDiv>
           <div className="mx-auto max-w-5xl text-center">
-            <h2 className="font-headline text-4xl font-bold tracking-tight text-white sm:text-6xl glowing-text">
-              Get in Touch
-            </h2>
+            <BlurText
+                as="h2"
+                className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+                text="Get in Touch"
+            />
             <p className="mt-6 text-lg leading-8 text-gray-300">
               Have questions or want to book a demo? Reach out to us.
             </p>
@@ -102,6 +107,7 @@ export function ContactSection() {
               </form>
             </div>
           </div>
+          </MotionDiv>
         </Vortex>
     </SectionWrapper>
   );

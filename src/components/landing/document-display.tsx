@@ -50,7 +50,7 @@ export function DocumentDisplay({ documents, onReset }: DocumentDisplayProps) {
       <div className="text-center">
         <BlurText
           as="h2"
-          className="font-headline text-4xl font-bold text-foreground md:text-5xl glowing-text"
+          className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
           text="Your Documents Are Ready"
         />
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">

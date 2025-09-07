@@ -22,7 +22,7 @@ export function CaseStudySection() {
           <div className="text-center md:text-left">
             <BlurText
               as="h2"
-              className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center md:justify-start"
+              className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center md:justify-start"
               text="From the Ground Up"
             />
             <p className="mt-4 text-muted-foreground">

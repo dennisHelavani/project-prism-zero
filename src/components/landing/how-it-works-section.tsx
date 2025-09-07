@@ -51,7 +51,7 @@ export function HowItWorksSection() {
         <div className="text-center max-w-4xl mx-auto">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
             text="How it works (MVP)"
           />
           <p className="mt-4 text-lg text-muted-foreground">
@@ -67,12 +67,12 @@ export function HowItWorksSection() {
           {steps.map((step, index) => (
              <MotionDiv
               key={step.title}
-              variants={cardVariants}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              style={{ transformStyle: 'preserve-3d' }}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              variants={cardVariants}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <Card className="flex flex-col bg-card border-[#FABE2C]/50 shadow-e1 rounded-xl p-6 h-full" style={{ backfaceVisibility: 'hidden' }}>
                 <div className="flex justify-between items-start mb-4">
@@ -105,8 +105,8 @@ export function HowItWorksSection() {
             <CtaButton asChild>
               <Link href="#upload">Try with your template</Link>
             </CtaButton>
-            <StarBorder as={Link} href="#book-demo">
-                Book a 15-min demo
+            <StarBorder asChild>
+                <Link href="#contact">Book a 15-min demo</Link>
             </StarBorder>
           </div>
        </MotionDiv>

@@ -61,10 +61,10 @@ const Skeleton = () => (
 );
 
 const itemVariants = {
-  hiddenLeft: { opacity: 0, x: -50 },
-  hiddenRight: { opacity: 0, x: 50 },
-  hiddenFade: { opacity: 0, y: 50 },
-  visible: { opacity: 1, x: 0, y: 0 }
+    hiddenLeft: { opacity: 0, x: -50 },
+    hiddenRight: { opacity: 0, x: 50 },
+    hiddenFade: { opacity: 0, y: 50 },
+    visible: { opacity: 1, x: 0, y: 0 }
 };
 
 
@@ -75,7 +75,7 @@ export function BenefitsSection() {
             <div className="text-center mb-12 md:mb-16">
                 <BlurText
                   as="h2"
-                  className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+                  className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
                   text="A New Era of Documentation"
                 />
                 <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -86,21 +86,22 @@ export function BenefitsSection() {
       
         <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
           {benefits.map((item, i) => {
-            const getInitial = () => {
-              const col = i % 3;
-              if (col === 0) return "hiddenLeft";
-              if (col === 2) return "hiddenRight";
-              return "hiddenFade";
-            }
+            const direction = i % 3 === 0 ? 'left' : i % 3 === 2 ? 'right' : 'fade';
+            const variant = direction === 'left' ? itemVariants.hiddenLeft : direction === 'right' ? itemVariants.hiddenRight : itemVariants.hiddenFade;
 
             return (
                <MotionDiv
                 key={i}
-                initial={getInitial()}
+                initial={variant}
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.15 }}
-                variants={itemVariants}
+                variants={{
+                    visible: { opacity: 1, x: 0, y: 0 },
+                    hiddenLeft: itemVariants.hiddenLeft,
+                    hiddenRight: itemVariants.hiddenRight,
+                    hiddenFade: itemVariants.hiddenFade
+                }}
               >
                 <BentoGridItem
                   title={item.title}

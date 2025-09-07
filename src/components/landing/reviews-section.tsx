@@ -51,7 +51,7 @@ export function ReviewsSection() {
         <div className="mx-auto max-w-2xl text-center">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
             text="Loved by industry professionals"
           />
         </div>
