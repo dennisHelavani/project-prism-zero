@@ -61,9 +61,11 @@ const Skeleton = () => (
 );
 
 const itemVariants = {
-  hiddenLeft: { opacity: 0, x: -50 },
-  hiddenRight: { opacity: 0, x: 50 },
-  hiddenFade: { opacity: 0, y: 50 },
+  hidden: (direction: 'left' | 'right' | 'fade') => {
+    if (direction === 'left') return { opacity: 0, x: -50 };
+    if (direction === 'right') return { opacity: 0, x: 50 };
+    return { opacity: 0, y: 50 };
+  },
   visible: { opacity: 1, x: 0, y: 0 }
 };
 
@@ -75,7 +77,7 @@ export function BenefitsSection() {
             <div className="text-center mb-12 md:mb-16">
                 <BlurText
                   as="h2"
-                  className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+                  className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
                   text="A New Era of Documentation"
                 />
                 <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -86,16 +88,17 @@ export function BenefitsSection() {
       
         <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
           {benefits.map((item, i) => {
-            const getInitial = () => {
-              if (i % 3 === 0) return 'hiddenLeft';
-              if (i % 3 === 2) return 'hiddenRight';
-              return 'hiddenFade';
+            const getDirection = () => {
+              if (i % 3 === 0) return 'left';
+              if (i % 3 === 2) return 'right';
+              return 'fade';
             }
 
             return (
                <MotionDiv
                 key={i}
-                initial={getInitial()}
+                custom={getDirection()}
+                initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.15 }}

@@ -6,7 +6,6 @@ import { SectionWrapper } from "./section-wrapper";
 import { Check } from "lucide-react";
 import BlurText from "../ui/blur-text";
 import { AnimatedCounter } from "../ui/animated-counter";
-import { motion } from "framer-motion";
 import { MotionDiv } from "../ui/motion-div";
 
 const bullets = [
@@ -28,7 +27,7 @@ export function RoiSection() {
         <div className="text-center mb-12 md:mb-16">
               <BlurText
                 as="h2"
-                className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+                className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
                 text="ROI Snapshot"
               />
           </div>

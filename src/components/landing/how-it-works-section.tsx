@@ -51,7 +51,7 @@ export function HowItWorksSection() {
         <div className="text-center max-w-4xl mx-auto">
           <BlurText
             as="h2"
-            className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
+            className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
             text="How it works (MVP)"
           />
           <p className="mt-4 text-lg text-muted-foreground">
@@ -76,7 +76,7 @@ export function HowItWorksSection() {
             >
               <Card className="flex flex-col bg-card border-[#FABE2C]/50 shadow-e1 rounded-xl p-6 h-full" style={{ backfaceVisibility: 'hidden' }}>
                 <div className="flex justify-between items-start mb-4">
-                  <Badge variant="outline" className="border-[#FABE2C]/50 text-foreground w-fit">
+                  <Badge variant="outline" className="border-[#FABE2C] text-foreground w-fit">
                     Step {step.step}
                   </Badge>
                   {step.icon}
