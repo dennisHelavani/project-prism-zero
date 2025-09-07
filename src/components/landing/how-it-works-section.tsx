@@ -58,7 +58,7 @@ export function HowItWorksSection() {
           {steps.map((step, index) => (
             <Card key={step.title} className="flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6">
               <div className="flex justify-between items-start mb-4">
-                <Badge variant="outline" className="border-[#FABE2C]/50 text-[#FABE2C] w-fit">
+                <Badge variant="outline" className="border-[#FABE2C]/50 text-foreground w-fit">
                   Step {step.step}
                 </Badge>
                 {step.icon}

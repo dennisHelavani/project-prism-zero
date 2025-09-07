@@ -20,32 +20,32 @@ const benefits = [
   {
     title: 'Instant draft generation',
     description: 'Answer a few questions; get comprehensive RAMS/CPP drafts fast.',
-    icon: <Clock className="h-4 w-4 text-neutral-500" />,
+    icon: <Clock className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
     title: 'Editable & compliant',
     description: 'Export to .doc for final tweaks; templates follow HSE/CDM guidance.',
-    icon: <ClipboardList className="h-4 w-4 text-neutral-500" />,
+    icon: <ClipboardList className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
     title: 'Always up-to-date',
     description: 'Prompts reflect current UK construction context.',
-    icon: <ShieldCheck className="h-4 w-4 text-neutral-500" />,
+    icon: <ShieldCheck className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
     title: 'Deterministic structure',
     description: 'JSON-schema prompts keep sections and order consistent.',
-    icon: <Fingerprint className="h-4 w-4 text-neutral-500" />,
+    icon: <Fingerprint className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
     title: 'Branded output',
     description: 'Logo, colours, and footer applied automatically.',
-    icon: <Palette className="h-4 w-4 text-neutral-500" />,
+    icon: <Palette className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
     title: 'Email delivery (~60 s)',
     description: 'DOCX optional; owner BCC for traceability.',
-    icon: <Share2 className="h-4 w-4 text-neutral-500" />,
+    icon: <Share2 className="h-4 w-4 text-[#FABE2C]" />,
   },
 ];
 
@@ -67,7 +67,7 @@ export function BenefitsSection() {
                 <BlurText
                   as="h2"
                   className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-                  text="A new era of documentation"
+                  text="A New Era of Documentation"
                 />
                 <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                     Hard Hat AI transforms your compliance workflow, turning hours of tedious work into minutes of strategic review.

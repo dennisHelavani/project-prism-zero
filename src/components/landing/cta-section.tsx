@@ -9,7 +9,7 @@ import { MotionDiv } from '../ui/motion-div';
 
 export function CtaSection() {
   return (
-    <SectionWrapper id="contact" className="bg-secondary rounded-xl shadow-e2 my-12 md:my-24">
+    <SectionWrapper id="contact" className="bg-secondary rounded-xl shadow-e2 my-12 md:my-24 border border-[#FABE2C]">
       <MotionDiv>
         <div className="mx-auto max-w-3xl text-center">
             <>
