@@ -128,7 +128,7 @@ export function Header() {
         </nav>
         <div className="hidden md:flex items-center gap-4">
            <CtaButton asChild>
-             <Link href="#contact">Generate my documents</Link>
+             <Link href="#upload">Generate my documents</Link>
            </CtaButton>
         </div>
         <div className="md:hidden">
@@ -164,7 +164,7 @@ export function Header() {
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
+                            <Link href="#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</Link>
                         </CtaButton>
                     </div>
                  </div>

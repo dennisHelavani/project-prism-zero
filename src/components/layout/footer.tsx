@@ -2,10 +2,10 @@ import Link from "next/link";
 import { CtaButton } from "../ui/cta-button";
 
 const footerNav = [
-  { name: "Product", items: ["Templates", "Integrations", "Pricing", "Changelog"] },
-  { name: "Company", items: ["About", "Blog", "Careers", "Contact"] },
-  { name: "Resources", items: ["Community", "Help Center", "API Docs"] },
-  { name: "Legal", items: ["Privacy", "Terms of Service"] },
+  { name: "Product", items: [{name: "Templates", href: "#templates"}, {name: "Integrations", href: "#integrations"}, {name: "Pricing", href: "#pricing"}, {name: "Reviews", href: "#reviews"}] },
+  { name: "Company", items: [{name: "About", href: "#our-story"}, {name: "Contact", href: "#contact"}] },
+  { name: "Resources", items: [{name: "Help Center", href:"#faq"}] },
+  { name: "Legal", items: [{name: "Privacy", href:"#"}, {name: "Terms of Service", href:"#"}] },
 ];
 
 const HardHatLogo = () => (
@@ -83,7 +83,7 @@ const HardHatLogo = () => (
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 mt-24" id="contact">
+    <footer className="border-t border-white/10 mt-24">
       <div className="mx-auto max-w-[1200px] px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2 md:col-span-1">
@@ -97,9 +97,9 @@ export function Footer() {
                     <h3 className="font-semibold text-foreground">{section.name}</h3>
                     <ul className="mt-4 space-y-2">
                         {section.items.map(item => (
-                            <li key={item}>
-                                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">
-                                    {item}
+                            <li key={item.name}>
+                                <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                                    {item.name}
                                 </Link>
                             </li>
                         ))}
@@ -109,7 +109,7 @@ export function Footer() {
         </div>
          <div className="mt-16 text-center">
             <CtaButton asChild>
-                <Link href="#cta">Try with your template</Link>
+                <Link href="#upload">Try with your template</Link>
             </CtaButton>
          </div>
       </div>

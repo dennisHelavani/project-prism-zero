@@ -29,108 +29,112 @@ export const Vortex = ({
   backgroundColor?: string;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const particle = useRef<any[]>([]);
   const noise3D = createNoise3D();
   const center = useRef([0, 0]);
   const tick = useRef(0);
+  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-
     if (canvas && container) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        const resize = () => {
-          const {
-            width,
-            height,
-          } = (container as HTMLElement).getBoundingClientRect();
-          canvas.width = width;
-          canvas.height = height;
-          center.current = [width / 2, height / 2];
-        };
-        resize();
-        window.addEventListener("resize", resize);
-
-        const createParticles = () => {
-          particle.current = [];
-          for (let i = 0; i < particleCount; i++) {
-            const r =
-              (canvas.width + canvas.height) / 2 -
-              Math.random() * ((canvas.width + canvas.height) / 2);
-            const theta = Math.random() * 2 * Math.PI;
-            particle.current.push({
-              x: center.current[0] + r * Math.cos(theta),
-              y: center.current[1] + r * Math.sin(theta),
-              vx: 0,
-              vy: 0,
-            });
-          }
-        };
-        createParticles();
-
-        const draw = () => {
-          tick.current++;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = backgroundColor;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          particle.current.forEach((p) => {
-            const noise = noise3D(p.x / 100, p.y / 100, tick.current / 1000);
-            const angle = noise * 2 * Math.PI;
-            const speed = baseSpeed + rangeSpeed * Math.random();
-            p.vx += Math.cos(angle) * speed;
-            p.vy += Math.sin(angle) * speed;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vx *= 0.95;
-            p.vy *= 0.95;
-
-            const dist = Math.sqrt(
-              Math.pow(p.x - center.current[0], 2) +
-                Math.pow(p.y - center.current[1], 2)
-            );
-            if (
-              p.x < 0 ||
-              p.x > canvas.width ||
-              p.y < 0 ||
-              p.y > canvas.height ||
-              dist > (canvas.width + canvas.height) / 2
-            ) {
-              const r =
-                (canvas.width + canvas.height) / 2 -
-                Math.random() * ((canvas.width + canvas.height) / 2);
-              const theta = Math.random() * 2 * Math.PI;
-              p.x = center.current[0] + r * Math.cos(theta);
-              p.y = center.current[1] + r * Math.sin(theta);
-              p.vx = 0;
-              p.vy = 0;
-            }
-
-            const radius = baseRadius + rangeRadius * Math.random();
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = `hsla(${
-              baseHue + noise * 50
-            }, 100%, 50%, ${1})`;
-            ctx.fill();
-          });
-
-          window.requestAnimationFrame(draw);
-        };
-        draw();
-
-        return () => {
-          window.removeEventListener("resize", resize);
-        };
-      }
+      const Dpr = window.devicePixelRatio || 1;
+      const rect = container.getBoundingClientRect();
+      setDimensions({ width: rect.width, height: rect.height });
+      canvas.width = rect.width * Dpr;
+      canvas.height = rect.height * Dpr;
+      canvas.getContext("2d")?.scale(Dpr, Dpr);
     }
-  }, []);
+  }, [containerRef]);
+
+  useEffect(() => {
+    const part = [];
+    for (let i = 0; i < particleCount; i++) {
+      part.push({
+        x: dimensions.width / 2,
+        y: dimensions.height / 2,
+        vx: 0,
+        vy: 0,
+        radius: baseRadius + Math.random() * rangeRadius,
+        speed: baseSpeed + Math.random() * rangeSpeed,
+        hue: baseHue,
+        alpha: Math.random(),
+      });
+    }
+    particle.current = part;
+  }, [
+    dimensions,
+    particleCount,
+    baseRadius,
+    rangeRadius,
+    baseSpeed,
+    rangeSpeed,
+    baseHue,
+  ]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId: number;
+
+    const draw = () => {
+      tick.current++;
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particle.current.forEach((p) => {
+        const noise = noise3D(
+          (p.x * 0.001) / 2,
+          (p.y * 0.001) / 2,
+          tick.current * 0.0001
+        );
+        const angle = Math.PI * 2 * noise;
+        p.vx = Math.cos(angle) * p.speed;
+        p.vy = Math.sin(angle) * p.speed;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (
+          p.x < 0 ||
+          p.x > canvas.width ||
+          p.y < 0 ||
+          p.y > canvas.height
+        ) {
+          p.x = canvas.width / 2;
+          p.y = canvas.height / 2;
+        }
+
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 50%, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      animationFrameId = window.requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+    };
+  }, [noise3D, backgroundColor, dimensions]);
 
   return (
     <div className={cn("relative h-full w-full", containerClassName)}>
-      <canvas ref={canvasRef} className="absolute h-full w-full "></canvas>
+      <div
+        className="absolute inset-0 z-0"
+        style={{ backgroundColor: backgroundColor }}
+      >
+        <canvas ref={canvasRef} className="h-full w-full"></canvas>
+      </div>
       <div ref={containerRef} className={cn("relative z-10", className)}>
         {children}
       </div>

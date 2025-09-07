@@ -6,10 +6,19 @@ import { CtaButton } from '../ui/cta-button';
 import { StarBorder } from '../ui/star-border';
 import Link from 'next/link';
 import { MotionDiv } from '../ui/motion-div';
+import { cn } from '@/lib/utils';
 
 export function CtaSection() {
   return (
-    <SectionWrapper id="contact" className="bg-secondary rounded-xl shadow-e2 my-12 md:my-24 border border-[#FABE2C]">
+    <SectionWrapper id="cta-section" className="my-12 md:my-24 relative overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <div
+          className={cn(
+            'absolute inset-0 bg-secondary bg-opacity-50',
+            'bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.2),rgba(255,255,255,0))]'
+          )}
+        />
+      </div>
       <MotionDiv>
         <div className="mx-auto max-w-3xl text-center">
             <>
