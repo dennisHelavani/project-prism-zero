@@ -76,22 +76,26 @@ export function Header() {
       { "bg-background/80 backdrop-blur-sm border-b border-white/10": scrolled }
     )}>
       <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6">
-        <Link href="/">
+        <Link href="/" className="z-10">
           <HardHatLogo />
         </Link>
-        <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-        <div className="hidden md:flex items-center gap-4">
-           <CtaButton asChild>
-             <a href="#upload">Generate my documents</a>
-           </CtaButton>
+        
+        <div className="flex items-center gap-8">
+            <nav className="hidden items-center gap-8 md:flex">
+              {navLinks.map((link) => (
+                <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+            <div className="hidden md:flex items-center gap-4">
+               <CtaButton asChild>
+                 <a href="#upload">Generate my documents</a>
+               </CtaButton>
+            </div>
         </div>
-        <div className="md:hidden">
+
+        <div className="md:hidden z-10">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
