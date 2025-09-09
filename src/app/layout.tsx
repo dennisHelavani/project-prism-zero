@@ -2,6 +2,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { CookieConsent } from '@/components/cookie-consent';
 
 export const metadata: Metadata = {
   title: 'Hard Hat AI',
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
         <Toaster />
+        <CookieConsent />
       </body>
     </html>
   );
