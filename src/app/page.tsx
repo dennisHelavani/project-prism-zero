@@ -32,7 +32,7 @@ export default function Home() {
       <Header />
       <div className="flex-1">
         <main>
-          <div className="relative isolate">
+          <div>
             <HeroSection />
             <ProofSection />
             <UseCasesSection />
