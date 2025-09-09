@@ -31,7 +31,7 @@ const steps = [
   {
     step: 3,
     title: "Receive your document",
-    description: "Branded PDF (DOCX optional) delivered to your inbox in ≈ 60 s.",
+    description: "Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.",
     icon: <FileCheck2 className="w-10 h-10 text-primary" />,
     chips: ["Filename standard", "Owner BCC"],
     note: "Quick 1-question follow-up to improve quality.",
@@ -55,7 +55,7 @@ export function HowItWorksSection() {
             text="How it works (MVP)"
           />
           <p className="mt-4 text-lg text-muted-foreground">
-            Short Tally form → Make.com automation → OpenAI → branded PDF by email (≈ 60 s)
+            Short Tally form → Make.com automation → OpenAI → branded PDF by email (≈ 3.5 minutes)
           </p>
            <p className="mt-2 text-sm text-muted-foreground/80">
             GDPR-ready • Deterministic structure (JSON schema) • Branded output

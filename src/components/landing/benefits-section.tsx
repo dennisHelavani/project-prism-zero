@@ -44,7 +44,7 @@ const benefits = [
     icon: <Palette className="h-4 w-4 text-[#FABE2C]" />,
   },
   {
-    title: 'Email delivery (~60 s)',
+    title: 'Email delivery (~3.5 min)',
     description: 'DOCX optional; owner BCC for traceability.',
     icon: <Share2 className="h-4 w-4 text-[#FABE2C]" />,
   },

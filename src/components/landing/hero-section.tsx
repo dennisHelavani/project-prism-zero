@@ -14,7 +14,7 @@ export function HeroSection() {
             <div className="text-center lg:text-left">
               <BlurText
                 as="h1"
-                className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text justify-center lg:justify-start"
+                className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-foreground sm:text-6xl glowing-text justify-center lg:justify-start"
                 style={{lineHeight: 1.2}}
                 text="Generate HSE & CDM documents in minutes—error-free."
               />
@@ -30,7 +30,7 @@ export function HeroSection() {
                 </StarBorder>
               </div>
                <p className="mt-6 text-sm text-muted-foreground">
-                GDPR-ready • Deterministic structure (JSON schema) • Branded PDF via email (~60 s)
+                GDPR-ready • Deterministic structure (JSON schema) • Branded PDF via email (~3.5 minutes)
               </p>
             </div>
           </MotionDiv>
