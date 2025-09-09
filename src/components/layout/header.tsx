@@ -38,17 +38,17 @@ export function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
       
-      const sections = navLinks.map(link => document.querySelector(link.href) as HTMLElement).filter(s => s);
+      const sections = navLinks.map(link => document.querySelector(link.href.substring(1)) as HTMLElement).filter(s => s);
       
       let currentSectionId: string | null = null;
       
-      const scrollOffset = window.scrollY + window.innerHeight * 0.4;
-      
-      sections.forEach(section => {
-        if (section.offsetTop <= scrollOffset) {
-          currentSectionId = section.id;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop <= window.scrollY + 100) {
+            currentSectionId = section.id;
+            break;
         }
-      });
+      }
       
       setActiveSection(currentSectionId);
     };
