@@ -103,11 +103,11 @@ export function HowItWorksSection() {
        <MotionDiv delay={0.4}>
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
             <CtaButton asChild>
-              <Link href="#upload">Try with your template</Link>
+              <Link href="#upload">Generate RAMS</Link>
             </CtaButton>
-            <StarBorder asChild>
-                <Link href="#contact">Book a 15-min demo</Link>
-            </StarBorder>
+             <CtaButton asChild>
+              <Link href="#upload">Generate CPP</Link>
+            </CtaButton>
           </div>
        </MotionDiv>
     </SectionWrapper>
