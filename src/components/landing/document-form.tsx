@@ -37,7 +37,7 @@ function SubmitButton() {
       ) : (
         <>
           <UploadCloud />
-          Try with your template
+          Generate
         </>
       )}
     </CtaButton>

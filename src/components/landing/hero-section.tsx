@@ -24,7 +24,10 @@ export function HeroSection() {
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
                 <CtaButton asChild>
-                  <Link href="#upload">Try with your template</Link>
+                  <Link href="#upload">Generate RAMS</Link>
+                </CtaButton>
+                 <CtaButton asChild>
+                  <Link href="#upload">Generate CPP</Link>
                 </CtaButton>
               </div>
                <p className="mt-6 text-sm text-muted-foreground">
