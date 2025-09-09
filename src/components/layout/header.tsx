@@ -47,7 +47,7 @@ const HardHatLogo = () => (
     <div className="flex items-center gap-2 text-2xl font-bold text-foreground">
         <HardHatIcon className="text-[#FABE2C]" />
         <div>
-          <span style={{color: '#FABE2C'}}>H</span>ard<span style={{color: '#FABE2C'}}>H</span>at<span style={{color: '#FABE2C'}}>A</span>i
+          <span style={{color: '#FABE2C'}}>H</span>ardHatAi
         </div>
     </div>
 );
