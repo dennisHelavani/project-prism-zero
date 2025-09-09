@@ -7,9 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { Vortex } from '@/components/ui/vortex';
 import BlurText from '@/components/ui/blur-text';
 import { MotionDiv } from '@/components/ui/motion-div';
+import { cn } from '@/lib/utils';
 
 type FormData = {
   name: string;
@@ -25,14 +25,10 @@ export function ContactSection() {
     // Handle form submission
   };
 
+  const inputStyles = "border-[#FABE2C]/50 focus:border-[#FABE2C] focus:ring-[#FABE2C]";
+
   return (
-    <SectionWrapper id="contact" className="overflow-hidden !py-0 mt-12 scroll-m-24">
-        <Vortex
-            backgroundColor="transparent"
-            particleCount={300}
-            baseHue={240}
-            className="flex items-center flex-col justify-center px-4 md:px-10 py-24 md:py-32 w-full h-full"
-        >
+    <SectionWrapper id="contact" className="!py-24 md:!py-32 mt-12 scroll-m-24">
         <MotionDiv>
           <div className="mx-auto max-w-5xl text-center">
             <BlurText
@@ -92,15 +88,15 @@ export function ContactSection() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-left">
                 <div>
                   <label htmlFor="name" className="sr-only">Name</label>
-                  <Input {...register('name')} id="name" placeholder="Name" required />
+                  <Input {...register('name')} id="name" placeholder="Name" required className={inputStyles} />
                 </div>
                 <div>
                    <label htmlFor="email" className="sr-only">Email</label>
-                  <Input {...register('email')} id="email" type="email" placeholder="Email" required />
+                  <Input {...register('email')} id="email" type="email" placeholder="Email" required className={inputStyles}/>
                 </div>
                 <div>
                   <label htmlFor="message" className="sr-only">Message</label>
-                  <Textarea {...register('message')} id="message" placeholder="Message" rows={5} required />
+                  <Textarea {...register('message')} id="message" placeholder="Message" rows={5} required className={inputStyles}/>
                 </div>
                 <Button type="submit" className="w-full bg-primary/80 hover:bg-primary">
                   Send Message
@@ -109,7 +105,6 @@ export function ContactSection() {
             </div>
           </div>
           </MotionDiv>
-        </Vortex>
     </SectionWrapper>
   );
 }
