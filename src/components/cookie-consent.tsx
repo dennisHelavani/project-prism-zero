@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -45,6 +46,10 @@ export function CookieConsent() {
                 We use essential cookies to make our site work. By clicking &quot;Accept&quot;, you agree to our use of cookies. For more details, see our{' '}
                 <Link href="#" className="underline hover:text-primary">
                   Privacy Policy
+                </Link>
+                 {' '}and{' '}
+                <Link href="#" className="underline hover:text-primary">
+                  Cookie Policy
                 </Link>
                 .
               </p>

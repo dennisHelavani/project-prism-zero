@@ -6,7 +6,7 @@ const footerNav = [
   { name: "Product", items: [{name: "Templates", href: "/#templates"}, {name: "Integrations", href: "/#integrations"}, {name: "Pricing", href: "/#pricing"}, {name: "Reviews", href: "/#reviews"}] },
   { name: "Company", items: [{name: "Our Story", href: "/#our-story"}, {name: "Contact", href: "/contact"}] },
   { name: "Resources", items: [{name: "FAQ", href:"/#faq"}] },
-  { name: "Legal", items: [{name: "Privacy", href:"#"}, {name: "Terms of Service", href:"#"}] },
+  { name: "Legal", items: [{name: "Privacy", href:"#"}, {name: "Terms of Service", href:"#"}, {name: "Cookie Policy", href: "#"}] },
 ];
 
 const HardHatLogo = () => (
