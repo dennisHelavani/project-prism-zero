@@ -31,8 +31,8 @@ export default function Home() {
       />
       <Header />
       <div className="flex-1">
-        <div className="relative isolate">
-          <main>
+        <main>
+          <div className="relative isolate">
             <HeroSection />
             <ProofSection />
             <UseCasesSection />
@@ -46,8 +46,8 @@ export default function Home() {
             <FormSection />
             <FaqSection />
             <CtaSection />
-          </main>
-        </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </div>
