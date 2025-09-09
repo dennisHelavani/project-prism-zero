@@ -2,7 +2,7 @@
 'use client';
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
@@ -35,6 +35,26 @@ export function Header() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
 
+  const smoothScrollToId = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const header = document.getElementById("site-header");
+    const offset = header ? header.offsetHeight + 24 : 96;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+
+    window.scrollTo({ top, behavior: "smooth" });
+  }, []);
+
+  const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("/#")) return; 
+    e.preventDefault();
+    const id = href.slice(2); 
+    smoothScrollToId(id);
+    history.replaceState(null, "", href);
+  };
+
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
@@ -52,7 +72,7 @@ export function Header() {
       
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
-        const sectionTop = section.offsetTop - 100;
+        const sectionTop = section.offsetTop - 150;
         if (window.scrollY >= sectionTop) {
             currentSectionId = section.id;
             break;
@@ -71,7 +91,7 @@ export function Header() {
   }, [pathname]);
 
   return (
-    <header className={cn(
+    <header id="site-header" className={cn(
       "sticky top-0 inset-x-0 z-50 transition-all duration-300",
       { "bg-background/80 backdrop-blur-sm border-b border-white/10": scrolled }
     )}>
@@ -84,7 +104,13 @@ export function Header() {
         
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="nav-link whitespace-nowrap" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
+            <Link 
+                key={link.name} 
+                href={link.href} 
+                className="nav-link whitespace-nowrap" 
+                data-active={activeSection === link.href.substring(2) || pathname === link.href}
+                onClick={(e) => handleNavClick(link.href, e)}
+            >
               {link.name}
             </Link>
           ))}
@@ -92,7 +118,7 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <a href="/#upload">Generate my documents</a>
+             <a href="/#upload" onClick={(e) => handleNavClick("/#upload", e)}>Generate my documents</a>
            </CtaButton>
         </div>
 
@@ -121,7 +147,19 @@ export function Header() {
                                 key={link.name} 
                                 href={link.href} 
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
-                                onClick={() => setMobileMenuOpen(false)}
+                                onClick={(e) => {
+                                    if (link.href.startsWith("/#")) {
+                                    e.preventDefault();
+                                    setMobileMenuOpen(false);
+                                    setTimeout(() => {
+                                        const id = link.href.slice(2);
+                                        smoothScrollToId(id);
+                                        history.replaceState(null, "", link.href);
+                                    }, 150);
+                                    } else {
+                                    setMobileMenuOpen(false);
+                                    }
+                                }}
                             >
                             {link.name}
                             </Link>
@@ -129,7 +167,14 @@ export function Header() {
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <a href="/#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</a>
+                            <a href="/#upload" onClick={(e) => {
+                                e.preventDefault();
+                                setMobileMenuOpen(false);
+                                setTimeout(() => {
+                                    smoothScrollToId("upload");
+                                    history.replaceState(null, "", "/#upload");
+                                }, 150);
+                            }}>Generate my documents</a>
                         </CtaButton>
                     </div>
                  </div>
