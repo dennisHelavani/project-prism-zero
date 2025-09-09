@@ -58,7 +58,12 @@ export function Header() {
         }
       }
       
-      setActiveSection(currentSectionId);
+      setActiveSection(current_section_id => {
+        if (current_section_id !== currentSectionId) {
+          return currentSectionId;
+        }
+        return current_section_id;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
