@@ -103,17 +103,32 @@ export function Header() {
         </div>
         
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
-          {navLinks.map((link) => (
-            <Link 
-                key={link.name} 
-                href={link.href} 
-                className="nav-link whitespace-nowrap" 
+          {navLinks.map((link) => {
+            if (link.name === "Contact") {
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-link whitespace-nowrap"
+                >
+                  {link.name}
+                </a>
+              );
+            }
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="nav-link whitespace-nowrap"
                 data-active={activeSection === link.href.substring(2) || pathname === link.href}
                 onClick={(e) => handleNavClick(link.href, e)}
-            >
-              {link.name}
-            </Link>
-          ))}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
@@ -142,7 +157,22 @@ export function Header() {
                         </Button>
                     </div>
                     <nav className="flex flex-col gap-4 p-4">
-                        {navLinks.map((link) => (
+                        {navLinks.map((link) => {
+                          if (link.name === 'Contact') {
+                            return (
+                                <a
+                                    key={link.name}
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {link.name}
+                                </a>
+                            )
+                          }
+                          return (
                             <Link
                                 key={link.name} 
                                 href={link.href} 
@@ -163,7 +193,8 @@ export function Header() {
                             >
                             {link.name}
                             </Link>
-                        ))}
+                          )
+                        })}
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
