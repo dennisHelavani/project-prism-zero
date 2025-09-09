@@ -38,17 +38,22 @@ export function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
       
-      const sections = navLinks.map(link => document.querySelector(link.href));
+      const sections = navLinks.map(link => document.querySelector(link.href.substring(1)) as HTMLElement).filter(s => s);
+      
       let currentSection: string | null = null;
+      
+      // Add a small offset to account for the header height
+      const scrollOffset = window.innerHeight * 0.4;
+
       sections.forEach((section) => {
         if (section) {
           const sectionTop = section.getBoundingClientRect().top;
-          if (sectionTop < window.innerHeight / 2) {
+          if (sectionTop < scrollOffset) {
             currentSection = section.id;
           }
         }
       });
-
+      
       setActiveSection(currentSection);
     };
 

@@ -26,9 +26,8 @@ export function ContactSection() {
   };
 
   return (
-    <SectionWrapper className="overflow-hidden !py-0">
+    <SectionWrapper id="contact" className="overflow-hidden !py-0 scroll-m-24">
         <Vortex
-            id="contact"
             backgroundColor="transparent"
             particleCount={300}
             baseHue={240}
@@ -38,7 +37,7 @@ export function ContactSection() {
           <div className="mx-auto max-w-5xl text-center">
             <BlurText
                 as="h2"
-                className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold text-foreground glowing-text justify-center"
+                className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
                 text="Get in Touch"
             />
             <p className="mt-6 text-lg leading-8 text-gray-300">
