@@ -1,3 +1,4 @@
+
 'use client';
 
 import { SectionWrapper } from './section-wrapper';
@@ -34,9 +35,6 @@ export function CtaSection() {
                   <CtaButton asChild>
                       <Link href="#upload">Try with your template</Link>
                   </CtaButton>
-                  <StarBorder asChild>
-                      <Link href="#contact">Book a 15-min demo</Link>
-                  </StarBorder>
               </div>
                <p className="mt-4 text-xs text-muted-foreground">
                   AI-generated — review before use.

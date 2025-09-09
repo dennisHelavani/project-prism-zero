@@ -1,3 +1,4 @@
+
 import { PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { StarBorder } from "../ui/star-border";
@@ -25,12 +26,9 @@ export function HeroSection() {
                 <CtaButton asChild>
                   <Link href="#upload">Try with your template</Link>
                 </CtaButton>
-                <StarBorder as={Link} href="#book-demo">
-                    Book a 15-min demo
-                </StarBorder>
               </div>
                <p className="mt-6 text-sm text-muted-foreground">
-                GDPR-ready • Deterministic structure (JSON schema) • Branded PDF via email (~3.5 minutes)
+                GDPR-ready • Deterministic structure (JSON schema) • Branded PDF via email (≈ 3.5 minutes)
               </p>
             </div>
           </MotionDiv>
