@@ -38,15 +38,19 @@ export function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
       
-      const sections = navLinks.map(link => document.querySelector(link.href.substring(1)) as HTMLElement).filter(s => s);
-      
       let currentSectionId: string | null = null;
       
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section && section.offsetTop <= window.scrollY + 100) {
-            currentSectionId = section.id;
-            break;
+      const sections = navLinks.map(link => document.querySelector(link.href) as HTMLElement).filter(s => s);
+
+      for (const section of sections) {
+        if (section) {
+            const sectionTop = section.offsetTop - 100; //- 100 offset for header
+            const sectionBottom = sectionTop + section.offsetHeight;
+
+            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                currentSectionId = section.id;
+                break;
+            }
         }
       }
       
@@ -90,7 +94,7 @@ export function Header() {
                     <span className="sr-only">Open menu</span>
                   </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background">
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background p-0 border-l">
                  <div className="flex h-full flex-col">
                     <div className="flex items-center justify-between p-4 border-b">
                          <Link href="/" onClick={() => setMobileMenuOpen(false)}>
