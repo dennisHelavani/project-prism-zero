@@ -6,8 +6,9 @@ import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { Cookie } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
-const COOKIE_CONSENT_KEY = 'cookie-consent-accepted';
+const COOKIE_CONSENT_KEY = 'cookie-consent-interacted';
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +21,7 @@ export function CookieConsent() {
     }
   }, []);
 
-  const handleAccept = () => {
+  const handleConsent = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
     setIsVisible(false);
   };
@@ -48,8 +49,9 @@ export function CookieConsent() {
                 .
               </p>
             </div>
-            <div className="flex-shrink-0">
-              <Button onClick={handleAccept}>Accept</Button>
+            <div className="flex-shrink-0 flex items-center gap-2">
+              <Button variant="ghost" onClick={handleConsent}>Reject</Button>
+              <Button onClick={handleConsent}>Accept</Button>
             </div>
           </Card>
         </motion.div>

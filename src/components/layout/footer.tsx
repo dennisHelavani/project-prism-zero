@@ -10,8 +10,27 @@ const footerNav = [
 ];
 
 const HardHatLogo = () => (
-    <div className="text-2xl font-bold text-foreground">
-        <span style={{color: '#FABE2C'}}>H</span>ard<span style={{color: '#FABE2C'}}>H</span>at<span style={{color: '#FABE2C'}}>A</span>i
+    <div className="flex items-center gap-2 text-2xl font-bold text-foreground">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-[#FABE2C]"
+        >
+            <path d="M2 13a4 4 0 0 0 4-4h12a4 4 0 0 0 4 4v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2Z" />
+            <path d="M12 4V9" />
+            <path d="M7.5 4.5 9 9" />
+            <path d="m16.5 4.5-1.5 4.5" />
+        </svg>
+        <div>
+          <span style={{color: '#FABE2C'}}>H</span>ardHatAi
+        </div>
     </div>
 );
 
@@ -42,11 +61,6 @@ export function Footer() {
                 </div>
             ))}
         </div>
-         <div className="mt-16 text-center">
-            <CtaButton asChild>
-                <a href="/#upload">Try with your template</a>
-            </CtaButton>
-         </div>
       </div>
       <div className="mx-auto max-w-[1200px] px-6 py-8 text-center text-sm text-muted-foreground border-t border-white/10">
         <p>&copy; {new Date().getFullYear()} Hard Hat AI. All rights reserved.</p>
