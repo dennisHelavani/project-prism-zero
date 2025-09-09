@@ -47,11 +47,12 @@ export function Header() {
   }, []);
 
   const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!href.startsWith("/#")) return; 
-    e.preventDefault();
-    const id = href.slice(2); 
-    smoothScrollToId(id);
-    history.replaceState(null, "", href);
+    if (pathname === '/' && href.startsWith('/#')) {
+      e.preventDefault();
+      const id = href.slice(2); 
+      smoothScrollToId(id);
+      history.replaceState(null, "", href);
+    }
   };
 
 
@@ -133,7 +134,7 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <a href="/#upload" onClick={(e) => handleNavClick("/#upload", e)}>Generate my documents</a>
+             <a href="/#upload" onClick={(e) => handleNavClick("/#upload", e as any)}>Generate my documents</a>
            </CtaButton>
         </div>
 
@@ -178,7 +179,7 @@ export function Header() {
                                 href={link.href} 
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={(e) => {
-                                    if (link.href.startsWith("/#")) {
+                                    if (pathname === '/' && link.href.startsWith("/#")) {
                                     e.preventDefault();
                                     setMobileMenuOpen(false);
                                     setTimeout(() => {
@@ -187,7 +188,7 @@ export function Header() {
                                         history.replaceState(null, "", link.href);
                                     }, 150);
                                     } else {
-                                    setMobileMenuOpen(false);
+                                      setMobileMenuOpen(false);
                                     }
                                 }}
                             >
