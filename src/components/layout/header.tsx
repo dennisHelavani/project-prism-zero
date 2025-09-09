@@ -84,7 +84,7 @@ export function Header() {
         
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
+            <Link key={link.name} href={link.href} className="nav-link whitespace-nowrap" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
               {link.name}
             </Link>
           ))}
