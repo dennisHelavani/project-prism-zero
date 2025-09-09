@@ -14,19 +14,17 @@ import { MotionDiv } from "../ui/motion-div";
 const steps = [
   {
     step: 1,
-    title: "Submit the short form",
-    description: "Answer ~4 questions. We only send 2–3 AI inputs.",
+    title: "Fill in the form",
+    description: "Tell us the essentials—project scope, site conditions, and key risks. No jargon, no long questionnaire.",
     icon: <ClipboardEdit className="w-10 h-10 text-primary" />,
-    chips: ["Tally on Framer", "Inputs: context • hazards • site"],
-    note: "Company, email, and project ID populate the cover & email—not the AI.",
+    chips: ["2–3 key inputs", "Site-specific"],
   },
   {
     step: 2,
-    title: "Deterministic generation",
-    description: "Make.com validates, then calls OpenAI with a JSON schema for consistent sectioning.",
+    title: "Our AI assembles your draft",
+    description: "We map your answers to the right sections, match hazards to proven controls, and apply your branding automatically. The result is a clear, consistent RAMS/CPP draft ready for review.",
     icon: <Cpu className="w-10 h-10 text-primary" />,
-    chips: ["JSON schema", "Consistent sections"],
-    note: "Sections: Cover → Exec Summary → Scope → Risks → Controls → Responsibilities → Emergency → Sign-off.",
+    chips: ["Auto-mapping", "HSE/CDM-aware", "Brand applied"],
   },
   {
     step: 3,
@@ -34,7 +32,6 @@ const steps = [
     description: "Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.",
     icon: <FileCheck2 className="w-10 h-10 text-primary" />,
     chips: ["Filename standard", "Owner BCC"],
-    note: "Quick 1-question follow-up to improve quality.",
   },
 ];
 
@@ -93,7 +90,6 @@ export function HowItWorksSection() {
                             <Badge key={chip} variant="secondary" className="text-xs">{chip}</Badge>
                         ))}
                     </div>
-                  {step.note && <p className="text-xs text-muted-foreground/70">{step.note}</p>}
                 </CardFooter>
               </Card>
             </MotionDiv>
