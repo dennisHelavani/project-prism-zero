@@ -30,25 +30,21 @@ export default function Home() {
         className="fixed inset-0 -z-10"
       />
       <Header />
-      <div className="flex-1">
-        <main>
-          <div>
-            <HeroSection />
-            <ProofSection />
-            <UseCasesSection />
-            <HowItWorksSection />
-            <RoiSection />
-            <BenefitsSection />
-            {/* <IntegrationsSection /> */}
-            <CaseStudySection />
-            <PricingSection />
-            <ReviewsSection />
-            <FormSection />
-            <FaqSection />
-            <CtaSection />
-          </div>
-        </main>
-      </div>
+      <main>
+        <HeroSection />
+        <ProofSection />
+        <UseCasesSection />
+        <HowItWorksSection />
+        <RoiSection />
+        <BenefitsSection />
+        {/* <IntegrationsSection /> */}
+        <CaseStudySection />
+        <PricingSection />
+        <ReviewsSection />
+        <FormSection />
+        <FaqSection />
+        <CtaSection />
+      </main>
       <Footer />
     </div>
   );
