@@ -52,18 +52,14 @@ export function Header() {
       
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
-        if (section.offsetTop <= window.scrollY + 100) {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) {
             currentSectionId = section.id;
             break;
         }
       }
       
-      setActiveSection(current_section_id => {
-        if (current_section_id !== currentSectionId) {
-          return currentSectionId;
-        }
-        return current_section_id;
-      });
+      setActiveSection(currentSectionId);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
