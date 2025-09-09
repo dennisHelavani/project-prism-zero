@@ -86,7 +86,7 @@ export function UseCasesSection() {
             </div>
           </div>
         
-        
+        {/*
         <MotionDiv delay={0.4}>
           <div>
             <h3 className="font-headline text-2xl font-bold text-primary mb-8 text-center">Coming Soon</h3>
@@ -104,6 +104,7 @@ export function UseCasesSection() {
             </div>
           </div>
         </MotionDiv>
+        */}
       </div>
     </SectionWrapper>
   );

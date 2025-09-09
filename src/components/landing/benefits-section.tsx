@@ -115,6 +115,7 @@ export function BenefitsSection() {
           })}
         </BentoGrid>
       
+      {/*
       <MotionDiv delay={0.4}>
         <div className="text-center mt-12">
           <h3 className="font-headline text-lg font-bold text-primary mb-4">Coming Soon</h3>
@@ -125,6 +126,7 @@ export function BenefitsSection() {
           </div>
         </div>
       </MotionDiv>
+      */}
     </SectionWrapper>
   );
 }
