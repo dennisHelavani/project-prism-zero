@@ -26,7 +26,7 @@ export function ContactSection() {
   };
 
   return (
-    <SectionWrapper id="contact" className="overflow-hidden !py-0 scroll-m-24">
+    <SectionWrapper id="contact" className="overflow-hidden !py-0 mt-12 scroll-m-24">
         <Vortex
             backgroundColor="transparent"
             particleCount={300}
