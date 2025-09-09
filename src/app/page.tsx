@@ -7,14 +7,12 @@ import { UseCasesSection } from "@/components/landing/use-cases-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { RoiSection } from "@/components/landing/roi-section";
 import { BenefitsSection } from "@/components/landing/benefits-section";
-import { IntegrationsSection } from "@/components/landing/integrations-section";
 import { CaseStudySection } from "@/components/landing/case-study-section";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { ReviewsSection } from "@/components/landing/reviews-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { FormSection } from "@/components/landing/form-section";
-import { ContactSection } from "@/components/landing/contact-section";
 import { Vortex } from "@/components/ui/vortex";
 
 export default function Home() {
@@ -48,7 +46,6 @@ export default function Home() {
             <FormSection />
             <FaqSection />
             <CtaSection />
-            <ContactSection />
           </main>
         </div>
       </div>

@@ -1,15 +1,15 @@
 
 'use client';
 
-import { SectionWrapper } from './landing/section-wrapper';
+import { SectionWrapper } from '@/components/landing/section-wrapper';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { Vortex } from './ui/vortex';
-import BlurText from './ui/blur-text';
-import { MotionDiv } from './ui/motion-div';
+import { Vortex } from '@/components/ui/vortex';
+import BlurText from '@/components/ui/blur-text';
+import { MotionDiv } from '@/components/ui/motion-div';
 
 type FormData = {
   name: string;

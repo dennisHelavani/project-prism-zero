@@ -3,9 +3,9 @@ import Link from "next/link";
 import { CtaButton } from "../ui/cta-button";
 
 const footerNav = [
-  { name: "Product", items: [{name: "Templates", href: "#templates"}, {name: "Integrations", href: "#integrations"}, {name: "Pricing", href: "#pricing"}, {name: "Reviews", href: "#reviews"}] },
-  { name: "Company", items: [{name: "Our Story", href: "#our-story"}, {name: "Contact", href: "#contact"}] },
-  { name: "Resources", items: [{name: "FAQ", href:"#faq"}] },
+  { name: "Product", items: [{name: "Templates", href: "/#templates"}, {name: "Integrations", href: "/#integrations"}, {name: "Pricing", href: "/#pricing"}, {name: "Reviews", href: "/#reviews"}] },
+  { name: "Company", items: [{name: "Our Story", href: "/#our-story"}, {name: "Contact", href: "/contact"}] },
+  { name: "Resources", items: [{name: "FAQ", href:"/#faq"}] },
   { name: "Legal", items: [{name: "Privacy", href:"#"}, {name: "Terms of Service", href:"#"}] },
 ];
 
@@ -33,9 +33,9 @@ export function Footer() {
                     <ul className="mt-4 space-y-2">
                         {section.items.map(item => (
                             <li key={item.name}>
-                                <a href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                                <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
                                     {item.name}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -44,7 +44,7 @@ export function Footer() {
         </div>
          <div className="mt-16 text-center">
             <CtaButton asChild>
-                <a href="#upload">Try with your template</a>
+                <a href="/#upload">Try with your template</a>
             </CtaButton>
          </div>
       </div>

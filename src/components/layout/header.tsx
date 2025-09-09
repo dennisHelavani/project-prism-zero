@@ -12,13 +12,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { CtaButton } from "../ui/cta-button";
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { name: "Our story", href: "#our-story" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "How It Works", href: "#how-it-works" },
-  { name: "Reviews", href: "#reviews" },
-  { name: "Contact", href: "#contact" },
+  { name: "Our story", href: "/#our-story" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "How It Works", href: "/#how-it-works" },
+  { name: "Reviews", href: "/#reviews" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const HardHatLogo = () => (
@@ -32,25 +33,28 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
-
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
       
+      if (pathname !== '/') {
+          setActiveSection(null);
+          return;
+      }
+      
+      const sections = navLinks
+        .map(link => (link.href.startsWith('/#') ? document.getElementById(link.href.substring(2)) : null))
+        .filter((s): s is HTMLElement => s !== null);
+
       let currentSectionId: string | null = null;
       
-      const sections = navLinks.map(link => document.querySelector(link.href) as HTMLElement).filter(s => s);
-
-      for (const section of sections) {
-        if (section) {
-            const sectionTop = section.offsetTop - 100; //- 100 offset for header
-            const sectionBottom = sectionTop + section.offsetHeight;
-
-            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
-                currentSectionId = section.id;
-                break;
-            }
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section.offsetTop <= window.scrollY + 100) {
+            currentSectionId = section.id;
+            break;
         }
       }
       
@@ -63,7 +67,7 @@ export function Header() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <header className={cn(
@@ -76,9 +80,9 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(1)}>
+            <Link key={link.name} href={link.href} className="nav-link" data-active={activeSection === link.href.substring(2) || pathname === link.href}>
               {link.name}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
@@ -107,19 +111,19 @@ export function Header() {
                     </div>
                     <nav className="flex flex-col gap-4 p-4">
                         {navLinks.map((link) => (
-                            <a
+                            <Link
                                 key={link.name} 
                                 href={link.href} 
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                             {link.name}
-                            </a>
+                            </Link>
                         ))}
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <a href="#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</a>
+                            <a href="/#upload" onClick={() => setMobileMenuOpen(false)}>Generate my documents</a>
                         </CtaButton>
                     </div>
                  </div>
