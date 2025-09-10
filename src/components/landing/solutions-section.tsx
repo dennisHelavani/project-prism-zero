@@ -9,7 +9,7 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 import Link from 'next/link';
-import { DataFlowVisual } from './data-flow-visual';
+import Image from 'next/image';
 
 const steps = [
   {
@@ -22,7 +22,7 @@ const steps = [
     title: 'Our AI assembles your draft',
     description: 'We map your answers to the right sections, match hazards to proven controls, and apply your branding automatically.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
-    icon: <DataFlowVisual />,
+    icon: <Image src="/robot-animation.gif" alt="AI Robot Animation" width={80} height={80} unoptimized />,
   },
   {
     title: 'Receive your document',
@@ -57,7 +57,7 @@ export function SolutionsSection() {
                     Step {index + 1}
                 </Badge>
                 {index === 1 ? (
-                  <div className="h-20 w-full flex items-center justify-center">
+                  <div className="h-20 w-20 flex items-center justify-center">
                     {step.icon}
                   </div>
                 ) : (
