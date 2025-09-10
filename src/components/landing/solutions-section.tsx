@@ -4,64 +4,74 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { InstantGenerationVisual, EditableShareableVisual } from './solution-visuals';
-import { DataFlowVisual } from './data-flow-visual';
+import { FileUp, Cpu, FileCheck } from 'lucide-react';
+import BlurText from '../ui/blur-text';
+import { MotionDiv } from '../ui/motion-div';
+import { CtaButton } from '../ui/cta-button';
+import Link from 'next/link';
 
-const solutions = [
+const steps = [
   {
-    title: 'Compliant Documents',
-    description: 'Generate fully compliant Risk Assessments, Method Statements, and CDM documents tailored to your project specifics.',
-    visual: (
-      <div className="rounded-xl border border-white/10 p-4">
-        <DataFlowVisual />
-      </div>
-    ),
+    title: 'Fill in the form',
+    description: 'Tell us the essentials—project scope, site conditions, and key risks.',
+    chips: ['2-3 key inputs', 'Site-specific'],
+    icon: <FileUp className="w-8 h-8 text-primary" />,
   },
   {
-    title: 'Instant Generation',
-    description: 'Our AI drafts your critical documents in minutes, not hours, freeing up your team to focus on site operations.',
-    visual: <InstantGenerationVisual />,
+    title: 'Our AI assembles your draft',
+    description: 'We map your answers to the right sections, match hazards to proven controls, and apply your branding automatically.',
+    chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
+    icon: <Cpu className="w-8 h-8 text-primary" />,
   },
   {
-    title: 'Editable & Shareable',
-    description: 'Receive documents in editable formats (.doc), ready for final review, team collaboration, and distribution.',
-    visual: <EditableShareableVisual />,
+    title: 'Receive your document',
+    description: 'Branded PDF (DOCX optional) delivered to your inbox in minutes.',
+    chips: ['Filename standard', 'Owner BCC'],
+    icon: <FileCheck className="w-8 h-8 text-primary" />,
   },
 ];
 
 export function SolutionsSection() {
   return (
     <SectionWrapper id="solutions">
-      <div className="mx-auto max-w-2xl text-center">
-        <Badge variant="outline" className="border-primary/50 text-primary mb-4">
-          Solutions
-        </Badge>
-        <h2 className="font-headline text-4xl font-bold tracking-tight text-foreground sm:text-5xl glowing-text">
-          Smart tools for faster safety & compliance
-        </h2>
-        <p className="mt-6 text-lg leading-8 text-muted-foreground">
-          Our AI-powered agents qualify risks, handle compliance checks, and generate documents instantly.
-        </p>
-      </div>
+      <MotionDiv>
+        <div className="mx-auto max-w-4xl text-center">
+          <BlurText
+            as="h2"
+            className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-foreground glowing-text justify-center"
+            text="Smart tools for faster safety & compliance"
+          />
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            Our AI-powered agents qualify risks, handle compliance checks, and generate documents instantly.
+          </p>
+        </div>
+      </MotionDiv>
 
-      <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
-        {solutions.map((solution, index) => (
-          <Card key={solution.title} className="flex flex-col overflow-hidden bg-card border-white/10 shadow-e1 rounded-xl p-6">
-             <Badge variant="outline" className="border-primary/50 text-primary mb-4 w-fit">
-                Step {index + 1}
-            </Badge>
-            <CardHeader className="p-0">
-              <CardTitle className="font-headline text-xl font-bold">{solution.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 mt-2 flex-grow">
-              <p className="text-muted-foreground">{solution.description}</p>
-            </CardContent>
-             <div className="relative h-48 w-full flex items-center justify-center bg-transparent mt-4">
-              {solution.visual}
-            </div>
-          </Card>
-        ))}
-      </div>
+      <MotionDiv delay={0.2}>
+        <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
+          {steps.map((step, index) => (
+            <Card key={step.title} className="flex flex-col overflow-hidden bg-card/80 border-primary/20 shadow-e1 rounded-xl p-6">
+               <div className="flex justify-between items-start mb-4">
+                <Badge variant="outline" className="border-primary/50 text-primary w-fit">
+                    Step {index + 1}
+                </Badge>
+                {step.icon}
+              </div>
+              <CardHeader className="p-0">
+                <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0 mt-2 flex-grow">
+                <p className="text-muted-foreground">{step.description}</p>
+              </CardContent>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {step.chips?.map((chip) => (
+                  <Badge key={chip} variant="secondary">{chip}</Badge>
+                ))}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </MotionDiv>
     </SectionWrapper>
   );
 }
