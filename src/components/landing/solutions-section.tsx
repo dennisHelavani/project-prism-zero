@@ -52,7 +52,7 @@ export function SolutionsSection() {
           {steps.map((step, index) => (
             <Card key={step.title} className="flex flex-col overflow-hidden bg-card/80 border-[#FABE2C]/50 shadow-e1 rounded-xl p-6">
                <div className="flex justify-between items-start mb-4">
-                <Badge variant="outline" className="border-[#FABE2C] text-primary w-fit">
+                <Badge variant="outline" className="border-[#FABE2C] text-white w-fit">
                     Step {index + 1}
                 </Badge>
                 {step.icon}
