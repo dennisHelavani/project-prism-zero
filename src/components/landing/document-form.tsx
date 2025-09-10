@@ -102,7 +102,7 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
             <FormItem>
               <FormLabel>Site Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="e.g., A multi-story residential building construction in a dense urban area..." {...field} />
+                <Textarea placeholder="e.g., A multi-story residential building construction in a dense urban area, site conditions..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
