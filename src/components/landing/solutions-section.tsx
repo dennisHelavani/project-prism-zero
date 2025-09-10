@@ -9,6 +9,7 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 import Link from 'next/link';
+import { DataFlowVisual } from './data-flow-visual';
 
 const steps = [
   {
@@ -21,7 +22,7 @@ const steps = [
     title: 'Our AI assembles your draft',
     description: 'We map your answers to the right sections, match hazards to proven controls, and apply your branding automatically.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
-    icon: <Cpu className="w-8 h-8 text-primary" />,
+    icon: <DataFlowVisual />,
   },
   {
     title: 'Receive your document',
@@ -55,7 +56,13 @@ export function SolutionsSection() {
                 <Badge variant="outline" className="border-[#FABE2C] text-white w-fit">
                     Step {index + 1}
                 </Badge>
-                {step.icon}
+                {index === 1 ? (
+                  <div className="h-20 w-full flex items-center justify-center">
+                    {step.icon}
+                  </div>
+                ) : (
+                  step.icon
+                )}
               </div>
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
