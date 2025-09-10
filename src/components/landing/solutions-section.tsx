@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +9,7 @@ import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { TextCarousel } from '../ui/text-carousel';
 
 const steps = [
   {
@@ -64,6 +64,8 @@ const iconVariants = {
   },
 };
 
+const carouselWords = ['project', 'scope', 'site', 'conditions'];
+
 export function SolutionsSection() {
   return (
     <SectionWrapper id="solutions">
@@ -95,6 +97,11 @@ export function SolutionsSection() {
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <p className="text-muted-foreground">{step.description}</p>
+                 {index === 0 && (
+                    <div className="flex-grow flex items-center justify-center">
+                        <TextCarousel items={carouselWords} />
+                    </div>
+                )}
                  {index === 1 && (
                     <div className="flex-grow flex flex-col justify-center space-y-2 mt-4">
                         {checkListItems.map((item, i) => (

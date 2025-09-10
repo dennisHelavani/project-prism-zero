@@ -1,0 +1,16 @@
+.text-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Or any fixed height */
+  overflow: hidden;
+  position: relative;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  text-transform: capitalize;
+}
+
+.text-carousel-item {
+  position: absolute;
+}
