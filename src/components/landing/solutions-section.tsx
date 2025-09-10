@@ -4,7 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { FileUp, Cpu, FileCheck } from 'lucide-react';
+import { FileUp, Cpu, FileCheck, Gauge, Hammer, Repeat } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
@@ -30,6 +30,14 @@ const steps = [
     icon: <FileCheck className="w-8 h-8 text-primary" />,
   },
 ];
+
+const checkListItems = [
+    { icon: <FileCheck className="w-5 h-5 text-foreground/80" />, text: 'System check' },
+    { icon: <Cpu className="w-5 h-5 text-foreground/80" />, text: 'Process check' },
+    { icon: <Gauge className="w-5 h-5 text-foreground/80" />, text: 'Speed check' },
+    { icon: <Hammer className="w-5 h-5 text-foreground/80" />, text: 'Manual work' },
+    { icon: <Repeat className="w-5 h-5 text-foreground/80" />, text: 'Repetitive task' },
+]
 
 export function SolutionsSection() {
   return (
@@ -60,8 +68,18 @@ export function SolutionsSection() {
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 mt-2 flex-grow">
+              <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <p className="text-muted-foreground">{step.description}</p>
+                 {index === 1 && (
+                    <div className="flex-grow flex flex-col justify-center space-y-2 mt-4">
+                        {checkListItems.map(item => (
+                            <div key={item.text} className="flex items-center gap-3 p-2 rounded-md border border-white/10">
+                                {item.icon}
+                                <span className="text-sm font-medium">{item.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
               </CardContent>
               <div className="mt-4 flex flex-wrap gap-2">
                 {step.chips?.map((chip) => (
