@@ -50,9 +50,9 @@ export function SolutionsSection() {
       <MotionDiv delay={0.2}>
         <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
           {steps.map((step, index) => (
-            <Card key={step.title} className="flex flex-col overflow-hidden bg-card/80 border-primary/20 shadow-e1 rounded-xl p-6">
+            <Card key={step.title} className="flex flex-col overflow-hidden bg-card/80 border-[#FABE2C]/50 shadow-e1 rounded-xl p-6">
                <div className="flex justify-between items-start mb-4">
-                <Badge variant="outline" className="border-primary/50 text-primary w-fit">
+                <Badge variant="outline" className="border-[#FABE2C] text-primary w-fit">
                     Step {index + 1}
                 </Badge>
                 {step.icon}
