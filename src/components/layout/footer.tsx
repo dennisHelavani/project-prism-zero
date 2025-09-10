@@ -1,6 +1,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { HardHat } from "lucide-react";
 
 const footerNav = [
   { name: "Product", items: [{name: "Templates", href: "/#templates"}, {name: "Integrations", href: "/#integrations"}, {name: "Pricing", href: "/#pricing"}, {name: "Reviews", href: "/#reviews"}] },
@@ -11,7 +12,7 @@ const footerNav = [
 
 const HardHatLogo = () => (
     <div className="flex items-center gap-2 text-2xl font-bold text-foreground">
-        <Image src="https://picsum.photos/seed/hardhatlogo/24/24" alt="Hard Hat AI Logo" width={24} height={24} data-ai-hint="logo construction" />
+        <HardHat className="h-6 w-6 text-[#FABE2C]" />
         <div>
           <span style={{color: '#FABE2C'}}>H</span>ardHatAi
         </div>

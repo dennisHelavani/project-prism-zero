@@ -14,6 +14,7 @@ import {
 import { CtaButton } from "../ui/cta-button";
 import { usePathname } from 'next/navigation';
 import Image from "next/image";
+import { HardHat } from "lucide-react";
 
 const navLinks = [
   { name: "Our story", href: "/#our-story" },
@@ -25,7 +26,7 @@ const navLinks = [
 
 const HardHatLogo = () => (
     <div className="flex items-center gap-2 text-2xl font-bold text-foreground">
-        <Image src="https://picsum.photos/seed/hardhatlogo/24/24" alt="Hard Hat AI Logo" width={24} height={24} data-ai-hint="logo construction" />
+        <HardHat className="h-6 w-6 text-[#FABE2C]" />
         <div>
           <span style={{color: '#FABE2C'}}>H</span>ardHatAi
         </div>
@@ -125,7 +126,7 @@ export function Header() {
             return (
               <Link
                 key={link.name}
-                href={link.href}
+                href={pathname === '/' ? link.href : `/${link.href}`}
                 className="nav-link whitespace-nowrap"
                 data-active={activeSection === link.href.substring(2) || pathname === link.href}
                 onClick={(e) => handleNavClick(link.href, e)}
@@ -180,7 +181,7 @@ export function Header() {
                           return (
                             <Link
                                 key={link.name} 
-                                href={link.href} 
+                                href={pathname === '/' ? link.href : `/${link.href}`}
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={(e) => {
                                     if (pathname === '/' && link.href.startsWith("/#")) {
