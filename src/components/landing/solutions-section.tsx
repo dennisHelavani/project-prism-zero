@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -99,7 +100,7 @@ export function SolutionsSection() {
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 0 && (
                     <div className="flex-grow flex items-center justify-center">
-                        <TextCarousel items={carouselWords} />
+                        <TextCarousel items={carouselWords} className="text-xl font-bold" />
                     </div>
                 )}
                  {index === 1 && (
