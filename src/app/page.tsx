@@ -14,6 +14,7 @@ import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { FormSection } from "@/components/landing/form-section";
 import { Vortex } from "@/components/ui/vortex";
+import { SolutionsSection } from "@/components/landing/solutions-section";
 
 export default function Home() {
   return (
@@ -34,7 +35,7 @@ export default function Home() {
         <HeroSection />
         <ProofSection />
         <UseCasesSection />
-        <HowItWorksSection />
+        <SolutionsSection />
         <RoiSection />
         <BenefitsSection />
         {/* <IntegrationsSection /> */}

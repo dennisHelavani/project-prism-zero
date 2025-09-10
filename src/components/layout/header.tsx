@@ -19,7 +19,7 @@ import { HardHat } from "lucide-react";
 const navLinks = [
   { name: "Our story", href: "/#our-story" },
   { name: "Pricing", href: "/#pricing" },
-  { name: "How It Works", href: "/#how-it-works" },
+  { name: "Solutions", href: "/#solutions" },
   { name: "Reviews", href: "/#reviews" },
   { name: "Contact", href: "/contact" },
 ];
