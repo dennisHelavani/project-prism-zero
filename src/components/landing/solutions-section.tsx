@@ -9,12 +9,13 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const steps = [
   {
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks. No jargon, no long questionnaire.',
-    chips: ['2-3 key inputs', 'Site-specific'],
+    chips: ['2–3 key inputs', 'Site-specific'],
     icon: <FileUp className="w-8 h-8 text-primary" />,
   },
   {
@@ -38,6 +39,30 @@ const checkListItems = [
     { icon: <Hammer className="w-5 h-5 text-foreground/80" />, text: 'Manual work' },
     { icon: <Repeat className="w-5 h-5 text-foreground/80" />, text: 'Repetitive task' },
 ]
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.2,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  }),
+};
+
+const iconVariants = {
+  animate: {
+    scale: [1, 1.1, 1],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
 
 export function SolutionsSection() {
   return (
@@ -72,11 +97,21 @@ export function SolutionsSection() {
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 1 && (
                     <div className="flex-grow flex flex-col justify-center space-y-2 mt-4">
-                        {checkListItems.map(item => (
-                            <div key={item.text} className="flex items-center gap-3 p-2 rounded-md border border-white/10">
+                        {checkListItems.map((item, i) => (
+                           <motion.div
+                              key={item.text}
+                              custom={i}
+                              initial="hidden"
+                              whileInView="visible"
+                              viewport={{ once: true, amount: 0.5 }}
+                              variants={itemVariants}
+                              className="flex items-center gap-3 p-2 rounded-md border border-white/10"
+                            >
+                              <motion.div variants={iconVariants} animate="animate">
                                 {item.icon}
-                                <span className="text-sm font-medium">{item.text}</span>
-                            </div>
+                              </motion.div>
+                              <span className="text-sm font-medium">{item.text}</span>
+                            </motion.div>
                         ))}
                     </div>
                 )}
