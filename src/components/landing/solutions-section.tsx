@@ -11,6 +11,8 @@ import { CtaButton } from '../ui/cta-button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { TextCarousel } from '../ui/text-carousel';
+import { FormVisual } from './form-visual';
+import { DocumentVisual } from './document-visual';
 
 const steps = [
   {
@@ -98,7 +100,7 @@ export function SolutionsSection() {
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 0 && (
                     <div className="flex-grow flex items-center justify-center">
-                        <TextCarousel items={carouselWords} className="text-xl font-bold" />
+                        <FormVisual />
                     </div>
                 )}
                  {index === 1 && (
@@ -140,6 +142,11 @@ export function SolutionsSection() {
                             </motion.div>
                         </div>
                     </div>
+                )}
+                 {index === 2 && (
+                  <div className="flex-grow flex items-center justify-center">
+                    <DocumentVisual />
+                  </div>
                 )}
               </CardContent>
               <div className="mt-4 flex flex-wrap gap-2">
