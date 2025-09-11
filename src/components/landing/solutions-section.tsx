@@ -4,7 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { FileUp, Cpu, FileCheck, Gauge, Hammer, Repeat } from 'lucide-react';
+import { FileUp, Cpu, FileCheck, Gauge, Hammer, Repeat, ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
@@ -21,7 +21,7 @@ const steps = [
   },
   {
     title: 'Our AI assembles your draft',
-    description: 'We map your answers to the right sections, match hazards to proven controls, and apply your branding automatically. The result is a clear, consistent RAMS/CPP draft ready for review.',
+    description: 'The AI maps your answers to the right sections, matches hazards to proven controls, and applies your branding automatically.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
     icon: <Cpu className="w-8 h-8 text-primary" />,
   },
@@ -33,13 +33,11 @@ const steps = [
   },
 ];
 
-const checkListItems = [
-    { icon: <FileCheck className="w-5 h-5 text-foreground/80" />, text: 'System check' },
-    { icon: <Cpu className="w-5 h-5 text-foreground/80" />, text: 'Process check' },
-    { icon: <Gauge className="w-5 h-5 text-foreground/80" />, text: 'Speed check' },
-    { icon: <Hammer className="w-5 h-5 text-foreground/80" />, text: 'Manual work' },
-    { icon: <Repeat className="w-5 h-5 text-foreground/80" />, text: 'Repetitive task' },
-]
+const processItems = [
+    { text: 'Map answers', result: 'right sections' },
+    { text: 'Match hazards', result: 'proven controls' },
+    { text: 'Apply branding', result: 'automatically' },
+];
 
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
@@ -104,23 +102,43 @@ export function SolutionsSection() {
                     </div>
                 )}
                  {index === 1 && (
-                    <div className="flex-grow flex flex-col justify-center space-y-2 mt-4">
-                        {checkListItems.map((item, i) => (
-                           <motion.div
-                              key={item.text}
-                              custom={i}
-                              initial="hidden"
-                              whileInView="visible"
-                              viewport={{ once: true, amount: 0.5 }}
-                              variants={itemVariants}
-                              className="flex items-center gap-3 p-2 rounded-md border border-white/10"
+                    <div className="flex-grow flex flex-col justify-center space-y-4 mt-4">
+                        <div>
+                            <h4 className="font-semibold text-foreground mb-2">Process</h4>
+                            <div className="space-y-2">
+                                {processItems.map((item, i) => (
+                                    <motion.div 
+                                        key={item.text}
+                                        custom={i}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        viewport={{ once: true, amount: 0.5 }}
+                                        variants={itemVariants}
+                                        className="flex items-center text-sm"
+                                    >
+                                        <span>{item.text}</span>
+                                        <ArrowRight className="w-4 h-4 mx-2 text-primary" />
+                                        <span className="text-muted-foreground">{item.result}</span>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="font-semibold text-foreground mb-2">Result</h4>
+                             <motion.div
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true, amount: 0.5 }}
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0, transition: { delay: 0.8 } }
+                                }}
+                                className="flex items-start gap-2 p-3 rounded-md bg-green-900/20 border border-green-500/30 text-sm"
                             >
-                              <motion.div variants={iconVariants} animate="animate">
-                                {item.icon}
-                              </motion.div>
-                              <span className="text-sm font-medium">{item.text}</span>
+                                <FileCheck className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+                                <span className="text-green-300">Clear, consistent RAMS/CPP draft ready for review</span>
                             </motion.div>
-                        ))}
+                        </div>
                     </div>
                 )}
               </CardContent>
