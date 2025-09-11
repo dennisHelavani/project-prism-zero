@@ -19,19 +19,16 @@ const steps = [
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks. No jargon, no long questionnaire.',
     chips: ['2–3 key inputs', 'Site-specific'],
-    icon: <FileUp className="w-8 h-8 text-primary" />,
   },
   {
     title: 'Our AI assembles your draft',
     description: 'Our AI organizes your answers, matches hazards to proven controls, and applies your branding.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
-    icon: <Cpu className="w-8 h-8 text-primary" />,
   },
   {
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    icon: <FileCheck className="w-8 h-8 text-primary" />,
   },
 ];
 
@@ -99,7 +96,7 @@ export function SolutionsSection() {
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 0 && (
                     <div className="flex-grow flex items-center justify-center">
-                        <TextCarousel items={carouselWords} className="h-24 text-lg font-bold" />
+                        <FormVisual />
                     </div>
                 )}
                  {index === 1 && (
