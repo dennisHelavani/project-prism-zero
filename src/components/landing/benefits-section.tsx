@@ -16,6 +16,7 @@ import { SectionWrapper } from './section-wrapper';
 import BlurText from '../ui/blur-text';
 import { Badge } from '../ui/badge';
 import { MotionDiv } from '../ui/motion-div';
+import { cn } from '@/lib/utils';
 
 const benefits = [
   {
@@ -92,6 +93,7 @@ export function BenefitsSection() {
             return (
                <MotionDiv
                 key={i}
+                className={cn(i >= 4 ? 'hidden md:block' : '')}
                 initial={variant}
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
