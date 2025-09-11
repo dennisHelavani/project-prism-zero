@@ -4,7 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { FileUp, Cpu, FileCheck, Gauge, Hammer, Repeat, ArrowRight } from 'lucide-react';
+import { FileUp, Cpu, FileCheck, ArrowRight } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
@@ -21,7 +21,7 @@ const steps = [
   },
   {
     title: 'Our AI assembles your draft',
-    description: 'The AI maps your answers to the right sections, matches hazards to proven controls, and applies your branding automatically.',
+    description: 'Our AI organizes your answers, matches hazards to proven controls, and applies your branding.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
     icon: <Cpu className="w-8 h-8 text-primary" />,
   },
