@@ -91,12 +91,6 @@ export function SolutionsSection() {
                 <Badge variant="outline" className="border-[#FABE2C] text-white w-fit">
                     Step {index + 1}
                 </Badge>
-                <motion.div
-                  variants={iconVariants}
-                  animate="animate"
-                >
-                  {step.icon}
-                </motion.div>
               </div>
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
