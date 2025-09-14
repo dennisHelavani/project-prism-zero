@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Visual1 from '../../images/howitworksstep1.png';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
@@ -12,13 +11,16 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 
+// ✅ Place your image file at: /public/images/howitworksstep1.png
+const VISUAL1 = '/images/howitworksstep1.png';
+
 const steps = [
   {
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks.',
     chips: ['2–3 key inputs', 'Site-specific'],
     icon: <FileUp className="w-8 h-8 text-primary" />,
-    visual: Visual1,
+    visual: VISUAL1,
     alt: 'Angled browser view showing the form being filled'
   },
   {
@@ -77,7 +79,8 @@ export function HowItWorksSection() {
               {/* Visual block for steps that have one (Step 1) */}
               {step.visual && (
                 <div className="mt-3 overflow-hidden rounded-lg border border-white/10 bg-black/20">
-                  <div className="relative w-full aspect-[16/10]">
+                  {/* Use inline aspect-ratio to guarantee height even without Tailwind's plugin */}
+                  <div className="relative w-full" style={{ aspectRatio: '16 / 10' }}>
                     <Image
                       src={step.visual}
                       alt={step.alt ?? step.title}
@@ -85,7 +88,8 @@ export function HowItWorksSection() {
                       className="object-cover"
                       sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                       priority={index === 0}
-                      placeholder="blur"
+                      // Using a public path, so no blurDataURL available by default:
+                      placeholder="empty"
                     />
                   </div>
                 </div>
