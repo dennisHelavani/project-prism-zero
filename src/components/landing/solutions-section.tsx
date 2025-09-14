@@ -10,8 +10,6 @@ import { MotionDiv } from '../ui/motion-div';
 import { motion } from 'framer-motion';
 import { DocumentVisual } from './document-visual';
 import Image from 'next/image';
-import Visual1 from '@/images/howitworksstep1.png';
-
 
 const steps = [
   {
@@ -78,48 +76,49 @@ export function SolutionsSection() {
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
-
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
-                 {index === 0 && (
-                    <div className="relative w-full aspect-[16/10] my-4 rounded-lg overflow-hidden border border-primary/20 glow-shadow">
-                        <Image
-                            src={Visual1}
-                            alt="A form being filled out for a construction project"
-                            data-ai-hint="form screenshot"
-                            fill
-                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                            className="object-cover"
-                            placeholder="blur"
-                        />
+                <div className="flex-grow my-4">
+                  {index === 0 && (
+                      <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-primary/20 glow-shadow">
+                          <Image
+                              src="https://picsum.photos/seed/form/600/375"
+                              alt="A form being filled out for a construction project"
+                              data-ai-hint="form screenshot"
+                              fill
+                              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                              className="object-cover"
+                          />
+                      </div>
+                  )}
+                  {index === 1 && (
+                      <div className="flex-grow flex flex-col justify-center space-y-4">
+                          <h4 className="font-semibold text-foreground mb-2">Process</h4>
+                          <div className="space-y-2">
+                              {processItems.map((item, i) => (
+                                  <motion.div 
+                                      key={item.text}
+                                      custom={i}
+                                      initial="hidden"
+                                      whileInView="visible"
+                                      viewport={{ once: true, amount: 0.5 }}
+                                      variants={itemVariants}
+                                      className="flex items-center text-sm"
+                                  >
+                                      <span>{item.text}</span>
+                                      <ArrowRight className="w-4 h-4 mx-2 text-primary" />
+                                      <span className="text-muted-foreground">{item.result}</span>
+                                  </motion.div>
+                              ))}
+                          </div>
+                      </div>
+                  )}
+                  {index === 2 && (
+                    <div className="flex-grow flex items-center justify-center">
+                      <DocumentVisual />
                     </div>
-                )}
-                 {index === 1 && (
-                    <div className="flex-grow flex flex-col justify-center space-y-4 my-4">
-                        <h4 className="font-semibold text-foreground mb-2">Process</h4>
-                        <div className="space-y-2">
-                            {processItems.map((item, i) => (
-                                <motion.div 
-                                    key={item.text}
-                                    custom={i}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, amount: 0.5 }}
-                                    variants={itemVariants}
-                                    className="flex items-center text-sm"
-                                >
-                                    <span>{item.text}</span>
-                                    <ArrowRight className="w-4 h-4 mx-2 text-primary" />
-                                    <span className="text-muted-foreground">{item.result}</span>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-                 {index === 2 && (
-                  <div className="flex-grow flex items-center justify-center my-4">
-                    <DocumentVisual />
-                  </div>
-                )}
+                  )}
+                </div>
+
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 1 && (
                     <div>
