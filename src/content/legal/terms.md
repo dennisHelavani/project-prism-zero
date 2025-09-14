@@ -4,7 +4,6 @@ lastUpdated: "2025-09-14"
 slug: "terms"
 ---
 
-# Terms of Service
 
 Welcome to Hard Hat AI (“we”, “us”, or “our”). By using our website and services, including the generation of construction-related documents such as Risk Assessments and Method Statements (RAMS) or Construction Phase Plans (CPP), you agree to the following terms and conditions:
 
