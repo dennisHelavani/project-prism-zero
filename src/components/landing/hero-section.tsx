@@ -10,7 +10,7 @@ import { HeroWave } from "../ui/hero-wave";
 
 export function HeroSection() {
   return (
-    <div className="relative px-6 pt-14 lg:px-8" id="hero">
+    <div className="relative px-6 pt-14 lg:px-8 overflow-hidden" id="hero">
         <HeroWave />
         <div className="relative z-10 mx-auto max-w-7xl py-24 sm:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <MotionDiv>
