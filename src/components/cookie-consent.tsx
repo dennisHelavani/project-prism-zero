@@ -8,6 +8,9 @@ import Link from 'next/link';
 import { Cookie } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { CookiePolicyModal } from './cookie-policy-modal';
+import { PrivacyPolicyModal } from './privacy-policy-modal';
 
 const COOKIE_CONSENT_KEY = 'cookie-consent-interacted';
 
@@ -58,13 +61,19 @@ export function CookieConsent() {
             <div className="flex-grow text-sm text-center md:text-left">
               <p>
                 We use essential cookies to make our site work. By clicking &quot;Accept&quot;, you agree to our use of cookies. For more details, see our{' '}
-                <Link href="#" className="underline hover:text-primary">
-                  Privacy Policy
-                </Link>
+                <Dialog>
+                  <DialogTrigger asChild>
+                     <button className="underline hover:text-primary">Privacy Policy</button>
+                  </DialogTrigger>
+                  <PrivacyPolicyModal />
+                </Dialog>
                  {' '}and{' '}
-                <Link href="#" className="underline hover:text-primary">
-                  Cookie Policy
-                </Link>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="underline hover:text-primary">Cookie Policy</button>
+                  </DialogTrigger>
+                  <CookiePolicyModal />
+                </Dialog>
                 .
               </p>
             </div>
