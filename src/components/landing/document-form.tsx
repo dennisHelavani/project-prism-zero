@@ -46,7 +46,7 @@ function SubmitButton() {
 
 export function DocumentForm({ onSuccess }: DocumentFormProps) {
   const { toast } = useToast();
-  const [state, formAction] = useActionState(generateDocumentsAction, { message: '' });
+  const [state, formAction, isPending] = useActionState(generateDocumentsAction, { message: '' });
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -56,11 +56,12 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
       mitigationMeasures: '',
       regulatoryRequirements: '',
     },
-    errors: state.errors ? Object.fromEntries(Object.entries(state.errors).map(([key, value]) => [key, { type: 'server', message: value?.[0] }])) : {},
+    // The `errors` object from `useForm` is not directly used here for state, 
+    // relying on the `useEffect` to set errors from the action state.
   });
   
   useEffect(() => {
-    if (state.message) {
+    if (state.message && !isPending) {
       if (state.data) {
         toast({
           title: "Success!",
@@ -82,7 +83,7 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
         }
       }
     }
-  }, [state, toast, onSuccess, form.setError]);
+  }, [state, toast, onSuccess, isPending]);
   
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const formData = new FormData();
