@@ -11,6 +11,7 @@ import { FileUp, Cpu, FileCheck } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
+import Visual1 from '@/images/howitworksstep1.png';
 
 const steps = [
   {
@@ -19,7 +20,7 @@ const steps = [
     chips: ['2–3 key inputs', 'Site-specific'],
     icon: <FileUp className="w-8 h-8 text-primary" />,
     visual: Visual1,
-    alt: 'Angled browser view showing the form being filled'
+    alt: 'A form being filled out for a construction project'
   },
   {
     title: 'Our AI assembles your draft',

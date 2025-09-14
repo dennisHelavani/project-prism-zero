@@ -10,12 +10,15 @@ import { MotionDiv } from '../ui/motion-div';
 import { motion } from 'framer-motion';
 import { DocumentVisual } from './document-visual';
 import Image from 'next/image';
+import Visual1 from '@/images/howitworksstep1.png';
 
 const steps = [
   {
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks. No jargon, no long questionnaire.',
     chips: ['2–3 key inputs', 'Site-specific'],
+    visual: Visual1,
+    alt: 'A form being filled out for a construction project'
   },
   {
     title: 'Our AI assembles your draft',
@@ -78,11 +81,11 @@ export function SolutionsSection() {
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <div className="flex-grow my-4">
-                  {index === 0 && (
+                  {index === 0 && step.visual && (
                       <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-primary/20 glow-shadow">
                           <Image
-                              src="https://picsum.photos/seed/form/600/375"
-                              alt="A form being filled out for a construction project"
+                              src={step.visual}
+                              alt={step.alt || 'Step 1 visual'}
                               data-ai-hint="form screenshot"
                               fill
                               sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"

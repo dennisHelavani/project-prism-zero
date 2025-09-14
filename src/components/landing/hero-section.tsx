@@ -1,7 +1,6 @@
 
 import { PlayCircle } from "lucide-react";
 import Link from "next/link";
-import { StarBorder } from "../ui/star-border";
 import { CtaButton } from "../ui/cta-button";
 import { Card } from "../ui/card";
 import BlurText from "../ui/blur-text";
