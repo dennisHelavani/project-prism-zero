@@ -23,6 +23,8 @@ const steps = [
     title: 'Our AI assembles your draft',
     description: 'Our AI organizes your answers, matches hazards to proven controls, and applies your branding.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
+    visual: Visual1, // Placeholder visual
+    alt: 'AI processing data to assemble a document'
   },
   {
     title: 'Receive your document',
@@ -82,7 +84,18 @@ export function SolutionsSection() {
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <div className="flex-grow my-4">
-                  {(index === 0 || index === 2) && step.visual && (
+                  {index === 1 ? (
+                     <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+                        <Image
+                            src="https://picsum.photos/seed/ai-process/600/400"
+                            alt={step.alt || `Step ${index + 1} visual`}
+                            data-ai-hint="data processing abstract"
+                            fill
+                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                            className="object-cover"
+                        />
+                    </div>
+                  ) : (
                      <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                         <Image
                             src={step.visual}
@@ -94,49 +107,10 @@ export function SolutionsSection() {
                         />
                     </div>
                   )}
-                  {index === 1 && (
-                      <div className="flex-grow flex flex-col justify-center space-y-4">
-                          <h4 className="font-semibold text-foreground mb-2">Process</h4>
-                          <div className="space-y-2">
-                              {processItems.map((item, i) => (
-                                  <motion.div
-                                      key={item.text}
-                                      custom={i}
-                                      initial="hidden"
-                                      whileInView="visible"
-                                      viewport={{ once: true, amount: 0.5 }}
-                                      variants={itemVariants}
-                                      className="flex items-center text-sm"
-                                  >
-                                      <span>{item.text}</span>
-                                      <ArrowRight className="w-4 h-4 mx-2 text-primary" />
-                                      <span className="text-muted-foreground">{item.result}</span>
-                                  </motion.div>
-                              ))}
-                          </div>
-                      </div>
-                  )}
                 </div>
 
                 <p className="text-muted-foreground">{step.description}</p>
-                 {index === 1 && (
-                    <div>
-                        <h4 className="font-semibold text-foreground mb-2 mt-4">Result</h4>
-                         <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, amount: 0.5 }}
-                            variants={{
-                                hidden: { opacity: 0, y: 20 },
-                                visible: { opacity: 1, y: 0, transition: { delay: 0.8 } }
-                            }}
-                            className="flex items-start gap-2 p-3 rounded-md bg-green-900/20 border border-green-500/30 text-sm"
-                        >
-                            <FileCheck className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                            <span className="text-green-300">Clear, consistent RAMS/CPP draft ready for review</span>
-                        </motion.div>
-                    </div>
-                 )}
+                
               </CardContent>
               <div className="mt-4 flex flex-wrap gap-2">
                 {step.chips?.map((chip) => (
