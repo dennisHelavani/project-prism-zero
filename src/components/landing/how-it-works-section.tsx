@@ -11,7 +11,6 @@ import { FileUp, Cpu, FileCheck } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
-import Visual1 from '@/images/howitworksstep1.png';
 
 const steps = [
   {
@@ -19,7 +18,7 @@ const steps = [
     description: 'Tell us the essentials—project scope, site conditions, and key risks.',
     chips: ['2–3 key inputs', 'Site-specific'],
     icon: <FileUp className="w-8 h-8 text-primary" />,
-    visual: Visual1,
+    visual: '/images/howitworksstep1.png',
     alt: 'A form being filled out for a construction project'
   },
   {
@@ -88,7 +87,6 @@ export function HowItWorksSection() {
                       className="object-cover"
                       sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                       priority={index === 0}
-                      placeholder="blur"
                     />
                   </div>
                 </div>

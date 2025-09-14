@@ -7,30 +7,27 @@ import { Badge } from '../ui/badge';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import Image from 'next/image';
-import Visual1 from '@/images/howitworksstep1.png';
-import Visual2 from '@/images/howitworksstep2.gif';
-import Visual3 from '@/images/howitworksstep2.png';
 
 const steps = [
   {
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks. No jargon, no long questionnaire.',
     chips: ['2–3 key inputs', 'Site-specific'],
-    visual: Visual1,
+    visual: '/images/howitworksstep1.png',
     alt: 'A form being filled out for a construction project'
   },
   {
     title: 'Our AI assembles your draft',
     description: 'Our AI organizes your answers, matches hazards to proven controls, and applies your branding.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
-    visual: Visual2,
+    visual: '/images/howitworksstep2.gif',
     alt: 'AI processing data to assemble a document'
   },
   {
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: Visual3,
+    visual: '/images/howitworksstep2.png',
     alt: 'Visual representation of document delivery'
   },
 ];
@@ -73,7 +70,7 @@ export function SolutionsSection() {
                           fill
                           sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                           className="object-cover"
-                          unoptimized={index === 1} // unoptimized for GIF
+                          unoptimized={step.visual.endsWith('.gif')}
                       />
                     </div>
                 </div>
