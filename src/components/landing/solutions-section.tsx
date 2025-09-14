@@ -28,8 +28,8 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: "https://picsum.photos/seed/step3/600/440",
-    alt: 'Document being delivered to an inbox'
+    visual: Visual1,
+    alt: 'Visual representation of document delivery'
   },
 ];
 
@@ -83,11 +83,11 @@ export function SolutionsSection() {
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <div className="flex-grow my-4">
                   {(index === 0 || index === 2) && step.visual && (
-                     <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
+                     <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                         <Image
                             src={step.visual}
                             alt={step.alt || `Step ${index + 1} visual`}
-                            data-ai-hint={index === 0 ? "form screenshot" : "document email"}
+                            data-ai-hint={index === 0 ? "form screenshot" : "document process"}
                             fill
                             sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                             className="object-cover"
