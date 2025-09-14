@@ -17,7 +17,6 @@ import { SolutionsSection } from "@/components/landing/solutions-section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SEO } from "@/config/seo.config";
 import Marketing from '@/config/marketing.tokens.json';
-import Beams from './testing/Beams';
 
 const org = {
   "@context":"https://schema.org",
@@ -86,18 +85,6 @@ export default function Home() {
         <ReviewsSection />
         <FormSection />
         <FaqSection />
-        <div style={{ width: '100%', height: '600px', position: 'relative', background: '#000', marginTop: '4rem' }}>
-            <Beams
-                beamWidth={2}
-                beamHeight={15}
-                beamNumber={12}
-                lightColor="#ffffff"
-                speed={2}
-                noiseIntensity={1.75}
-                scale={0.2}
-                rotation={0}
-            />
-        </div>
         <CtaSection />
       </main>
       <Footer />
