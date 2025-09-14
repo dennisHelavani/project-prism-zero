@@ -29,6 +29,8 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
+    visual: 'https://picsum.photos/seed/hhiw3/600/440',
+    alt: 'Document being delivered to an inbox'
   },
 ];
 
@@ -81,17 +83,17 @@ export function SolutionsSection() {
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <div className="flex-grow my-4">
-                  {index === 0 && step.visual && (
-                      <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
-                          <Image
-                              src={step.visual}
-                              alt={step.alt || 'Step 1 visual'}
-                              data-ai-hint="form screenshot"
-                              fill
-                              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                              className="object-cover"
-                          />
-                      </div>
+                  {(index === 0 || index === 2) && step.visual && (
+                     <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
+                        <Image
+                            src={step.visual}
+                            alt={step.alt || `Step ${index + 1} visual`}
+                            data-ai-hint={index === 0 ? "form screenshot" : "document email"}
+                            fill
+                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                            className="object-cover"
+                        />
+                    </div>
                   )}
                   {index === 1 && (
                       <div className="flex-grow flex flex-col justify-center space-y-4">
@@ -114,11 +116,6 @@ export function SolutionsSection() {
                               ))}
                           </div>
                       </div>
-                  )}
-                  {index === 2 && (
-                    <div className="flex-grow flex items-center justify-center">
-                      <DocumentVisual />
-                    </div>
                   )}
                 </div>
 
