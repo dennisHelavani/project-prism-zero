@@ -3,6 +3,7 @@ import { SectionWrapper } from "./section-wrapper";
 import Image from "next/image";
 import BlurText from "../ui/blur-text";
 import { MotionDiv } from "../ui/motion-div";
+import FounderPortrait from "@/images/aaronprofile.png";
 
 export function CaseStudySection() {
   return (
@@ -11,12 +12,13 @@ export function CaseStudySection() {
         <MotionDiv>
           <div className="relative h-96 w-full lg:h-[500px]">
             <Image
-              src="https://picsum.photos/600/800"
+              src={FounderPortrait}
               alt="Founder portrait"
               data-ai-hint="construction manager portrait"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-lg object-cover shadow-lg object-top"
+              placeholder="blur"
             />
           </div>
         </MotionDiv>
