@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -11,16 +12,13 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
 
-// ✅ Place your image file at: /public/images/howitworksstep1.png
-const VISUAL1 = '/images/howitworksstep1.png';
-
 const steps = [
   {
     title: 'Fill in the form',
     description: 'Tell us the essentials—project scope, site conditions, and key risks.',
     chips: ['2–3 key inputs', 'Site-specific'],
     icon: <FileUp className="w-8 h-8 text-primary" />,
-    visual: VISUAL1,
+    visual: Visual1,
     alt: 'Angled browser view showing the form being filled'
   },
   {
@@ -75,8 +73,8 @@ export function HowItWorksSection() {
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
-
-              {/* Visual block for steps that have one (Step 1) */}
+              
+              {/* Visual block for steps that have one */}
               {step.visual && (
                 <div className="mt-3 overflow-hidden rounded-lg border border-white/10 bg-black/20">
                   {/* Use inline aspect-ratio to guarantee height even without Tailwind's plugin */}
@@ -84,12 +82,12 @@ export function HowItWorksSection() {
                     <Image
                       src={step.visual}
                       alt={step.alt ?? step.title}
+                      data-ai-hint="form screenshot"
                       fill
                       className="object-cover"
                       sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                       priority={index === 0}
-                      // Using a public path, so no blurDataURL available by default:
-                      placeholder="empty"
+                      placeholder="blur"
                     />
                   </div>
                 </div>
