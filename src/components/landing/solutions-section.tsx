@@ -28,7 +28,7 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: 'https://picsum.photos/seed/h3/600/440',
+    visual: "https://picsum.photos/seed/step3/600/440",
     alt: 'Document being delivered to an inbox'
   },
 ];
@@ -99,7 +99,7 @@ export function SolutionsSection() {
                           <h4 className="font-semibold text-foreground mb-2">Process</h4>
                           <div className="space-y-2">
                               {processItems.map((item, i) => (
-                                  <motion.div 
+                                  <motion.div
                                       key={item.text}
                                       custom={i}
                                       initial="hidden"
