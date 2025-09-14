@@ -3,10 +3,36 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { CookieConsent } from '@/components/cookie-consent';
+import { SEO } from '@/config/seo.config';
 
 export const metadata: Metadata = {
-  title: 'Hard Hat AI',
-  description: 'AI-powered HSE & CDM documents delivered in minutes — editable, compliant, ready to send.',
+  metadataBase: new URL(SEO.domain),
+  title: { default: SEO.defaultTitle, template: SEO.titleTemplate },
+  description: SEO.description,
+  keywords: SEO.keywords,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SEO.siteName,
+    title: SEO.defaultTitle,
+    description: SEO.description,
+    url: "/",
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    locale: "en_GB"
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: SEO.twitter.handle,
+    creator: SEO.twitter.handle,
+    title: SEO.defaultTitle,
+    description: SEO.description,
+    images: ["/og/default.png"]
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  }
 };
 
 export default function RootLayout({

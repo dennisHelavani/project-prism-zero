@@ -4,20 +4,27 @@ import { getLegalDocs } from '@/lib/legal/getLegalDocs';
 import { LegalLayout } from '@/components/legal/LegalLayout';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { SEO } from '@/config/seo.config';
 
 export async function generateMetadata(): Promise<Metadata> {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hardhatai.co';
-    const canonicalUrl = new URL('/legal', siteUrl).toString();
+    const title = "Legal — Privacy, Terms, Cookies";
+    const description = "Read our Privacy Policy, Terms of Service, and Cookie Policy.";
+    const url = "/legal";
 
     return {
-        title: "Legal — Privacy, Terms, Cookies | Hard Hat AI",
-        description: "Read our Privacy Policy, Terms of Service, and Cookie Policy.",
-        robots: {
-            index: true,
-            follow: true,
+        title,
+        description,
+        alternates: { canonical: url },
+        openGraph: {
+            title,
+            description,
+            url,
+            images: [{ url: "/og/legal.png", width: 1200, height: 630 }]
         },
-        alternates: {
-            canonical: canonicalUrl,
+        twitter: {
+            title,
+            description,
+            images: ["/og/legal.png"]
         }
     }
 }
