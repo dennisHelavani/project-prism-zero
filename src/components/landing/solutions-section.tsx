@@ -29,7 +29,7 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: Visual1,
+    visual: "https://picsum.photos/seed/step3/600/400",
     alt: 'Visual representation of document delivery'
   },
 ];
