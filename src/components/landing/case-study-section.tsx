@@ -3,6 +3,7 @@ import { SectionWrapper } from "./section-wrapper";
 import Image from "next/image";
 import BlurText from "../ui/blur-text";
 import { MotionDiv } from "../ui/motion-div";
+import { Check } from "lucide-react";
 
 export function CaseStudySection() {
   return (
@@ -14,11 +15,36 @@ export function CaseStudySection() {
               From the Ground Up
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Hard Hat AI was born from first-hand frustration. Our founder, a former site manager, spent more time battling paperwork than managing projects. Endless revisions, compliance checks, and tedious documentation were the norms.
+              On construction, rail, and infrastructure projects, safety documents like RAMS and CPP were slow to produce, inconsistent, and not truly site-specific. Time that should have gone to the build went into formatting, re-keying, and chasing edits.
             </p>
             <p className="mt-4 text-lg text-muted-foreground">
-              We knew there had to be a better way. We envisioned a tool that could understand the nuances of construction projects and generate the necessary documents with precision and speed. That vision is now Hard Hat AI, your partner in reclaiming time and ensuring compliance.
+              Hard Hat AI combines on-site HSE experience with automation to create compliant drafts in minutes—editable, consistent, and genuinely useful on the ground. The result: clearer documents, fewer bottlenecks, and more time on site.
             </p>
+            <figure className="mt-6 border-l-4 border-primary pl-4">
+              <blockquote className="text-foreground italic">
+                <p>“RAMS used to take 2–3 hours—or the cost of a safety pro. Now it’s minutes at a fraction of the price. That’s Hard Hat AI.”</p>
+              </blockquote>
+              <figcaption className="mt-2 text-sm text-muted-foreground">
+                — Aaron Lazenby, Founder & Chartered Health and Safety Professional (CMIOSH)
+              </figcaption>
+            </figure>
+            <div className="mt-8">
+              <h3 className="font-headline text-xl font-bold text-foreground">Why we’re different</h3>
+              <ul className="mt-4 space-y-2 text-muted-foreground">
+                <li className="flex items-start gap-3">
+                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
+                  <span>Built by practitioners, not just technologists</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
+                  <span>Tuned for UK HSE/CDM expectations</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
+                  <span>Designed for real-world editing, reviews, and hand-off</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </MotionDiv>
         <MotionDiv delay={0.2}>
