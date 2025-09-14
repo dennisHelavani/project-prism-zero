@@ -1,8 +1,7 @@
-
 'use client';
 
 import Link from "next/link";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
@@ -17,10 +16,10 @@ import Image from "next/image";
 import { HardHat } from "lucide-react";
 
 const navLinks = [
-  { name: "Our story", href: "/#our-story" },
-  { name: "Pricing", href: "/#pricing" },
-  { name: "How It Works", href: "/#how-it-works" },
-  { name: "Reviews", href: "/#reviews" },
+  { name: "Our story", href: "#our-story" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "How It Works", href: "#how-it-works" },
+  { name: "Reviews", href: "#reviews" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -39,57 +38,55 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const pathname = usePathname();
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const isClickingRef = useRef(false);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const smoothScrollToId = useCallback((id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const getHeaderHeight = useCallback(() => {
+    if (typeof window === "undefined") return 80;
+    const header = document.getElementById("site-header");
+    return header ? header.offsetHeight : 80;
   }, []);
 
+  const smoothScrollToId = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const headerHeight = getHeaderHeight();
+      const y = element.getBoundingClientRect().top + window.scrollY - headerHeight;
+
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
+      
+      // Set a flag to prevent observer from firing during scroll
+      isClickingRef.current = true;
+      setActiveSection(id);
+      
+      // Clear any existing timeout
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+
+      // Reset the flag after scrolling is likely complete
+      clickTimeoutRef.current = setTimeout(() => {
+        isClickingRef.current = false;
+      }, 1000);
+    }
+  }, [getHeaderHeight]);
+
   const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (pathname === '/' && href.startsWith('/#')) {
+    if (pathname === '/' && href.startsWith('#')) {
       e.preventDefault();
-      const id = href.slice(2); 
-      history.replaceState(null, "", href);
+      const id = href.substring(1); 
+      history.pushState(null, '', href);
       smoothScrollToId(id);
     }
   };
 
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
-      
-      if (pathname !== '/') {
-          setActiveSection(null);
-          return;
-      }
-      
-      const sections = navLinks
-        .map(link => (link.href.startsWith('/#') ? document.getElementById(link.href.substring(2)) : null))
-        .filter((s): s is HTMLElement => s !== null);
-
-      let currentSectionId: string | null = null;
-      
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        const rect = section.getBoundingClientRect();
-        
-        // Header is ~72px, let's use 80px as offset
-        if (rect.top <= 80 && rect.bottom > 80) {
-            currentSectionId = section.id;
-            break;
-        }
-      }
-
-      if (!currentSectionId && sections.length > 0) {
-        const firstSection = sections[0];
-        if (window.scrollY < firstSection.offsetTop - 80) {
-             currentSectionId = null;
-        }
-      }
-      
-      setActiveSection(currentSectionId);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -98,7 +95,64 @@ export function Header() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [pathname]);
+  }, []);
+
+  useEffect(() => {
+    if (pathname !== '/') {
+        setActiveSection(null);
+        if (observerRef.current) {
+            observerRef.current.disconnect();
+        }
+        return;
+    }
+
+    const headerHeight = getHeaderHeight();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isClickingRef.current) return;
+        
+        let bestEntry: IntersectionObserverEntry | null = null;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+              bestEntry = entry;
+            }
+          }
+        });
+        if (bestEntry) {
+          setActiveSection(bestEntry.target.id);
+        }
+      },
+      {
+        rootMargin: `-${headerHeight}px 0px -55% 0px`,
+        threshold: 0.1,
+      }
+    );
+    observerRef.current = observer;
+
+    const sections = navLinks
+      .map(link => (link.href.startsWith('#') ? document.getElementById(link.href.substring(1)) : null))
+      .filter((s): s is HTMLElement => s !== null);
+
+    sections.forEach(section => observer.observe(section));
+
+    // Handle initial load with hash
+    const initialHash = window.location.hash;
+    if (initialHash) {
+      const id = initialHash.substring(1);
+      // Use timeout to ensure page is fully rendered
+      setTimeout(() => {
+        smoothScrollToId(id);
+      }, 100);
+    }
+
+    return () => {
+      observer.disconnect();
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+    };
+  }, [pathname, getHeaderHeight, smoothScrollToId]);
 
   return (
     <header id="site-header" className={cn(
@@ -114,7 +168,7 @@ export function Header() {
         
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
           {navLinks.map((link) => {
-            const id = link.href.startsWith('/#') ? link.href.substring(2) : null;
+            const id = link.href.startsWith('#') ? link.href.substring(1) : null;
             if (link.name === "Contact") {
               return (
                  <Link
@@ -130,7 +184,7 @@ export function Header() {
             return (
               <Link
                 key={link.name}
-                href={pathname === '/' ? link.href : `/${link.href}`}
+                href={pathname === '/' ? link.href : `/${link.href.substring(1)}`}
                 className="nav-link whitespace-nowrap"
                 data-active={activeSection === id}
                 onClick={(e) => handleNavClick(link.href, e)}
@@ -143,7 +197,7 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <a href="/#upload" onClick={(e) => handleNavClick("/#upload", e as any)}>Generate my documents</a>
+             <a href="#upload" onClick={(e) => handleNavClick("#upload", e as any)}>Generate my documents</a>
            </CtaButton>
         </div>
 
@@ -181,38 +235,35 @@ export function Header() {
                             )
                           }
                           return (
-                            <Link
+                            <a
                                 key={link.name} 
-                                href={pathname === '/' ? link.href : `/${link.href}`}
+                                href={link.href}
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={(e) => {
-                                    if (pathname === '/' && link.href.startsWith("/#")) {
-                                    e.preventDefault();
-                                    setMobileMenuOpen(false);
-                                    setTimeout(() => {
-                                        const id = link.href.slice(2);
+                                    if (pathname === '/' && link.href.startsWith("#")) {
+                                        e.preventDefault();
+                                        setMobileMenuOpen(false);
+                                        const id = link.href.substring(1);
+                                        history.pushState(null, '', link.href);
                                         smoothScrollToId(id);
-                                        history.replaceState(null, "", link.href);
-                                    }, 150);
                                     } else {
                                       setMobileMenuOpen(false);
+                                      // Router push for other pages
                                     }
                                 }}
                             >
                             {link.name}
-                            </Link>
+                            </a>
                           )
                         })}
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <a href="/#upload" onClick={(e) => {
+                            <a href="#upload" onClick={(e) => {
                                 e.preventDefault();
                                 setMobileMenuOpen(false);
-                                setTimeout(() => {
-                                    smoothScrollToId("upload");
-                                    history.replaceState(null, "", "/#upload");
-                                }, 150);
+                                history.pushState(null, '', '#upload');
+                                smoothScrollToId("upload");
                             }}>Generate my documents</a>
                         </CtaButton>
                     </div>
