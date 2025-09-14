@@ -29,8 +29,7 @@ export async function getLegalDocs(): Promise<LegalDoc[]> {
 
       const { data, content } = matter(fileContents);
 
-      const processedContent = await unified()
-        .use(remark)
+      const processedContent = await remark()
         .use(remarkGfm)
         .use(remarkHtml, { sanitize: false })
         .use(rehypeSlug)
