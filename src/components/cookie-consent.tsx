@@ -41,13 +41,9 @@ export function CookieConsent() {
     setIsVisible(false);
   };
   
-  if (!hasMounted) {
-    return null;
-  }
-
   return (
     <AnimatePresence>
-      {isVisible && (
+      {hasMounted && isVisible && (
         <motion.div
           initial={{ y: '100%' }}
           animate={{ y: '0%' }}
