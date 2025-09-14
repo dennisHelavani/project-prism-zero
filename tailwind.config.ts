@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -16,6 +17,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'hero-gradient': 'linear-gradient(180deg, #0A0A0A 0%, #0D0D0F 100%)',
+      },
       fontFamily: {
         body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         headline: ['Outfit', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],

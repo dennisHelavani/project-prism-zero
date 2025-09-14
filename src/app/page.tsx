@@ -13,23 +13,11 @@ import { ReviewsSection } from "@/components/landing/reviews-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { FormSection } from "@/components/landing/form-section";
-import { Vortex } from "@/components/ui/vortex";
 import { SolutionsSection } from "@/components/landing/solutions-section";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-      <Vortex
-          backgroundColor="transparent"
-          particleCount={200}
-          baseHue={240}
-          rangeY={200}
-          baseSpeed={0.05}
-          rangeSpeed={0.5}
-          baseRadius={0.5}
-          rangeRadius={1.5}
-          className="fixed inset-0 -z-10"
-        />
       <Header />
       <main>
         <HeroSection />
