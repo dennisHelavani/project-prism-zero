@@ -29,6 +29,19 @@ const nextConfig: NextConfig = {
       ...config.resolve.alias,
       'node-fetch': 'isomorphic-fetch',
     };
+    // This is to support local images
+    config.module.rules.push({
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            publicPath: '/_next',
+            name: 'static/media/[name].[hash].[ext]',
+          },
+        },
+      ],
+    });
     return config;
   },
 };
