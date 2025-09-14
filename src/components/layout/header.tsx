@@ -53,10 +53,11 @@ export function Header() {
     if (element) {
       const headerHeight = getHeaderHeight();
       const y = element.getBoundingClientRect().top + window.scrollY - headerHeight;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       window.scrollTo({
         top: y,
-        behavior: 'smooth'
+        behavior: reducedMotion ? 'auto' : 'smooth'
       });
       
       // Set a flag to prevent observer from firing during scroll
@@ -169,6 +170,8 @@ export function Header() {
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
           {navLinks.map((link) => {
             const id = link.href.startsWith('#') ? link.href.substring(1) : null;
+            const finalHref = pathname === '/' ? link.href : `/${link.href}`;
+
             if (link.name === "Contact") {
               return (
                  <Link
@@ -184,10 +187,10 @@ export function Header() {
             return (
               <Link
                 key={link.name}
-                href={pathname === '/' ? link.href : `/${link.href.substring(1)}`}
+                href={finalHref}
                 className="nav-link whitespace-nowrap"
                 data-active={activeSection === id}
-                onClick={(e) => handleNavClick(link.href, e)}
+                onClick={(e) => handleNavClick(link.href, e as any)}
               >
                 {link.name}
               </Link>
@@ -197,7 +200,7 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <a href="#upload" onClick={(e) => handleNavClick("#upload", e as any)}>Generate my documents</a>
+             <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => handleNavClick("#upload", e as any)}>Generate my documents</Link>
            </CtaButton>
         </div>
 
@@ -222,7 +225,8 @@ export function Header() {
                     </div>
                     <nav className="flex flex-col gap-4 p-4">
                         {navLinks.map((link) => {
-                           if (link.name === 'Contact') {
+                          const finalHref = pathname === '/' ? link.href : `/${link.href}`;
+                          if (link.name === 'Contact') {
                             return (
                                 <Link
                                     key={link.name}
@@ -235,36 +239,35 @@ export function Header() {
                             )
                           }
                           return (
-                            <a
+                            <Link
                                 key={link.name} 
-                                href={link.href}
+                                href={finalHref}
                                 className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                 onClick={(e) => {
+                                    setMobileMenuOpen(false);
                                     if (pathname === '/' && link.href.startsWith("#")) {
                                         e.preventDefault();
-                                        setMobileMenuOpen(false);
                                         const id = link.href.substring(1);
                                         history.pushState(null, '', link.href);
                                         smoothScrollToId(id);
-                                    } else {
-                                      setMobileMenuOpen(false);
-                                      // Router push for other pages
                                     }
                                 }}
                             >
                             {link.name}
-                            </a>
+                            </Link>
                           )
                         })}
                     </nav>
                     <div className="mt-auto p-4 border-t">
                         <CtaButton asChild>
-                            <a href="#upload" onClick={(e) => {
-                                e.preventDefault();
+                            <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => {
                                 setMobileMenuOpen(false);
-                                history.pushState(null, '', '#upload');
-                                smoothScrollToId("upload");
-                            }}>Generate my documents</a>
+                                if (pathname === '/') {
+                                  e.preventDefault();
+                                  history.pushState(null, '', '#upload');
+                                  smoothScrollToId("upload");
+                                }
+                            }}>Generate my documents</Link>
                         </CtaButton>
                     </div>
                  </div>

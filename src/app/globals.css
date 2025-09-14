@@ -61,7 +61,6 @@
   }
   html {
     @apply scroll-smooth;
-    scroll-padding-top: 80px;
   }
   body {
     @apply bg-background text-foreground;
