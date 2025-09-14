@@ -8,7 +8,6 @@ import { ArrowRight, FileCheck } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { motion } from 'framer-motion';
-import { DocumentVisual } from './document-visual';
 import Image from 'next/image';
 import Visual1 from '@/images/howitworksstep1.png';
 
@@ -29,7 +28,7 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: 'https://picsum.photos/seed/hhiw3/600/440',
+    visual: 'https://picsum.photos/seed/h3/600/440',
     alt: 'Document being delivered to an inbox'
   },
 ];
