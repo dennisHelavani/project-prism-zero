@@ -9,6 +9,7 @@ import { MotionDiv } from '../ui/motion-div';
 import Image from 'next/image';
 import Visual1 from '@/images/howitworksstep1.png';
 import Visual2 from '@/images/howitworksstep2.gif';
+import Visual3 from '@/images/howitworksstep2.png';
 
 const steps = [
   {
@@ -29,7 +30,7 @@ const steps = [
     title: 'Receive your document',
     description: 'Branded PDF (DOCX optional) delivered to your inbox in ≈ 3.5 minutes.',
     chips: ['Filename standard', 'Owner BCC'],
-    visual: "https://picsum.photos/seed/step3/600/400",
+    visual: Visual3,
     alt: 'Visual representation of document delivery'
   },
 ];
