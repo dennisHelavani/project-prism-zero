@@ -21,15 +21,23 @@ export function CookieConsent() {
   
   useEffect(() => {
     if (hasMounted) {
-      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-      if (consent !== 'true') {
-        setIsVisible(true);
+      try {
+        const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        if (consent !== 'true') {
+          setIsVisible(true);
+        }
+      } catch (e) {
+        console.error("Could not access localStorage:", e);
       }
     }
   }, [hasMounted]);
 
   const handleConsent = () => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
+    try {
+      localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
+    } catch (e) {
+      console.error("Could not write to localStorage:", e);
+    }
     setIsVisible(false);
   };
   
