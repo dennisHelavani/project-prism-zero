@@ -4,15 +4,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { FileUp, Cpu, FileCheck, ArrowRight, Gauge, Hammer, Repeat } from 'lucide-react';
+import { ArrowRight, FileCheck } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
-import { CtaButton } from '../ui/cta-button';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { TextCarousel } from '../ui/text-carousel';
-import { FormVisual } from './form-visual';
 import { DocumentVisual } from './document-visual';
+import Image from 'next/image';
 
 const steps = [
   {
@@ -51,19 +48,6 @@ const itemVariants = {
   }),
 };
 
-const iconVariants = {
-  animate: {
-    scale: [1, 1.1, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const carouselWords = ['project', 'scope', 'site', 'conditions'];
-
 export function SolutionsSection() {
   return (
     <SectionWrapper id="how-it-works">
@@ -93,58 +77,67 @@ export function SolutionsSection() {
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
+                <div className="flex-grow my-4">
+                  {index === 0 && (
+                      <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-primary/20 glow-shadow">
+                          <Image
+                              src="https://picsum.photos/seed/form/600/375"
+                              alt="A form being filled out for a construction project"
+                              data-ai-hint="form screenshot"
+                              fill
+                              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                              className="object-cover"
+                          />
+                      </div>
+                  )}
+                  {index === 1 && (
+                      <div className="flex-grow flex flex-col justify-center space-y-4">
+                          <h4 className="font-semibold text-foreground mb-2">Process</h4>
+                          <div className="space-y-2">
+                              {processItems.map((item, i) => (
+                                  <motion.div 
+                                      key={item.text}
+                                      custom={i}
+                                      initial="hidden"
+                                      whileInView="visible"
+                                      viewport={{ once: true, amount: 0.5 }}
+                                      variants={itemVariants}
+                                      className="flex items-center text-sm"
+                                  >
+                                      <span>{item.text}</span>
+                                      <ArrowRight className="w-4 h-4 mx-2 text-primary" />
+                                      <span className="text-muted-foreground">{item.result}</span>
+                                  </motion.div>
+                              ))}
+                          </div>
+                      </div>
+                  )}
+                  {index === 2 && (
+                    <div className="flex-grow flex items-center justify-center">
+                      <DocumentVisual />
+                    </div>
+                  )}
+                </div>
+
                 <p className="text-muted-foreground">{step.description}</p>
-                 {index === 0 && (
-                    <div className="flex-grow flex flex-col items-center justify-center">
-                        <TextCarousel items={carouselWords} className="my-4 text-2xl font-bold" />
-                        <FormVisual />
-                    </div>
-                )}
                  {index === 1 && (
-                    <div className="flex-grow flex flex-col justify-center space-y-4 mt-4">
-                        <div>
-                            <h4 className="font-semibold text-foreground mb-2">Process</h4>
-                            <div className="space-y-2">
-                                {processItems.map((item, i) => (
-                                    <motion.div 
-                                        key={item.text}
-                                        custom={i}
-                                        initial="hidden"
-                                        whileInView="visible"
-                                        viewport={{ once: true, amount: 0.5 }}
-                                        variants={itemVariants}
-                                        className="flex items-center text-sm"
-                                    >
-                                        <span>{item.text}</span>
-                                        <ArrowRight className="w-4 h-4 mx-2 text-primary" />
-                                        <span className="text-muted-foreground">{item.result}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="font-semibold text-foreground mb-2">Result</h4>
-                             <motion.div
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, amount: 0.5 }}
-                                variants={{
-                                    hidden: { opacity: 0, y: 20 },
-                                    visible: { opacity: 1, y: 0, transition: { delay: 0.8 } }
-                                }}
-                                className="flex items-start gap-2 p-3 rounded-md bg-green-900/20 border border-green-500/30 text-sm"
-                            >
-                                <FileCheck className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-                                <span className="text-green-300">Clear, consistent RAMS/CPP draft ready for review</span>
-                            </motion.div>
-                        </div>
+                    <div>
+                        <h4 className="font-semibold text-foreground mb-2 mt-4">Result</h4>
+                         <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.5 }}
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0, transition: { delay: 0.8 } }
+                            }}
+                            className="flex items-start gap-2 p-3 rounded-md bg-green-900/20 border border-green-500/30 text-sm"
+                        >
+                            <FileCheck className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+                            <span className="text-green-300">Clear, consistent RAMS/CPP draft ready for review</span>
+                        </motion.div>
                     </div>
-                )}
-                 {index === 2 && (
-                  <div className="flex-grow flex items-center justify-center">
-                    <DocumentVisual />
-                  </div>
-                )}
+                 )}
               </CardContent>
               <div className="mt-4 flex flex-wrap gap-2">
                 {step.chips?.map((chip) => (
