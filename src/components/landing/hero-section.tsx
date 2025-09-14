@@ -12,7 +12,7 @@ export function HeroSection() {
   return (
     <div className="relative px-6 pt-14 lg:px-8" id="hero">
         <HeroWave />
-        <div className="mx-auto max-w-7xl py-24 sm:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 mx-auto max-w-7xl py-24 sm:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <MotionDiv>
             <div className="text-center lg:text-left">
               <BlurText

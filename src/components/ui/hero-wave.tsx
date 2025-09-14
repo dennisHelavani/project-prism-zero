@@ -34,6 +34,9 @@ export function HeroWave() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const animationFrameId = useRef<number>();
+  const isRunning = useRef(true);
+  const time = useRef(0);
+  const lastTime = useRef(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -53,8 +56,6 @@ export function HeroWave() {
     let width = 0;
     let height = 0;
     let dpr = window.devicePixelRatio || 1;
-    let time = 0;
-    let lastTime = 0;
 
     const resize = () => {
       dpr = window.devicePixelRatio || 1;
@@ -86,7 +87,7 @@ export function HeroWave() {
 
       ctx.beginPath();
       for (let x = -5; x < width + 5; x++) {
-        const t = time * waveConfig.speed;
+        const t = time.current * waveConfig.speed;
         const phase1 = (x / wavelength) * 2 * Math.PI + t;
         const phase2 = (x / wavelength2) * 2 * Math.PI - t * 0.6;
         const drift = Math.sin(t * 0.3) * verticalDriftPx;
@@ -122,25 +123,20 @@ export function HeroWave() {
     };
 
     const render = (timestamp: number) => {
-      if (lastTime === 0) lastTime = timestamp;
-      const deltaTime = (timestamp - lastTime) / 1000;
-      lastTime = timestamp;
-      time += deltaTime;
+      if (lastTime.current === 0) lastTime.current = timestamp;
+      const deltaTime = (timestamp - lastTime.current) / 1000;
+      lastTime.current = timestamp;
+      
+      if (isRunning.current && !prefersReducedMotion) {
+        time.current += deltaTime;
+      }
 
       ctx.clearRect(0, 0, width, height);
       
-      // Draw wave and reflection
       drawWave(false);
       drawWave(true);
       
-      // Fade edges
-      ctx.save();
       const fadeWidth = width * waveConfig.fadeEdgePct;
-      const gradient = ctx.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop(0, 'rgba(10, 10, 10, 0)');
-      gradient.addColorStop(0.5, 'rgba(10, 10, 10, 1)');
-      gradient.addColorStop(1, 'rgba(10, 10, 10, 0)');
-      
       const gradientMask = ctx.createLinearGradient(0, 0, width, 0);
       gradientMask.addColorStop(0, 'transparent');
       gradientMask.addColorStop(waveConfig.fadeEdgePct, 'white');
@@ -150,26 +146,36 @@ export function HeroWave() {
       ctx.globalCompositeOperation = 'destination-in';
       ctx.fillStyle = gradientMask;
       ctx.fillRect(0, 0, width, height);
-      ctx.restore();
+      ctx.globalCompositeOperation = 'source-over';
 
-      if (!prefersReducedMotion) {
+      if (isRunning.current) {
         animationFrameId.current = requestAnimationFrame(render);
       }
     };
 
+    const startAnimation = () => {
+      if (!isRunning.current) {
+        isRunning.current = true;
+        lastTime.current = 0; // Reset time to avoid jump
+        animationFrameId.current = requestAnimationFrame(render);
+      }
+    }
+    
+    const stopAnimation = () => {
+        isRunning.current = false;
+        if(animationFrameId.current) {
+            cancelAnimationFrame(animationFrameId.current);
+            animationFrameId.current = undefined;
+        }
+    }
+
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        if (!animationFrameId.current) {
-          lastTime = 0;
-          animationFrameId.current = requestAnimationFrame(render);
-        }
+        startAnimation();
       } else {
-        if (animationFrameId.current) {
-          cancelAnimationFrame(animationFrameId.current);
-          animationFrameId.current = undefined;
-        }
+        stopAnimation();
       }
-    });
+    }, { threshold: 0.1 });
 
     if (containerRef.current) {
       observer.observe(containerRef.current);
@@ -177,15 +183,11 @@ export function HeroWave() {
     
     window.addEventListener('resize', resize);
     resize();
-
-    // Initial render for reduced motion or static fallback
-    requestAnimationFrame(render);
+    startAnimation();
 
     return () => {
       window.removeEventListener('resize', resize);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      stopAnimation();
       if (containerRef.current) {
         observer.unobserve(containerRef.current);
       }
