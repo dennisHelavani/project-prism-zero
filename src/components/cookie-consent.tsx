@@ -13,19 +13,29 @@ const COOKIE_CONSENT_KEY = 'cookie-consent-interacted';
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    // This code only runs on the client, preventing hydration mismatches.
-    const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (consent !== 'true') {
-      setIsVisible(true);
-    }
+    setHasMounted(true);
   }, []);
+  
+  useEffect(() => {
+    if (hasMounted) {
+      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+      if (consent !== 'true') {
+        setIsVisible(true);
+      }
+    }
+  }, [hasMounted]);
 
   const handleConsent = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
     setIsVisible(false);
   };
+  
+  if (!hasMounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

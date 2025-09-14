@@ -1,3 +1,4 @@
+
 import { SectionWrapper } from "./section-wrapper";
 import Image from "next/image";
 import BlurText from "../ui/blur-text";
@@ -14,6 +15,7 @@ export function CaseStudySection() {
               alt="Founder portrait"
               data-ai-hint="construction manager portrait"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-lg object-cover shadow-lg object-top"
             />
           </div>

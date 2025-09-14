@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { generateDocumentsAction } from '@/app/actions';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ interface DocumentFormProps {
 }
 
 function SubmitButton() {
-  const { pending } = useFormStatus();
+  const { pending } = useActionState(generateDocumentsAction, { message: '' });
   return (
     <CtaButton type="submit" disabled={pending}>
       {pending ? (
@@ -46,7 +46,7 @@ function SubmitButton() {
 
 export function DocumentForm({ onSuccess }: DocumentFormProps) {
   const { toast } = useToast();
-  const [state, formAction] = useFormState(generateDocumentsAction, { message: '' });
+  const [state, formAction] = useActionState(generateDocumentsAction, { message: '' });
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -82,7 +82,7 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
         }
       }
     }
-  }, [state, toast, onSuccess, form]);
+  }, [state, toast, onSuccess, form.setError]);
   
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const formData = new FormData();
