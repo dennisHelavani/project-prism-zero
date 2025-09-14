@@ -82,7 +82,7 @@ export function SolutionsSection() {
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <div className="flex-grow my-4">
                   {index === 0 && step.visual && (
-                      <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-primary/20 glow-shadow">
+                      <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                           <Image
                               src={step.visual}
                               alt={step.alt || 'Step 1 visual'}
