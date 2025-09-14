@@ -1,53 +1,63 @@
 
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
-import { remark } from 'remark';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import remarkHtml from 'remark-html';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSanitize from 'rehype-sanitize';
-import {unified} from 'unified';
 
-const legalDir = path.join(process.cwd(), 'src', 'content', 'legal');
+export type LegalDoc = { slug: 'privacy'|'terms'|'cookies', title: string, lastUpdated?: string, html: string };
 
-export type LegalDoc = {
-  slug: string;
-  title: string;
-  lastUpdated: string | null;
-  html: string;
-};
+const ORDER: LegalDoc['slug'][] = ['privacy','terms','cookies'];
+
+function toTitle(slug: string) {
+  if (slug === 'terms') return 'Terms of Service';
+  if (slug === 'cookies') return 'Cookie Policy';
+  return 'Privacy Policy';
+}
 
 export async function getLegalDocs(): Promise<LegalDoc[]> {
-  const filenames = fs.readdirSync(legalDir);
-  const docs = await Promise.all(
-    filenames.map(async (filename) => {
-      const slug = filename.replace(/\.md$/, '');
-      const fullPath = path.join(legalDir, filename);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const dir = path.join(process.cwd(), 'src', 'content', 'legal');
+  const files = ['privacy.md', 'terms.md', 'cookies.md'];
+  const results: LegalDoc[] = [];
 
-      const { data, content } = matter(fileContents);
+  for (const file of files) {
+    const full = path.join(dir, file);
+    try {
+      const raw = await fs.readFile(full, 'utf8');
+      const { data, content } = matter(raw);
 
-      const processedContent = await remark()
-        .use(remarkGfm)
-        .use(remarkHtml, { sanitize: false })
-        .use(rehypeSlug)
-        .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
-        .use(rehypeSanitize)
-        .process(content);
-      
-      const html = processedContent.toString();
+      const html = String(
+        await unified()
+          .use(remarkParse)
+          .use(remarkGfm)
+          .use(remarkRehype, { allowDangerousHtml: true })
+          .use(rehypeSanitize)
+          .use(rehypeSlug)
+          .use(rehypeAutolinkHeadings, { behavior: 'wrap' })
+          .use(rehypeStringify)
+          .process(content)
+      );
 
-      return {
+      const slug = (data.slug || path.basename(file, '.md')) as LegalDoc['slug'];
+      results.push({
         slug,
-        title: data.title || 'Untitled',
-        lastUpdated: data.lastUpdated || null,
-        html,
-      };
-    })
-  );
+        title: data.title || toTitle(slug),
+        lastUpdated: data.lastUpdated || undefined,
+        html
+      });
+    } catch {
+      // Missing file: push empty shell so layout still renders
+      const slug = path.basename(file, '.md') as LegalDoc['slug'];
+      results.push({ slug, title: toTitle(slug), html: '<p>Content coming soon.</p>' });
+    }
+  }
 
-  const order = ['privacy', 'terms', 'cookies'];
-  return docs.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug));
+  // ensure Privacy, Terms, Cookies order
+  return ORDER.map(s => results.find(r => r.slug === s)!).filter(Boolean);
 }

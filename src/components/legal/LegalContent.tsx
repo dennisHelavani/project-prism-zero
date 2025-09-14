@@ -1,6 +1,6 @@
 
 import type { LegalDoc } from '@/lib/legal/getLegalDocs';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface LegalContentProps {
   docs: LegalDoc[];
@@ -15,7 +15,7 @@ export function LegalContent({ docs }: LegalContentProps) {
             <h2 className="font-headline text-3xl font-bold text-foreground glowing-text">{doc.title}</h2>
             {doc.lastUpdated && (
               <p className="mt-2 text-sm text-muted-foreground">
-                Last updated: {format(new Date(doc.lastUpdated), 'MMMM d, yyyy')}
+                Last updated: {format(parseISO(doc.lastUpdated), 'MMMM d, yyyy')}
               </p>
             )}
           </div>
