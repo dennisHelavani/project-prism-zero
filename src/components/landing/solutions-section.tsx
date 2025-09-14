@@ -8,6 +8,7 @@ import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import Image from 'next/image';
 import Visual1 from '@/images/howitworksstep1.png';
+import Visual2 from '@/images/howitworksstep2.gif';
 
 const steps = [
   {
@@ -21,7 +22,7 @@ const steps = [
     title: 'Our AI assembles your draft',
     description: 'Our AI organizes your answers, matches hazards to proven controls, and applies your branding.',
     chips: ['Auto-mapping', 'HSE/CDM-aware', 'Brand applied'],
-    visual: "https://picsum.photos/seed/ai-process/600/400",
+    visual: Visual2,
     alt: 'AI processing data to assemble a document'
   },
   {
@@ -62,19 +63,20 @@ export function SolutionsSection() {
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
-                <div className="flex-grow my-4">
+                 <div className="my-4">
                     <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
                       <Image
-                          src={typeof step.visual === 'string' ? step.visual : step.visual}
+                          src={step.visual}
                           alt={step.alt || `Step ${index + 1} visual`}
                           data-ai-hint={index === 0 ? "form screenshot" : index === 1 ? "data processing abstract" : "document process"}
                           fill
                           sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
                           className="object-cover"
+                          unoptimized={index === 1} // unoptimized for GIF
                       />
                     </div>
                 </div>
-                <p className="text-muted-foreground">{step.description}</p>
+                <p className="flex-grow text-muted-foreground">{step.description}</p>
               </CardContent>
               <div className="mt-4 flex flex-wrap gap-2">
                 {step.chips?.map((chip) => (
