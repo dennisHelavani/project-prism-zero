@@ -19,7 +19,7 @@ import { HardHat } from "lucide-react";
 const navLinks = [
   { name: "Our story", href: "/#our-story" },
   { name: "Pricing", href: "/#pricing" },
-  { name: "Solutions", href: "/#solutions" },
+  { name: "How It Works", href: "/#how-it-works" },
   { name: "Reviews", href: "/#reviews" },
   { name: "Contact", href: "/contact" },
 ];
@@ -43,20 +43,15 @@ export function Header() {
   const smoothScrollToId = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-
-    const header = document.getElementById("site-header");
-    const offset = header ? header.offsetHeight + 24 : 96;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-
-    window.scrollTo({ top, behavior: "smooth" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/' && href.startsWith('/#')) {
       e.preventDefault();
       const id = href.slice(2); 
-      smoothScrollToId(id);
       history.replaceState(null, "", href);
+      smoothScrollToId(id);
     }
   };
 
@@ -78,10 +73,19 @@ export function Header() {
       
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
-        const sectionTop = section.offsetTop - 150;
-        if (window.scrollY >= sectionTop) {
+        const rect = section.getBoundingClientRect();
+        
+        // Header is ~72px, let's use 80px as offset
+        if (rect.top <= 80 && rect.bottom > 80) {
             currentSectionId = section.id;
             break;
+        }
+      }
+
+      if (!currentSectionId && sections.length > 0) {
+        const firstSection = sections[0];
+        if (window.scrollY < firstSection.offsetTop - 80) {
+             currentSectionId = null;
         }
       }
       
@@ -110,17 +114,17 @@ export function Header() {
         
         <nav className="hidden items-center justify-center gap-8 md:flex flex-1">
           {navLinks.map((link) => {
+            const id = link.href.startsWith('/#') ? link.href.substring(2) : null;
             if (link.name === "Contact") {
               return (
-                <a
+                 <Link
                   key={link.name}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="nav-link whitespace-nowrap"
+                  data-active={pathname === link.href}
                 >
                   {link.name}
-                </a>
+                </Link>
               );
             }
             return (
@@ -128,7 +132,7 @@ export function Header() {
                 key={link.name}
                 href={pathname === '/' ? link.href : `/${link.href}`}
                 className="nav-link whitespace-nowrap"
-                data-active={activeSection === link.href.substring(2) || pathname === link.href}
+                data-active={activeSection === id}
                 onClick={(e) => handleNavClick(link.href, e)}
               >
                 {link.name}
@@ -164,18 +168,16 @@ export function Header() {
                     </div>
                     <nav className="flex flex-col gap-4 p-4">
                         {navLinks.map((link) => {
-                          if (link.name === 'Contact') {
+                           if (link.name === 'Contact') {
                             return (
-                                <a
+                                <Link
                                     key={link.name}
                                     href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
                                     className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {link.name}
-                                </a>
+                                </Link>
                             )
                           }
                           return (

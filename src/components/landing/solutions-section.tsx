@@ -4,7 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionWrapper } from './section-wrapper';
 import { Badge } from '../ui/badge';
-import { FileUp, Cpu, FileCheck, ArrowRight } from 'lucide-react';
+import { FileUp, Cpu, FileCheck, ArrowRight, Gauge, Hammer, Repeat } from 'lucide-react';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { CtaButton } from '../ui/cta-button';
@@ -66,7 +66,7 @@ const carouselWords = ['project', 'scope', 'site', 'conditions'];
 
 export function SolutionsSection() {
   return (
-    <SectionWrapper id="solutions">
+    <SectionWrapper id="how-it-works">
       <MotionDiv>
         <div className="mx-auto max-w-4xl text-center">
           <BlurText
@@ -95,7 +95,8 @@ export function SolutionsSection() {
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
                 <p className="text-muted-foreground">{step.description}</p>
                  {index === 0 && (
-                    <div className="flex-grow flex items-center justify-center">
+                    <div className="flex-grow flex flex-col items-center justify-center">
+                        <TextCarousel items={carouselWords} className="my-4 text-2xl font-bold" />
                         <FormVisual />
                     </div>
                 )}

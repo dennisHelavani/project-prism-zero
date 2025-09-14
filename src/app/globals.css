@@ -75,6 +75,9 @@
   .scroll-m-24 {
     scroll-margin-top: 6rem; /* 96px */
   }
+  section[id] {
+    scroll-margin-top: 80px;
+  }
 }
 
 @layer components {
