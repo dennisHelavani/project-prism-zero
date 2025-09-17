@@ -15,28 +15,61 @@ import {
 } from 'lucide-react';
 import { SectionWrapper } from './section-wrapper';
 import BlurText from '../ui/blur-text';
-import { Badge } from '../ui/badge';
 import { MotionDiv } from '../ui/motion-div';
 import { cn } from '@/lib/utils';
+import { CardVisual } from './card-visual';
 
-const benefits = [
+type CardItem = {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  visual?: {
+    src: string;
+    alt: string;
+    type?: 'image' | 'gif';
+    priority?: boolean;
+  };
+};
+
+const VISUALS: Record<string, CardItem['visual']> = {
+  'Instant draft generation': {
+    src: '/images/instantdraftgeneration.png',
+    alt: 'Form becoming a finished RAMS/CPP draft',
+    type: 'image',
+    priority: true
+  },
+  'Editable & compliant': {
+    src: '/images/editablecompliance.png',
+    alt: 'DOC editor with compliance badge',
+    type: 'image'
+  },
+  'Always up-to-date': {
+    src: '/images/uptodate.gif',
+    alt: 'Shield refresh and calendar flip indicating updated guidance',
+    type: 'gif'
+  },
+  'Branded output': {
+    src: '/images/branded.png',
+    alt: 'Brand color and logo applied to a document template',
+    type: 'image'
+  }
+};
+
+const benefitData: Omit<CardItem, 'visual'>[] = [
   {
     title: 'Instant draft generation',
     description: 'Answer a few questions; get comprehensive RAMS/CPP drafts fast.',
     icon: <Clock className="h-4 w-4 text-[#FABE2C]" />,
-    image: '/images/instantdraftgeneration.png',
   },
   {
     title: 'Editable & compliant',
     description: 'Export to .doc for final tweaks; templates follow HSE/CDM guidance.',
     icon: <ClipboardList className="h-4 w-4 text-[#FABE2C]" />,
-    image: '/images/editablecompliance.png',
   },
   {
     title: 'Always up-to-date',
     description: 'Prompts reflect current UK construction context.',
     icon: <ShieldCheck className="h-4 w-4 text-[#FABE2C]" />,
-    image: '/images/uptodate.gif',
   },
   {
     title: 'Deterministic structure',
@@ -47,7 +80,6 @@ const benefits = [
     title: 'Branded output',
     description: 'Logo, colours, and footer applied automatically.',
     icon: <Palette className="h-4 w-4 text-[#FABE2C]" />,
-    image: '/images/branded.png'
   },
   {
     title: 'Email delivery (~3.5 min)',
@@ -56,9 +88,10 @@ const benefits = [
   },
 ];
 
-const Skeleton = () => (
-  <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900" />
-);
+const benefits: CardItem[] = benefitData.map(item => ({
+  ...item,
+  visual: VISUALS[item.title],
+}));
 
 const itemVariants = {
     hiddenLeft: { opacity: 0, x: -50 },
@@ -84,25 +117,10 @@ export function BenefitsSection() {
             </div>
         </MotionDiv>
       
-        <BentoGrid className="mx-auto auto-rows-[18rem] md:auto-rows-[20rem]">
+        <BentoGrid className="mx-auto auto-rows-auto">
           {benefits.map((item, i) => {
             const direction = i % 3 === 0 ? 'left' : i % 3 === 2 ? 'right' : 'fade';
             const variant = direction === 'left' ? itemVariants.hiddenLeft : direction === 'right' ? itemVariants.hiddenRight : itemVariants.hiddenFade;
-
-            const headerContent = item.image ? (
-              <div className="relative flex h-full min-h-[6rem] w-full flex-1 rounded-xl overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                  unoptimized={item.image.endsWith('.gif')}
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                />
-              </div>
-            ) : (
-              <Skeleton />
-            );
 
             return (
                <MotionDiv
@@ -119,30 +137,26 @@ export function BenefitsSection() {
                     hiddenFade: itemVariants.hiddenFade
                 }}
               >
-                <BentoGridItem
-                  title={item.title}
-                  description={item.description}
-                  header={headerContent}
-                  className="md:col-span-1 h-full"
-                  icon={item.icon}
-                />
+                <div
+                  className={cn(
+                    "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 bg-card justify-between flex flex-col space-y-4 border border-white/10 h-full"
+                  )}
+                >
+                  <CardVisual visual={item.visual} />
+                  <div className="group-hover/bento:translate-x-2 transition duration-200">
+                    {item.icon}
+                    <div className="font-headline font-bold text-foreground mb-2 mt-2">
+                      {item.title}
+                    </div>
+                    <div className="font-sans font-normal text-muted-foreground text-xs">
+                      {item.description}
+                    </div>
+                  </div>
+                </div>
               </MotionDiv>
             )
           })}
         </BentoGrid>
-      
-      {/*
-      <MotionDiv delay={0.4}>
-        <div className="text-center mt-12">
-          <h3 className="font-headline text-lg font-bold text-primary mb-4">Coming Soon</h3>
-          <div className="flex justify-center flex-wrap gap-2">
-              {comingSoon.map(item => (
-                  <Badge key={item} variant="secondary">{item}</Badge>
-              ))}
-          </div>
-        </div>
-      </MotionDiv>
-      */}
     </SectionWrapper>
   );
 }
