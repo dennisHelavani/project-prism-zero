@@ -2,10 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import {
-  BentoGrid,
-  BentoGridItem,
-} from '@/components/ui/bento-grid';
-import {
   ClipboardList,
   ShieldCheck,
   Share2,
@@ -17,42 +13,17 @@ import { SectionWrapper } from './section-wrapper';
 import BlurText from '../ui/blur-text';
 import { MotionDiv } from '../ui/motion-div';
 import { cn } from '@/lib/utils';
-import { CardVisual } from './card-visual';
 
 type CardItem = {
   title: string;
   description: string;
   icon: React.ReactNode;
-  visual?: {
+  visual: {
     src: string;
     alt: string;
-    type?: 'image' | 'gif';
+    'data-ai-hint': string;
     priority?: boolean;
   };
-};
-
-const VISUALS: Record<string, CardItem['visual']> = {
-  'Instant draft generation': {
-    src: '/images/instantdraftgeneration.png',
-    alt: 'Form becoming a finished RAMS/CPP draft',
-    type: 'image',
-    priority: true
-  },
-  'Editable & compliant': {
-    src: '/images/editablecompliance.png',
-    alt: 'DOC editor with compliance badge',
-    type: 'image'
-  },
-  'Always up-to-date': {
-    src: '/images/uptodate.gif',
-    alt: 'Shield refresh and calendar flip indicating updated guidance',
-    type: 'gif'
-  },
-  'Branded output': {
-    src: '/images/branded.png',
-    alt: 'Brand color and logo applied to a document template',
-    type: 'image'
-  }
 };
 
 const benefitData: Omit<CardItem, 'visual'>[] = [
@@ -88,9 +59,14 @@ const benefitData: Omit<CardItem, 'visual'>[] = [
   },
 ];
 
-const benefits: CardItem[] = benefitData.map(item => ({
+const benefits: CardItem[] = benefitData.map((item, i) => ({
   ...item,
-  visual: VISUALS[item.title],
+  visual: {
+    src: `https://picsum.photos/seed/${i + 1}/600/400`,
+    alt: `Abstract visual for ${item.title}`,
+    'data-ai-hint': 'abstract technology',
+    priority: i < 3, // Prioritize loading for the first row of images
+  },
 }));
 
 const itemVariants = {
@@ -117,7 +93,7 @@ export function BenefitsSection() {
             </div>
         </MotionDiv>
       
-        <BentoGrid className="mx-auto auto-rows-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto">
           {benefits.map((item, i) => {
             const direction = i % 3 === 0 ? 'left' : i % 3 === 2 ? 'right' : 'fade';
             const variant = direction === 'left' ? itemVariants.hiddenLeft : direction === 'right' ? itemVariants.hiddenRight : itemVariants.hiddenFade;
@@ -142,7 +118,20 @@ export function BenefitsSection() {
                     "row-span-1 rounded-xl group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 bg-card justify-between flex flex-col space-y-4 border border-white/10 h-full"
                   )}
                 >
-                  <CardVisual visual={item.visual} />
+                    <div className={cn(
+                      'relative w-full rounded-xl overflow-hidden border border-white/8 bg-gradient-to-b from-white/2 to-white/0',
+                      'h-[220px] md:h-[240px] lg:h-[260px]'
+                    )}>
+                        <Image
+                          src={item.visual.src}
+                          alt={item.visual.alt}
+                          data-ai-hint={item.visual['data-ai-hint']}
+                          fill
+                          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                          className="object-cover"
+                          priority={!!item.visual.priority}
+                        />
+                    </div>
                   <div className="group-hover/bento:translate-x-2 transition duration-200">
                     {item.icon}
                     <div className="font-headline font-bold text-foreground mb-2 mt-2">
@@ -156,7 +145,7 @@ export function BenefitsSection() {
               </MotionDiv>
             )
           })}
-        </BentoGrid>
+        </div>
     </SectionWrapper>
   );
 }
