@@ -62,7 +62,7 @@ const benefitData: Omit<CardItem, 'visual'>[] = [
 const benefits: CardItem[] = benefitData.map((item, i) => ({
   ...item,
   visual: {
-    src: `https://picsum.photos/seed/${i + 1}/600/400`,
+    src: `https://picsum.photos/seed/${i + 2}/600/400`, // Start seed from 2 now
     alt: `Abstract visual for ${item.title}`,
     'data-ai-hint': 'abstract technology',
     priority: i < 3, // Prioritize loading for the first row of images
@@ -122,15 +122,81 @@ export function BenefitsSection() {
                       'relative w-full rounded-xl overflow-hidden border border-white/8 bg-gradient-to-b from-white/2 to-white/0',
                       'h-[220px] md:h-[240px] lg:h-[260px]'
                     )}>
-                        <Image
-                          src={item.visual.src}
-                          alt={item.visual.alt}
-                          data-ai-hint={item.visual['data-ai-hint']}
-                          fill
-                          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                          className="object-cover"
-                          priority={!!item.visual.priority}
-                        />
+                        {i === 0 ? (
+                          <div className="benefit-visual">
+                            {/* LEFT: email PNG */}
+                            <div className="bv-left">
+                              <img src="/images/email.png" alt="Incoming email" />
+                            </div>
+
+                            {/* RIGHT: stacked checks */}
+                            <div className="bv-right">
+                              <div className="bv-chip">
+                                <span className="bv-ico" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                    <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+                                    <path d="M14 3v6h6"/>
+                                  </svg>
+                                </span>
+                                <span>System check</span>
+                              </div>
+
+                              <div className="bv-chip">
+                                <span className="bv-ico" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                    <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                                    <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                                    <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                                    <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                                  </svg>
+                                </span>
+                                <span>Process check</span>
+                              </div>
+
+                              <div className="bv-chip">
+                                <span className="bv-ico" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                    <path d="M21 12a9 9 0 1 1-18 0"/>
+                                    <path d="M12 12l5-3"/>
+                                  </svg>
+                                </span>
+                                <span>Speed check</span>
+                              </div>
+
+                              <div className="bv-chip">
+                                <span className="bv-ico" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                    <path d="M14 7a4 4 0 1 0-5.657 5.657l8 8 3-3-8-8z"/>
+                                    <path d="M14 7l3 3"/>
+                                  </svg>
+                                </span>
+                                <span>Manual work</span>
+                              </div>
+
+                              <div className="bv-chip">
+                                <span className="bv-ico" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                                    <path d="M17 2l4 4-4 4"/>
+                                    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                    <path d="M7 22l-4-4 4-4"/>
+                                    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                  </svg>
+                                </span>
+                                <span>Repetitive task</span>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Image
+                            src={item.visual.src}
+                            alt={item.visual.alt}
+                            data-ai-hint={item.visual['data-ai-hint']}
+                            fill
+                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                            className="object-cover"
+                            priority={!!item.visual.priority}
+                          />
+                        )}
                     </div>
                   <div className="group-hover/bento:translate-x-2 transition duration-200">
                     {item.icon}
