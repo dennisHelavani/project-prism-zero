@@ -31,7 +31,7 @@ const benefits = [
     title: 'Always up-to-date',
     description: 'Prompts reflect current UK construction context.',
     icon: <ShieldCheck className="h-4 w-4 text-[#FABE2C]" />,
-  },
+  }
 ];
 
 /* ---------------------------------------------
@@ -45,13 +45,14 @@ const LEFT_VISUAL: Record<
     src: '/images/editablecompliance.png',
     alt: 'Document editing compliance visual',
   },
-  'Always up-to-date': {
-    src: '/images/calendar.png',
-    alt: 'Up-to-date policy visual',
-  },
   'Branded output': {
     src: '/images/branded.png',
     alt: 'Branded document visual',
+  },
+  // Card 4 uses a custom animated component; we keep this only if you want a static fallback:
+  'Always up-to-date': {
+    src: '/images/calendar.png',
+    alt: 'Up-to-date policy visual'
   },
 };
 
@@ -90,7 +91,7 @@ const CHIP_LABELS: Record<string, string[]> = {
 };
 
 /* ---------------------------------------------
-   Tiny SVGs for chip bullets
+   Inline icons for the chips
 --------------------------------------------- */
 const Icons = {
   doc: (
@@ -128,6 +129,7 @@ const Icons = {
     </svg>
   ),
 };
+
 function iconFor(label: string) {
   const l = label.toLowerCase();
   if (l.includes('doc') || l.includes('email') || l.includes('audit') || l.includes('header') || l.includes('footer'))
@@ -150,7 +152,7 @@ const itemVariants = {
 };
 
 /* ---------------------------------------------
-   Progress dial (first card)
+   PROGRESS DIAL (click to animate 0→100)
 --------------------------------------------- */
 function ProgressDial({
   size = 240,
@@ -242,75 +244,69 @@ function ProgressDial({
 }
 
 /* ---------------------------------------------
-   UpToDateRings (FIXED: icon centered, rings rotate around it)
-   ⚠️ Keyframes include translate + rotate so centering is preserved.
+   CARD 4: Animated calendar with orbiting rings
 --------------------------------------------- */
-function UpToDateRings({
-  src,
-  alt,
-  iconScale = 0.62, // make the calendar large (0.55–0.7 works well)
-}: {
-  src: string;
-  alt: string;
-  iconScale?: number;
-}) {
+function UpToDateOrbit({ iconSrc = '/images/calendar.png' }: { iconSrc?: string }) {
   return (
-    <div className="grid h-full w-full place-items-center">
-      {/* square stage that scales with available space */}
-      <div className="relative aspect-square w-[86%] max-w-[340px] min-w-[180px]">
-        {/* Centered big icon */}
-        <Image
-          src={src}
-          alt={alt}
-          width={512}
-          height={512}
-          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_10px_24px_rgba(0,0,0,0.45)]"
-          style={{ width: `${iconScale * 100}%`, height: 'auto' }}
-          priority={false}
-        />
+    <div className="relative grid place-items-center w-[min(80%,220px)] aspect-square">
+      {/* Center icon (bigger, crisp) */}
+      <Image
+        src={iconSrc}
+        alt="Calendar"
+        width={92}
+        height={92}
+        className="relative z-10 drop-shadow-[0_10px_24px_rgba(0,0,0,0.45)]"
+      />
 
-        {/* Outer ring */}
-        <div className="ring-cw absolute left-1/2 top-1/2 h-[96%] w-[96%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/14 border-dashed">
-          <div className="absolute left-1/2 top-0 -translate-x-1/2">
-            <div className="h-0 w-0 border-x-[6px] border-x-transparent border-b-[10px] border-b-[#FABE2C] drop-shadow-[0_2px_8px_rgba(250,190,44,0.5)]" />
-          </div>
+      {/* Orbit rings */}
+      <div className="pointer-events-none absolute inset-0">
+        {/* Rings (static circles) */}
+        <div className="absolute inset-[10%] rounded-full border border-white/12" />
+        <div className="absolute inset-[22%] rounded-full border border-white/10" />
+        <div className="absolute inset-[34%] rounded-full border border-white/8" />
+
+        {/* Rotating dot carriers (rotate the whole ring for smooth orbit) */}
+        <div className="ring-carrier absolute inset-[10%] animate-[orbit_9s_linear_infinite]">
+          <span className="dot" />
         </div>
-
-        {/* Middle ring */}
-        <div className="ring-ccw absolute left-1/2 top-1/2 h-[78%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/12">
-          <div className="absolute left-1/2 top-0 -translate-x-1/2">
-            <div className="h-2 w-2 rounded-full bg-[#FABE2C] shadow-[0_0_10px_2px_rgba(250,190,44,0.35)]" />
-          </div>
+        <div className="ring-carrier absolute inset-[22%] animate-[orbit_12s_linear_infinite_reverse]">
+          <span className="dot dot--small" />
         </div>
-
-        {/* Inner ring */}
-        <div className="ring-cw-fast absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 border-dotted">
-          <div className="absolute left-1/2 top-0 -translate-x-1/2">
-            <div className="h-0 w-0 border-x-[5px] border-x-transparent border-b-[8px] border-b-white/70" />
-          </div>
+        <div className="ring-carrier absolute inset-[34%] animate-[orbit_15s_linear_infinite]">
+          <span className="dot dot--accent" />
         </div>
       </div>
 
-      {/* keyframes keep translate + rotate together */}
       <style jsx>{`
-        @keyframes kf-ring-cw {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        .ring-carrier { border-radius: 9999px; }
+        .dot {
+          position: absolute;
+          top: -4px; /* top of the ring */
+          left: 50%;
+          transform: translateX(-50%);
+          width: 8px;
+          height: 8px;
+          border-radius: 9999px;
+          background: #F6C84E;
+          box-shadow: 0 0 10px rgba(246, 200, 78, 0.6);
         }
-        @keyframes kf-ring-ccw {
-          from { transform: translate(-50%, -50%) rotate(360deg); }
-          to   { transform: translate(-50%, -50%) rotate(0deg); }
+        .dot--small { width: 6px; height: 6px; opacity: 0.9; }
+        .dot--accent {
+          width: 7px; height: 7px;
+          background: #7dd3fc; /* cyan accent */
+          box-shadow: 0 0 10px rgba(125, 211, 252, 0.55);
         }
-        .ring-cw      { animation: kf-ring-cw 18s linear infinite; }
-        .ring-ccw     { animation: kf-ring-ccw 12s linear infinite; }
-        .ring-cw-fast { animation: kf-ring-cw 9s  linear infinite; }
+
+        @keyframes orbit {
+          to { transform: rotate(360deg); }
+        }
       `}</style>
     </div>
   );
 }
 
 /* ---------------------------------------------
-   Split visual container (equal heights, centered)
+   Split visual (ALWAYS 2 columns) with dynamic scaling
 --------------------------------------------- */
 function SplitVisual({
   left,
@@ -321,16 +317,40 @@ function SplitVisual({
   leftSlot?: React.ReactNode;
   rightLabels: string[];
 }) {
+  const wrapRef = React.useRef<HTMLDivElement | null>(null);
+  const [scale, setScale] = React.useState(1);
+
+  useEffect(() => {
+    if (!wrapRef.current) return;
+    const el = wrapRef.current;
+    const BASE = 720; // target width for full-size content
+    const MIN = 0.6;
+    const MAX = 1.0;
+
+    const ro = new ResizeObserver(([entry]) => {
+      const w = entry.contentRect.width;
+      const s = Math.max(MIN, Math.min(MAX, w / BASE));
+      setScale(s);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div
+      ref={wrapRef}
       className={cn(
-        'grid h-[230px] sm:h-[250px] md:h-[270px] lg:h-[290px] w-full grid-cols-2 gap-3 items-stretch',
-        'rounded-2xl overflow-hidden max-[420px]:grid-cols-1',
+        'grid grid-cols-2 items-stretch rounded-2xl overflow-hidden',
+        'h-[clamp(180px,36vw,310px)]',
+        'gap-[clamp(6px,1.4vw,12px)]',
         'bg-[radial-gradient(120%_100%_at_0%_0%,rgba(255,255,255,0.06)_0%,transparent_60%),radial-gradient(120%_100%_at_100%_0%,rgba(255,255,255,0.04)_0%,transparent_60%)]'
       )}
     >
-      {/* LEFT cell */}
-      <div className="relative my-auto flex h-full items-center justify-center">
+      {/* LEFT (scaled) */}
+      <div
+        className="relative flex h-full items-center justify-center px-[clamp(4px,0.8vw,12px)]"
+        style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
+      >
         {leftSlot ? (
           leftSlot
         ) : (
@@ -338,9 +358,9 @@ function SplitVisual({
             <Image
               src={left.src}
               alt={left.alt}
-              width={280}
-              height={280}
-              className="h-auto max-h-[80%] max-w-[70%] object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
+              width={300}
+              height={300}
+              className="h-auto max-h-[80%] max-w-[72%] object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
               priority={!!left.priority}
               unoptimized={left.type === 'gif'}
             />
@@ -348,28 +368,33 @@ function SplitVisual({
         )}
       </div>
 
-      {/* RIGHT cell (chips) */}
-      <div className="my-auto flex h-full flex-col justify-center gap-2.5 p-3">
-        {rightLabels.map((label) => (
-          <div
-            key={label}
-            className={cn(
-              'flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 cursor-default',
-              'bg-white/[.04] border border-white/[.08] text-neutral-200',
-              'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-[2px]'
-            )}
-          >
-            <span className="text-neutral-300">{iconFor(label)}</span>
-            <span className="text-sm">{label}</span>
-          </div>
-        ))}
+      {/* RIGHT (scaled) */}
+      <div
+        className="flex h-full flex-col justify-center px-[clamp(4px,0.8vw,12px)]"
+        style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
+      >
+        <div className="flex flex-col gap-[clamp(6px,1.2vw,10px)]">
+          {rightLabels.map((label) => (
+            <div
+              key={label}
+              className={cn(
+                'flex items-center gap-2 rounded-xl border bg-white/[.04] border-white/[.08] text-neutral-200',
+                'px-[clamp(10px,1.6vw,14px)] py-[clamp(6px,1.2vw,10px)]',
+                'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-[2px] cursor-default'
+              )}
+            >
+              <span className="text-neutral-300">{iconFor(label)}</span>
+              <span className="text-[clamp(11px,1.2vw,14px)] leading-tight">{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
 /* ---------------------------------------------
-   Benefit card (no hover transforms)
+   Benefit card (no hover effects)
 --------------------------------------------- */
 function BenefitCard({
   index,
@@ -385,6 +410,7 @@ function BenefitCard({
   const leftImage = LEFT_VISUAL[title];
   const rightLabels = CHIP_LABELS[title] ?? [];
   const isFirst = index === 0;
+  const isUpToDate = title === 'Always up-to-date';
 
   return (
     <div
@@ -394,6 +420,7 @@ function BenefitCard({
         'shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset,0_20px_60px_rgba(0,0,0,0.45)]'
       )}
     >
+      {/* Top: icon & title */}
       <div className="px-5 pt-4 md:px-6 md:pt-5">
         <div className="mb-3 flex items-center gap-2">
           {icon && (
@@ -401,24 +428,24 @@ function BenefitCard({
               {icon}
             </span>
           )}
-          <h3 className="font-headline text-base md:text-lg font-semibold text-white">
-            {title}
-          </h3>
+          <h3 className="font-headline text-base md:text-lg font-semibold text-white">{title}</h3>
         </div>
       </div>
 
+      {/* Visual row */}
       <div className="relative w-full overflow-hidden rounded-3xl">
         {isFirst ? (
-          <SplitVisual leftSlot={<ProgressDial color="#FABE2C" />} rightLabels={rightLabels} />
-        ) : title === 'Always up-to-date' ? (
           <SplitVisual
             leftSlot={
-              <UpToDateRings
-                src={LEFT_VISUAL['Always up-to-date']?.src ?? '/images/calendar.png'}
-                alt={LEFT_VISUAL['Always up-to-date']?.alt ?? 'Up-to-date policy visual'}
-                iconScale={0.64} // tweak if you want the icon even larger/smaller
-              />
+              <div className="w-[min(78%,220px)] aspect-square">
+                <ProgressDial color="#FABE2C" />
+              </div>
             }
+            rightLabels={rightLabels}
+          />
+        ) : isUpToDate ? (
+          <SplitVisual
+            leftSlot={<UpToDateOrbit iconSrc="/images/calendar.png" />}
             rightLabels={rightLabels}
           />
         ) : (
@@ -426,12 +453,12 @@ function BenefitCard({
         )}
       </div>
 
+      {/* Description */}
       <div className="px-5 pb-5 pt-3 md:px-6 md:pb-6">
-        <p className="text-[13px] leading-relaxed text-white/65 md:text-sm">
-          {description}
-        </p>
+        <p className="text-[13px] leading-relaxed text-white/65 md:text-sm">{description}</p>
       </div>
 
+      {/* Soft corner bloom */}
       <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-white/[.04] blur-2xl" />
     </div>
   );
