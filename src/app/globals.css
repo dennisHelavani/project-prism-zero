@@ -133,3 +133,79 @@
       transform: rotateX(360deg);
     }
 }
+
+
+
+@layer components {
+  /* === Email + Checks visual (dark theme) === */
+  .benefit-visual {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: radial-gradient(120% 100% at 0% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(120% 100% at 100% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+  }
+
+  .bv-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .bv-left img {
+    max-width: 68%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+  }
+
+  .bv-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .bv-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e7e7e7;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(2px);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .bv-chip:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .bv-ico {
+    width: 18px;
+    height: 18px;
+    color: #cfcfcf;
+    display: inline-flex;
+  }
+
+  @media (max-width: 420px) {
+    .benefit-visual {
+      grid-template-columns: 1fr;
+    }
+
+    .bv-left img {
+      max-width: 56%;
+    }
+  }
+}
