@@ -202,6 +202,7 @@
   @media (max-width: 420px) {
     .benefit-visual {
       grid-template-columns: 1fr;
+      transform: 1 !important;
     }
 
     .bv-left img {

@@ -49,10 +49,9 @@ const LEFT_VISUAL: Record<
     src: '/images/branded.png',
     alt: 'Branded document visual',
   },
-  // Card 4 uses a custom animated component; we keep this only if you want a static fallback:
   'Always up-to-date': {
     src: '/images/calendar.png',
-    alt: 'Up-to-date policy visual'
+    alt: 'Up-to-date policy visual',
   },
 };
 
@@ -62,7 +61,7 @@ const LEFT_VISUAL: Record<
 const CHIP_LABELS: Record<string, string[]> = {
   'Instant draft generation': [
     'Fill 4 quick fields',
-    'Answer simple questions',
+    'Answer questions',
     'Submit in seconds',
     'AI drafts RAMS/CPP',
     'Email with .DOC/PDF',
@@ -206,11 +205,11 @@ function ProgressDial({
       type="button"
       onClick={start}
       className={cn(
-        'relative isolate grid place-items-center rounded-full outline-none select-none',
-        !running && pct === 0 ? 'animate-[pulseDial_3.2s_ease-in-out_infinite]' : ''
+        // centered content for the dial itself
+        'relative isolate grid place-items-center rounded-full outline-none select-none'
       )}
       aria-label="Start instant draft generation"
-      style={{ width: 'min(66%, 240px)', height: 'min(66%, 240px)' }}
+      style={{ width: 'min(78%, 240px)', height: 'min(78%, 240px)' }}
     >
       <svg viewBox={`0 0 ${size} ${size}`} className="block drop-shadow-[0_8px_18px_rgba(0,0,0,0.35)]" style={{ width: '100%', height: '100%' }}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="transparent" stroke={track} strokeWidth={stroke} />
@@ -234,10 +233,7 @@ function ProgressDial({
         </div>
       </div>
       <style jsx>{`
-        @keyframes pulseDial {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.01); }
-        }
+        @keyframes pulseDial { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
       `}</style>
     </button>
   );
@@ -249,7 +245,6 @@ function ProgressDial({
 function UpToDateOrbit({ iconSrc = '/images/calendar.png' }: { iconSrc?: string }) {
   return (
     <div className="relative grid place-items-center w-[min(80%,220px)] aspect-square">
-      {/* Center icon (bigger, crisp) */}
       <Image
         src={iconSrc}
         alt="Calendar"
@@ -257,15 +252,10 @@ function UpToDateOrbit({ iconSrc = '/images/calendar.png' }: { iconSrc?: string 
         height={92}
         className="relative z-10 drop-shadow-[0_10px_24px_rgba(0,0,0,0.45)]"
       />
-
-      {/* Orbit rings */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Rings (static circles) */}
         <div className="absolute inset-[10%] rounded-full border border-white/12" />
         <div className="absolute inset-[22%] rounded-full border border-white/10" />
         <div className="absolute inset-[34%] rounded-full border border-white/8" />
-
-        {/* Rotating dot carriers (rotate the whole ring for smooth orbit) */}
         <div className="ring-carrier absolute inset-[10%] animate-[orbit_9s_linear_infinite]">
           <span className="dot" />
         </div>
@@ -276,37 +266,26 @@ function UpToDateOrbit({ iconSrc = '/images/calendar.png' }: { iconSrc?: string 
           <span className="dot dot--accent" />
         </div>
       </div>
-
       <style jsx>{`
         .ring-carrier { border-radius: 9999px; }
         .dot {
           position: absolute;
-          top: -4px; /* top of the ring */
-          left: 50%;
+          top: -4px; left: 50%;
           transform: translateX(-50%);
-          width: 8px;
-          height: 8px;
-          border-radius: 9999px;
-          background: #F6C84E;
-          box-shadow: 0 0 10px rgba(246, 200, 78, 0.6);
+          width: 8px; height: 8px; border-radius: 9999px;
+          background: #F6C84E; box-shadow: 0 0 10px rgba(246,200,78,0.6);
         }
         .dot--small { width: 6px; height: 6px; opacity: 0.9; }
-        .dot--accent {
-          width: 7px; height: 7px;
-          background: #7dd3fc; /* cyan accent */
-          box-shadow: 0 0 10px rgba(125, 211, 252, 0.55);
-        }
-
-        @keyframes orbit {
-          to { transform: rotate(360deg); }
-        }
+        .dot--accent { width: 7px; height: 7px; background: #7dd3fc; box-shadow: 0 0 10px rgba(125,211,252,0.55); }
+        @keyframes orbit { to { transform: rotate(360deg); } }
       `}</style>
     </div>
   );
 }
 
 /* ---------------------------------------------
-   Split visual (ALWAYS 2 columns) with dynamic scaling
+   Split visual (ALWAYS 2 columns) with dynamic scaling.
+   CHANGE: keep scale = 1 on small screens; center L/R content.
 --------------------------------------------- */
 function SplitVisual({
   left,
@@ -323,11 +302,15 @@ function SplitVisual({
   useEffect(() => {
     if (!wrapRef.current) return;
     const el = wrapRef.current;
-    const BASE = 720; // target width for full-size content
+    const BASE = 720;
     const MIN = 0.6;
     const MAX = 1.0;
 
     const ro = new ResizeObserver(([entry]) => {
+      // ✅ Do NOT downscale on small screens (keep at 1)
+      const viewportW = typeof window !== 'undefined' ? window.innerWidth : 1024;
+      if (viewportW < 640) { setScale(1); return; }
+
       const w = entry.contentRect.width;
       const s = Math.max(MIN, Math.min(MAX, w / BASE));
       setScale(s);
@@ -346,9 +329,9 @@ function SplitVisual({
         'bg-[radial-gradient(120%_100%_at_0%_0%,rgba(255,255,255,0.06)_0%,transparent_60%),radial-gradient(120%_100%_at_100%_0%,rgba(255,255,255,0.04)_0%,transparent_60%)]'
       )}
     >
-      {/* LEFT (scaled) */}
+      {/* LEFT: perfectly centered both ways */}
       <div
-        className="relative flex h-full items-center justify-center px-[clamp(4px,0.8vw,12px)]"
+        className="relative grid h-full w-full place-items-center px-[clamp(4px,0.8vw,12px)]"
         style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
       >
         {leftSlot ? (
@@ -368,9 +351,9 @@ function SplitVisual({
         )}
       </div>
 
-      {/* RIGHT (scaled) */}
+      {/* RIGHT: centered content; scales on larger screens only */}
       <div
-        className="flex h-full flex-col justify-center px-[clamp(4px,0.8vw,12px)]"
+        className="grid h-full w-full content-center px-[clamp(4px,0.8vw,12px)]"
         style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
       >
         <div className="flex flex-col gap-[clamp(6px,1.2vw,10px)]">
@@ -437,17 +420,15 @@ function BenefitCard({
         {isFirst ? (
           <SplitVisual
             leftSlot={
-              <div className="w-[min(78%,220px)] aspect-square">
+              // ✅ Centered wrapper for the dial + "Click to generate"
+              <div className="mx-auto my-auto grid place-items-center w-[min(82%,240px)] aspect-square">
                 <ProgressDial color="#FABE2C" />
               </div>
             }
             rightLabels={rightLabels}
           />
         ) : isUpToDate ? (
-          <SplitVisual
-            leftSlot={<UpToDateOrbit iconSrc="/images/calendar.png" />}
-            rightLabels={rightLabels}
-          />
+          <SplitVisual leftSlot={<UpToDateOrbit iconSrc="/images/calendar.png" />} rightLabels={rightLabels} />
         ) : (
           <SplitVisual left={leftImage} rightLabels={rightLabels} />
         )}
