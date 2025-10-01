@@ -7,3 +7,5 @@ export function createAdminClient() {
   const key = process.env.SUPABASE_SERVICE_ROLE!;
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+export const supabaseAdmin = createAdminClient();

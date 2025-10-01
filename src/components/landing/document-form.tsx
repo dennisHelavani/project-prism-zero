@@ -25,11 +25,10 @@ interface DocumentFormProps {
   onSuccess: (data: GenerateHseCdmDocumentsOutput) => void;
 }
 
-function SubmitButton() {
-  const { pending } = useActionState(generateDocumentsAction, { message: '' });
+function SubmitButton({ isPending }: { isPending: boolean }) {
   return (
-    <CtaButton type="submit" disabled={pending}>
-      {pending ? (
+    <CtaButton type="submit" disabled={isPending}>
+      {isPending ? (
         <>
           <Loader2 className="animate-spin" />
           Generating...
@@ -162,7 +161,7 @@ export function DocumentForm({ onSuccess }: DocumentFormProps) {
           )}
         />
         <div className="text-center pt-4">
-          <SubmitButton />
+          <SubmitButton isPending={isPending} />
           <p className="mt-4 text-xs text-muted-foreground">
             AI-generated — review before use.
           </p>

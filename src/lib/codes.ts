@@ -32,6 +32,8 @@ export function monthKeyUtc(date = new Date()): string {
   return new Date(Date.UTC(y, m, 1, 0, 0, 0, 0)).toISOString();
 }
 
+export const monthKey = monthKeyUtc;
+
 /** Get-or-create customer idempotently (case/space-insensitive) */
 export async function upsertCustomerByEmail(email: string) {
   const e = canonicalizeEmail(email);

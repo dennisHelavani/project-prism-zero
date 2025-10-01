@@ -76,7 +76,7 @@ export function Header() {
     }
   }, [getHeaderHeight]);
 
-  const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (pathname === '/' && href.startsWith('#')) {
       e.preventDefault();
       const id = href.substring(1); 
@@ -120,8 +120,9 @@ export function Header() {
             }
           }
         });
-        if (bestEntry) {
-          setActiveSection(bestEntry.target.id);
+        const target: Element | undefined = bestEntry?.target;
+        if (target instanceof HTMLElement && target.id) {
+          setActiveSection(target.id);
         }
       },
       {
@@ -190,7 +191,7 @@ export function Header() {
                 href={finalHref}
                 className="nav-link whitespace-nowrap"
                 data-active={activeSection === id}
-                onClick={(e) => handleNavClick(link.href, e as any)}
+                onClick={(e) => handleNavClick(link.href, e)}
               >
                 {link.name}
               </Link>
@@ -200,7 +201,7 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => handleNavClick("#upload", e as any)}>Generate my documents</Link>
+             <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => handleNavClick("#upload", e)}>Generate my documents</Link>
            </CtaButton>
         </div>
 

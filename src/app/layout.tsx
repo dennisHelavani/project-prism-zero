@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SEO.domain),
   title: { default: SEO.defaultTitle, template: SEO.titleTemplate },
   description: SEO.description,
-  keywords: SEO.keywords,
+  keywords: [...SEO.keywords],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

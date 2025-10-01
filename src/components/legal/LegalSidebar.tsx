@@ -40,8 +40,9 @@ export function LegalSidebar({ docs }: LegalSidebarProps) {
             }
         });
         
-        if (bestEntry) {
-            setActiveSection(bestEntry.target.id);
+        const target: Element | undefined = bestEntry?.target;
+        if (target instanceof HTMLElement && target.id) {
+            setActiveSection(target.id);
         }
       },
       { rootMargin: `-${getHeaderHeight()}px 0px -55% 0px`, threshold: 0.1 }
@@ -81,7 +82,6 @@ export function LegalSidebar({ docs }: LegalSidebarProps) {
               <a
                 href={`#${doc.slug}`}
                 onClick={(e) => handleNavClick(e, doc.slug)}
-                aria-current={activeSection === doc.slug ? 'true' : undefined}
                 className={cn(
                   'block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-white',
                   'relative',
