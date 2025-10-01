@@ -28,29 +28,30 @@ export function LegalSidebar({ docs }: LegalSidebarProps) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
         if (clickRef.current) return;
-        
+
         let bestEntry: IntersectionObserverEntry | null = null;
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
-                    bestEntry = entry;
-                }
-            }
-        });
-        
-        const target: Element | undefined = bestEntry?.target;
-        if (target instanceof HTMLElement && target.id) {
-            setActiveSection(target.id);
+        for (const entry of entries) {
+          if (entry.isIntersecting && (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio)) {
+            bestEntry = entry;
+          }
+        }
+
+        if (bestEntry && bestEntry.target instanceof HTMLElement) {
+          setActiveSection(bestEntry.target.id);
         }
       },
       { rootMargin: `-${getHeaderHeight()}px 0px -55% 0px`, threshold: 0.1 }
     );
+
     observerRef.current = observer;
 
-    const sections = docs.map(doc => document.getElementById(doc.slug)).filter(Boolean);
-    sections.forEach(section => observer.observe(section!));
+    const sections = docs
+      .map((doc) => document.getElementById(doc.slug))
+      .filter((el): el is HTMLElement => !!el);
+
+    sections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
   }, [docs, getHeaderHeight]);

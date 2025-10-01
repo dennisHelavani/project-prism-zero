@@ -1,14 +1,13 @@
-
 'use client';
 
-import { cn } from "@/lib/utils"
-import type { ReactNode } from "react"
+import { cn } from "@/lib/utils";
+import type { ReactNode, CSSProperties } from "react";
 
 interface SectionWrapperProps {
   children: ReactNode;
   className?: string;
   id?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
 export function SectionWrapper({ children, className, id, style }: SectionWrapperProps) {
@@ -20,5 +19,5 @@ export function SectionWrapper({ children, className, id, style }: SectionWrappe
     >
       {children}
     </section>
-  )
+  );
 }

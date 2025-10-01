@@ -109,20 +109,18 @@ export function Header() {
 
     const headerHeight = getHeaderHeight();
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
         if (isClickingRef.current) return;
         
         let bestEntry: IntersectionObserverEntry | null = null;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
-              bestEntry = entry;
-            }
+        for (const entry of entries) {
+          if (entry.isIntersecting && (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio)) {
+            bestEntry = entry;
           }
-        });
-        const target: Element | undefined = bestEntry?.target;
-        if (target instanceof HTMLElement && target.id) {
-          setActiveSection(target.id);
+        }
+
+        if (bestEntry && bestEntry.target instanceof HTMLElement) {
+          setActiveSection(bestEntry.target.id);
         }
       },
       {
@@ -201,7 +199,13 @@ export function Header() {
         
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
            <CtaButton asChild>
-             <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => handleNavClick("#upload", e)}>Generate my documents</Link>
+             <Link href={pathname === '/' ? '#upload' : '/#upload'} onClick={(e) => {
+               if (pathname === '/') {
+                 e.preventDefault();
+                 history.pushState(null, '', '#upload');
+                 smoothScrollToId("upload");
+               }
+             }}>Generate my documents</Link>
            </CtaButton>
         </div>
 

@@ -59,7 +59,7 @@ export function HowItWorksSection() {
         <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
           {steps.map((step, index) => (
             <Card
-              key={index}
+              key={step.title}
               className="flex flex-col overflow-hidden bg-card/80 border-primary/20 shadow-e1 rounded-xl p-6"
             >
               <div className="mb-4 flex items-start justify-between">
@@ -81,7 +81,7 @@ export function HowItWorksSection() {
                   <div className="relative w-full" style={{ aspectRatio: '16 / 10' }}>
                     <Image
                       src={step.visual}
-                      alt={('alt' in step && step.alt) ? step.alt : step.title}
+                      alt={(step as any).alt || step.title}
                       data-ai-hint="form screenshot"
                       fill
                       className="object-cover"

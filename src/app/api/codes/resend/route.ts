@@ -9,7 +9,8 @@ export async function POST(req: Request) {
   const { data: cust } = await supabaseAdmin.from('customers').select('id').eq('email', email).single();
   if (!cust) return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
 
-  const mkey = monthKey();
+  // month_key must be an ISO date (YYYY-MM-DD). monthKey() already returns ISO string.
+  const mkey = monthKey().slice(0, 10);
   const { data: codeRow } = await supabaseAdmin
     .from('monthly_codes')
     .select('code_hash, created_at, expires_at') // (We don't have the plain code; for MVP you can create a new code here)
