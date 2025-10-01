@@ -66,7 +66,7 @@ export function HowItWorksSection() {
                 <Badge variant="outline" className="w-fit border-primary/50 text-primary">
                   Step {index + 1}
                 </Badge>
-                {/* Hide icon if a visual is provided (Step 1) */}
+                {/* Hide icon if a visual is provided (Step 1) */} 
                 {!step.visual && step.icon}
               </div>
 

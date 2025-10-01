@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/sheet"
 import { CtaButton } from "../ui/cta-button";
 import { usePathname } from 'next/navigation';
-import Image from "next/image";
 import { HardHat } from "lucide-react";
 
 const navLinks = [
@@ -40,7 +39,7 @@ export function Header() {
   const pathname = usePathname();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const isClickingRef = useRef(false);
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getHeaderHeight = useCallback(() => {
     if (typeof window === "undefined") return 80;
