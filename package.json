@@ -7,7 +7,7 @@
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
     "build": "next build",
-    "build:dev": "npm run build",    
+    "build:dev": "npm run build",
     "start": "next start -p $PORT",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
@@ -54,6 +54,7 @@
     "jose": "^6.1.0",
     "lucide-react": "^0.475.0",
     "next": "15.3.3",
+    "nodemailer": "^7.0.6",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
@@ -69,6 +70,7 @@
     "remark-html": "^16.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
+    "resend": "^6.1.2",
     "simplex-noise": "^4.0.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
@@ -79,6 +81,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "file-loader": "^6.2.0",
