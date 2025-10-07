@@ -7,6 +7,9 @@ import {
   addDaysUTC,
   monthKeyISO,
 } from '@/lib/codes';
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(req: Request) {
   const hdr = req.headers.get('x-admin-secret');
