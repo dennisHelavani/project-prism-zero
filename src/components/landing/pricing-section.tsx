@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { CtaButton } from "../ui/cta-button";
 import { StarBorder } from "../ui/star-border";
 
+
 const tiers = [
   {
     name: "Basic",
@@ -22,7 +23,7 @@ const tiers = [
       "Standard support",
     ],
     cta: "Get Started",
-    href: "#",
+    href: "/checkout/rams",              // ← RAMS product
     icon: <Rocket className="w-6 h-6 text-primary" />,
     highlighted: false,
   },
@@ -40,11 +41,12 @@ const tiers = [
       "Content creation assistance",
     ],
     cta: "Get Started",
-    href: "#",
+    href: "/checkout/cpp",               // ← CPP product
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
   },
 ];
+
 
 export function PricingSection() {
   return (
