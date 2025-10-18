@@ -1,71 +1,110 @@
+// src/app/pricing/success/page.tsx
 import { stripe } from '@/lib/stripe';
+
+export const runtime = 'nodejs'; // server runtime
+export const dynamic = 'force-dynamic'; // ensure fresh render after redirect back from Stripe
+
+type SP = { session_id?: string };
 
 export default async function SuccessPage({
   searchParams,
 }: {
-  searchParams?: { session_id?: string };
+  // In Next.js 15 App Router, searchParams is async:
+  searchParams: Promise<SP>;
 }) {
-  const sessionId = searchParams?.session_id;
+  const sp = await searchParams;
+  const sessionId = sp?.session_id;
 
   // If Stripe didn’t send session_id, still show a simple success page
   if (!sessionId) {
     return (
-      <main className="p-8 max-w-xl">
+      <main className="mx-auto max-w-2xl p-6 md:p-10">
         <h1 className="text-2xl font-semibold">Success</h1>
         <p className="mt-2">Your checkout completed.</p>
         <p className="mt-2">
-          Please check your inbox for an email with your one-time access link.
+          Please check your inbox for an email with your one-time access code and link.
         </p>
-        <a className="inline-block mt-6 underline" href="/pricing">Back to pricing</a>
+        <a className="mt-6 inline-block underline" href="/pricing">
+          Back to Pricing
+        </a>
       </main>
     );
   }
 
-  // Fetch the session to show details
-  const session = await stripe.checkout.sessions.retrieve(sessionId, {
-    expand: ['line_items.data.price'],
-  });
+  // Try to retrieve the session to show extra details (amount, email, product)
+  let amount: string | null = null;
+  let currency: string | undefined;
+  let email: string | undefined;
+  let paymentStatus: string | undefined;
+  let product: 'RAMS' | 'CPP' | undefined;
 
-  const amount =
-    typeof session.amount_total === 'number' ? (session.amount_total / 100).toFixed(2) : null;
-  const currency = session.currency?.toUpperCase();
-  const email =
-    (session.customer_details?.email as string | undefined) ||
-    (session.customer_email as string | undefined);
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['line_items.data.price'],
+    });
 
-  const paymentStatus = session.payment_status; // 'paid' or 'no_payment_required' etc.
+    amount =
+      typeof session.amount_total === 'number'
+        ? (session.amount_total / 100).toFixed(2)
+        : null;
+    currency = session.currency?.toUpperCase();
+    email =
+      (session.customer_details?.email as string | undefined) ||
+      (session.customer_email as string | undefined);
+    paymentStatus = session.payment_status;
 
-  const line = (session.line_items as any)?.data?.[0];
-  const priceId: string | undefined = line?.price?.id;
-  let product = session.metadata?.product as string | undefined;
-  if (!product) {
-    const ramOne = process.env.STRIPE_PRICE_RAMs_ONEOFF;
-    const cppOne = process.env.STRIPE_PRICE_CPP_ONEOFF;
-    if (priceId === ramOne) product = 'RAMS';
-    if (priceId === cppOne) product = 'CPP';
+    // Determine product from metadata or price id
+    const line = (session.line_items as any)?.data?.[0];
+    const priceId: string | undefined = line?.price?.id;
+
+    const ram = process.env.STRIPE_PRICE_RAMs_ONEOFF;
+    const cpp = process.env.STRIPE_PRICE_CPP_ONEOFF;
+
+    if (session.metadata?.product === 'RAMS' || session.metadata?.product === 'CPP') {
+      product = session.metadata.product as 'RAMS' | 'CPP';
+    } else if (priceId === ram) {
+      product = 'RAMS';
+    } else if (priceId === cpp) {
+      product = 'CPP';
+    }
+  } catch {
+    // If Stripe lookup fails, just fall back to the generic success UI below
   }
 
   return (
-    <main className="p-8 max-w-xl space-y-2">
+    <main className="mx-auto max-w-2xl p-6 md:p-10 space-y-3">
       <h1 className="text-2xl font-semibold">Success</h1>
       <p>Thank you{email ? `, ${email}` : ''}!</p>
-      <p>
-        Status: <b>{paymentStatus}</b>
-      </p>
+
+      {paymentStatus && (
+        <p>
+          Status: <b>{paymentStatus}</b>
+        </p>
+      )}
+
       {amount && currency && (
         <p>
           Total: <b>{amount} {currency}</b>
         </p>
       )}
-      {product && <p>Product: <b>{product}</b></p>}
+
+      {product && (
+        <p>
+          Product: <b>{product}</b>
+        </p>
+      )}
 
       <hr className="my-4" />
-      <p>
-        If you haven’t received the email with your one-time access link yet, give it a minute and
-        check your spam/junk folder. (In local dev, make sure your Stripe <code>listen</code> is
-        running and <code>RESEND_API_KEY</code>/<code>FROM_EMAIL</code> are set.)
+
+      <p className="text-sm text-muted-foreground">
+        If you haven’t received the email with your one-time access code yet, give it a minute and
+        check your spam/junk folder. (In development, ensure your Stripe webhook is configured and
+        <code className="mx-1">RESEND_API_KEY</code>/<code>FROM_EMAIL</code> are set.)
       </p>
-      <a className="inline-block mt-6 underline" href="/pricing">Back to pricing</a>
+
+      <a className="mt-4 inline-block underline" href="/pricing">
+        Back to Pricing
+      </a>
     </main>
   );
 }
