@@ -1,7 +1,9 @@
 // /app/api/access/submit/route.ts
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
+
+const supabaseAdmin = getSupabaseAdmin();
 export async function POST(req: Request) {
   const form = await req.formData();
   const code = String(form.get('code') ?? '').trim().toUpperCase();

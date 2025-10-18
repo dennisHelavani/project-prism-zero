@@ -1,8 +1,10 @@
 // app/access/forms/page.tsx
 import PageShell from '@/components/layout/page-shell';
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import AccessSingleForm from '@/components/landing/access-forms-client';
 
+
+const supabaseAdmin = getSupabaseAdmin();
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export default async function AccessForms({

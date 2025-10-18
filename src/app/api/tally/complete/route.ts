@@ -1,7 +1,10 @@
 // /app/api/tally/complete/route.ts
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
+
+
+const supabaseAdmin = getSupabaseAdmin();
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = (url.searchParams.get('code') || '').toUpperCase();

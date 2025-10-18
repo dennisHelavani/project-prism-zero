@@ -2,8 +2,11 @@
 import { headers as nextHeaders } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
+
+
+const supabaseAdmin = getSupabaseAdmin();
 // ---- Resend (HTTP) ----
 async function sendEmailViaResendHTTP(params: {
   to: string;
