@@ -1,53 +1,49 @@
 // src/app/api/stripe/create-checkout/route.ts
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
-
 import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { stripe } from '@/lib/stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-});
+type Product = 'RAMS' | 'CPP';
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002';
+const priceFor = (p: Product) =>
+  p === 'RAMS' ? process.env.STRIPE_PRICE_RAMs_ONEOFF : process.env.STRIPE_PRICE_CPP_ONEOFF;
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:9002';
+
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
-    const { email, product } = await req.json();
+    const { email, product }: { email?: string; product?: Product } =
+      await req.json().catch(() => ({}));
 
-    if (!email || !product) {
-      return NextResponse.json({ error: 'email_and_product_required' }, { status: 400 });
+    const cleanEmail = (email ?? '').toString().trim();
+    const chosen: Product = product === 'RAMS' ? 'RAMS' : 'CPP';
+    const priceId = priceFor(chosen);
+
+    if (!cleanEmail) {
+      return NextResponse.json({ error: 'Email required' }, { status: 400 });
     }
-
-    // Choose price & mode
-    let price: string | undefined;
-    let mode: 'payment' | 'subscription' = 'payment';
-
-    if (product === 'RAMS') {
-      price = process.env.STRIPE_PRICE_RAMs_SUB;
-      mode = 'subscription';
-    } else if (product === 'CPP') {
-      price = process.env.STRIPE_PRICE_CPP_ONEOFF;
-      mode = 'payment';
-    }
-
-    if (!price) {
-      return NextResponse.json({ error: 'price_not_configured' }, { status: 400 });
+    if (!priceId) {
+      return NextResponse.json({ error: `Missing price for ${chosen}` }, { status: 500 });
     }
 
     const session = await stripe.checkout.sessions.create({
-      mode,
-      customer_email: email,
-      line_items: [{ price, quantity: 1 }],
+      mode: 'payment', // one-time payment
+      customer_email: cleanEmail,
+      line_items: [{ price: priceId, quantity: 1 }],
       allow_promotion_codes: true,
-      success_url: `${APP_URL}/post-checkout?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${APP_URL}/pricing`,
-      metadata: { product }, // we’ll read this in the webhook
+      metadata: { product: chosen },
+      // send the session id back to our success page
+      success_url: `${BASE_URL}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${BASE_URL}/pricing?canceled=1`,
     });
 
     return NextResponse.json({ url: session.url }, { status: 200 });
   } catch (err: any) {
-    console.error('/api/stripe/create-checkout error', err);
-    return NextResponse.json({ error: 'server_error' }, { status: 500 });
+    console.error('[create-checkout] error:', err?.message || err);
+    return NextResponse.json(
+      { error: err?.raw?.message || err?.message || 'Unexpected error' },
+      { status: 500 }
+    );
   }
 }
