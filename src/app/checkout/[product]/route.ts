@@ -1,22 +1,19 @@
 // app/checkout/[product]/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 
 type Product = 'RAMS' | 'CPP';
 const priceFor = (p: Product) =>
   p === 'RAMS'
-    ? process.env.STRIPE_PRICE_RAMs_ONEOFF  // <- ensure ENV key is ALL CAPS "RAMS"
+    ? process.env.STRIPE_PRICE_RAMs_ONEOFF
     : process.env.STRIPE_PRICE_CPP_ONEOFF;
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { product: string } }  // <- required, not optional
-) {
+export async function GET(_req: NextRequest, ctx: any) {
   try {
-    const key = (params.product || '').toUpperCase();
+    const key = String(ctx?.params?.product ?? '').toUpperCase();
     const product: Product = key === 'RAMS' ? 'RAMS' : 'CPP';
 
     const priceId = priceFor(product);
