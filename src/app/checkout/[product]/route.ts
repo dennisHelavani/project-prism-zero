@@ -5,7 +5,7 @@ import { stripe } from '@/lib/stripe';
 type Product = 'RAMS' | 'CPP';
 const priceFor = (p: Product) =>
   p === 'RAMS'
-    ? process.env.STRIPE_PRICE_RAMS_ONEOFF  // <- ensure ENV key is ALL CAPS "RAMS"
+    ? process.env.STRIPE_PRICE_RAMs_ONEOFF  // <- ensure ENV key is ALL CAPS "RAMS"
     : process.env.STRIPE_PRICE_CPP_ONEOFF;
 
 export const runtime = 'nodejs';
