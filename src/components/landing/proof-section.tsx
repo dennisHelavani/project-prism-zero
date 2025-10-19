@@ -14,7 +14,7 @@ const techLogos = [
   { node: <p className="text-xl font-bold text-muted-foreground">Northline</p>, title: "Northline" },
 ];
 
-const chips = ["Used across UK projects", "Built with Tally + Make.com + OpenAI"];
+const chips = ["Used across UK projects", "Built by a Team of Professionals"];
 const stats = [
     { value: 92, label: "Hours Saved", unit: "k" },
     { value: 99, label: "Compliance Rate", unit: "%" },
