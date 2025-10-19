@@ -22,7 +22,7 @@ const tiers = [
       "2 revisions",
       "Standard support",
     ],
-    cta: "Get Started",
+    cta: "Buy RAMS",
     href: "/checkout/rams",              // ← RAMS product
     icon: <Rocket className="w-6 h-6 text-primary" />,
     highlighted: false,
@@ -40,7 +40,7 @@ const tiers = [
       "Priority support",
       "Content creation assistance",
     ],
-    cta: "Get Started",
+    cta: "Buy CPP",
     href: "/checkout/cpp",               // ← CPP product
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
@@ -84,7 +84,7 @@ export function PricingSection() {
               </CardHeader>
               <CardContent className="flex-grow p-0 pt-6">
                 <CtaButton asChild className="w-full">
-                  <Link href={tier.href}>{tier.cta}</Link>
+                  <Link href={tier.href} prefetch={false}>{tier.cta}</Link>
                 </CtaButton>
                 <div className="mt-6 space-y-3">
                     <p className="font-semibold">What's included:</p>
