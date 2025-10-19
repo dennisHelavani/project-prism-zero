@@ -11,7 +11,7 @@ import { StarBorder } from "../ui/star-border";
 
 const tiers = [
   {
-    name: "Basic",
+    name: "RAMS",
     price: "$299",
     priceSuffix: "/project",
     description: "Perfect for small businesses starting with AI automation.",
@@ -22,13 +22,13 @@ const tiers = [
       "2 revisions",
       "Standard support",
     ],
-    cta: "Buy RAMS",
+    cta: "Purchase",
     href: "/checkout/rams",              // ← RAMS product
     icon: <Rocket className="w-6 h-6 text-primary" />,
     highlighted: false,
   },
   {
-    name: "Pro",
+    name: "CPP",
     price: "$799",
     priceSuffix: "/project",
     description: "Ideal for growing companies needing robust e-commerce features.",
@@ -40,7 +40,7 @@ const tiers = [
       "Priority support",
       "Content creation assistance",
     ],
-    cta: "Buy CPP",
+    cta: "Purchase",
     href: "/checkout/cpp",               // ← CPP product
     icon: <Zap className="w-6 h-6 text-primary" />,
     highlighted: true,
