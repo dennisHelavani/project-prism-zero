@@ -83,7 +83,7 @@ export default function Home() {
         <CaseStudySection />
         <PricingSection />
         <ReviewsSection />
-        <FormSection />
+       {/*  <FormSection />*/}
         <FaqSection />
         <CtaSection />
       </main>

@@ -83,7 +83,7 @@ export function PricingSection() {
                  <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow p-0 pt-6">
-                <CtaButton asChild className="w-full">
+                <CtaButton  asChild className="w-full" >
                   <Link href={tier.href} prefetch={false}>{tier.cta}</Link>
                 </CtaButton>
                 <div className="mt-6 space-y-3">
