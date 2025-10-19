@@ -50,7 +50,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Sear
             <h1 className="text-2xl font-semibold tracking-tight text-white">You’re all set</h1>
             <p className="mt-2 text-sm text-white/70">
               {productLabel ? <>We’ve received your purchase of <b>{productLabel}</b>.</> : 'Your purchase is confirmed.'}
-              {' '}Check your inbox for your access code and next steps.
+              {' '}Check your mail inbox for your access code and next steps.
             </p>
 
             <div className="mt-6 grid w-full gap-4 sm:grid-cols-2">
