@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.hardhatai.co
+
+# Sitemaps
+Sitemap: https://www.hardhatai.co/sitemap.xml
