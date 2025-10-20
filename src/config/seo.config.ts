@@ -6,16 +6,16 @@ export const SEO = {
   titleTemplate: "%s | Hard Hat AI",
   description: "AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.",
   keywords: [
-    "RAMS generator",
-    "CDM documents",
-    "construction safety",
-    "method statements",
-    "risk assessments",
-    "UK HSE compliance",
-    "CPP automation",
-    "AI construction docs",
+    "automated construction phase plan generator",
+    "create construction phase plan form online",
+    "construction phase plan tool for contractors",
+    "instant RACM form generation for construction",
+    "risk and control matrix template for construction",
+    "online RACM & CPP forms",
+    "construction documentation generator – CPP & RACM",
+    "digital construction safety document tool CPP",
     "health and safety documents",
-    "construction planning"
+    "construction compliance document generator – forms"
   ],
   twitter: { handle: "@HardHatAI", card: "summary_large_image" }, // Replace with your Twitter handle
   openGraph: { type: "website", locale: "en_GB" },
