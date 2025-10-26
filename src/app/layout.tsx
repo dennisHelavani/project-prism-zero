@@ -40,10 +40,7 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     shortcut: "/favicon.ico",
-  },
-
-  // (nice to have for mobile UI color chips)
-  themeColor: "#0A0A0A",
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
