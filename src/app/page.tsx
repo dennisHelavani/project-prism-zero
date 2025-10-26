@@ -18,6 +18,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { SEO } from "@/config/seo.config";
 import Marketing from '@/config/marketing.tokens.json';
 
+
 const org = {
   "@context":"https://schema.org",
   "@type":"Organization",
