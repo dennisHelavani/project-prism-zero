@@ -12,7 +12,7 @@ import { StarBorder } from "../ui/star-border";
 const tiers = [
   {
     name: "RAMS",
-    price: "$299",
+    price: "£9.50",
     priceSuffix: "/project",
     description: "Perfect for small businesses starting with AI automation.",
     features: [
@@ -29,7 +29,7 @@ const tiers = [
   },
   {
     name: "CPP",
-    price: "$799",
+    price: "£14.95",
     priceSuffix: "/project",
     description: "Ideal for growing companies needing robust e-commerce features.",
     features: [

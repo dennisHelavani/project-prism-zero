@@ -33,7 +33,7 @@ const product = {
   "name":"Hard Hat AI — RAMS & CDM document generator",
   "applicationCategory":"BusinessApplication",
   "operatingSystem":"Web",
-  "offers": { "@type":"Offer", "price":"299", "priceCurrency":"GBP" },
+  "offers": { "@type":"Offer", "price":"9.50", "priceCurrency":"GBP" },
   "description":"Generate HSE/CDM documents in minutes with branded, compliant drafts."
 };
 const website = {

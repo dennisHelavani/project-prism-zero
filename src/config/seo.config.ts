@@ -5,7 +5,7 @@ export const SEO = {
   defaultTitle: "Generate HSE & CDM documents in minutes — Hard Hat AI",
   titleTemplate: "%s | Hard Hat AI",
   description:
-    "AI-powered editable documents, fully compliant and ready to send. Spend less time on paperwork and more on what matters—building.",
+    "Hard Hat AI helps UK contractors and construction professionals instantly generate RAMS, Construction Phase Plans, and safety documentation. AI-powered editable PDF files, HSE-aligned. Save hours on paperwork.",
   keywords: [
     "automated construction phase plan generator",
     "create construction phase plan form online",
