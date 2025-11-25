@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 
 type Product = 'RAMS' | 'CPP';
+
 const priceFor = (p: Product) =>
   p === 'RAMS'
     ? process.env.STRIPE_PRICE_RAMs_ONEOFF
@@ -11,21 +12,30 @@ const priceFor = (p: Product) =>
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET(_req: NextRequest, ctx: any) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ product: string }> }
+) {
   try {
-    const key = String(ctx?.params?.product ?? '').toUpperCase();
-    const product: Product = key === 'RAMS' ? 'RAMS' : 'CPP';
+    // ✅ params is now async, so we await it
+    const { product } = await params;
 
-    const priceId = priceFor(product);
+    const key = String(product ?? '').toUpperCase();
+    const resolvedProduct: Product = key === 'RAMS' ? 'RAMS' : 'CPP';
+
+    const priceId = priceFor(resolvedProduct);
     if (!priceId) {
-      return NextResponse.json({ error: `Missing price for ${product}` }, { status: 500 });
+      return NextResponse.json(
+        { error: `Missing price for ${resolvedProduct}` },
+        { status: 500 }
+      );
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
       allow_promotion_codes: true,
-      metadata: { product },
+      metadata: { product: resolvedProduct },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing?canceled=1`,
     });

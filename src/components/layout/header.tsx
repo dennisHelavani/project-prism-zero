@@ -177,7 +177,7 @@ export function Header() {
         {/* Desktop CTA → always /access */}
         <div className="hidden md:flex flex-1 justify-end items-center gap-4">
           <CtaButton asChild>
-            <Link href="/access">Generate my documents</Link>
+            <Link href="/access">Generate My Documents</Link>
           </CtaButton>
         </div>
 
