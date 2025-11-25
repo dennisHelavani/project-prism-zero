@@ -44,7 +44,7 @@ export default async function AccessGate() {
             </form>
 
             <p className="mt-4 text-xs text-white/50">
-              This code expires in 7 days and can be used once.
+              {/* This code expires in 7 days and can be used once. */}
             </p>
           </div>
         </div>
