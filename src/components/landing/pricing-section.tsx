@@ -13,7 +13,7 @@ const tiers = [
   {
     name: "RAMS",
     price: "£9.50",
-    priceSuffix: "/project",
+    priceSuffix: "/month",
     description: "Perfect for small businesses starting with AI automation.",
     features: [
       "5 pages included",
@@ -30,7 +30,7 @@ const tiers = [
   {
     name: "CPP",
     price: "£14.95",
-    priceSuffix: "/project",
+    priceSuffix: "/month",
     description: "Ideal for growing companies needing robust e-commerce features.",
     features: [
       "Up to 15 pages included",
