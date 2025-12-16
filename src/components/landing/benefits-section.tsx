@@ -60,7 +60,7 @@ const LEFT_VISUAL: Record<
 --------------------------------------------- */
 const CHIP_LABELS: Record<string, string[]> = {
   'Instant draft generation': [
-    'Fill 4 quick fields',
+    'Fill quick fields',
     'Answer questions',
     'Submit in seconds',
     'AI drafts RAMS/CPP',
@@ -82,7 +82,7 @@ const CHIP_LABELS: Record<string, string[]> = {
   ],
   'Branded output': [
     'Logo applied',
-    'Colours set',
+   
     'Footer legal',
     'Header format',
     'File naming',

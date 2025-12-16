@@ -7,11 +7,13 @@ import { AnimatedCounter } from "../ui/animated-counter";
 import { LogoLoop } from '../ui/logo-loop';
 import { MotionDiv } from "../ui/motion-div";
 
+
 const techLogos = [
-  { node: <p className="text-xl font-bold text-muted-foreground">Acme Rail</p>, title: "Acme Rail" },
-  { node: <p className="text-xl font-bold text-muted-foreground">Tier 1 Build</p>, title: "Tier 1 Build" },
-  { node: <p className="text-xl font-bold text-muted-foreground">CityWorks</p>, title: "CityWorks" },
-  { node: <p className="text-xl font-bold text-muted-foreground">Northline</p>, title: "Northline" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Apex Civil & Engineering</p>, title: "Apex Civil & Engineering" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Ironclad Construction Holdings</p>, title: "Ironclad Construction Holdings" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Vertex Projects International</p>, title: "Vertex Projects International" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Novus Infrastructure</p>, title: "Novus Infrastructure" },
+  { node: <p className="text-xl font-bold text-muted-foreground">Stonegate Projects</p>, title: "Stonegate Projects" },
 ];
 
 const chips = ["Used across UK projects", "Built by a Team of Professionals"];

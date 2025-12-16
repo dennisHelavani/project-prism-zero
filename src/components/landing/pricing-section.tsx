@@ -33,7 +33,7 @@ const tiers = [
     priceSuffix: "/month",
     description: "Ideal for growing companies needing robust e-commerce features.",
     features: [
-      "Up to 15 pages included",
+    
       "Advanced SEO optimization",
       "E-commerce integration",
       "Unlimited revisions",
