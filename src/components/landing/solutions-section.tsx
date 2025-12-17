@@ -52,27 +52,27 @@ export function SolutionsSection() {
         <div className="mx-auto mt-16 grid max-w-none grid-cols-1 gap-8 sm:mt-20 lg:max-w-none lg:grid-cols-3">
           {steps.map((step, index) => (
             <Card key={step.title} className="flex flex-col overflow-hidden bg-card/80 border-primary/20 shadow-e1 rounded-xl p-6">
-               <div className="flex justify-between items-start mb-4">
+              <div className="flex justify-between items-start mb-4">
                 <Badge variant="outline" className="border-[#FABE2C] text-white w-fit">
-                    Step {index + 1}
+                  Step {index + 1}
                 </Badge>
               </div>
               <CardHeader className="p-0">
                 <CardTitle className="font-headline text-xl font-bold">{step.title}</CardTitle>
               </CardHeader>
               <CardContent className="p-0 mt-2 flex-grow flex flex-col">
-                 <div className="my-4">
-                    <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
-                      <Image
-                          src={step.visual}
-                          alt={step.alt || `Step ${index + 1} visual`}
-                          data-ai-hint={index === 0 ? "form screenshot" : index === 1 ? "data processing abstract" : "document process"}
-                          fill
-                          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                          className="object-cover"
-                          unoptimized={step.visual.endsWith('.gif')}
-                      />
-                    </div>
+                <div className="my-4">
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
+                    <Image
+                      src={step.visual}
+                      alt={step.alt || `Step ${index + 1} visual`}
+                      data-ai-hint={index === 0 ? "form screenshot" : index === 1 ? "data processing abstract" : "document process"}
+                      fill
+                      sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                      className="object-cover"
+                      unoptimized={step.visual.endsWith('.gif')}
+                    />
+                  </div>
                 </div>
                 <p className="flex-grow text-muted-foreground">{step.description}</p>
               </CardContent>

@@ -48,15 +48,27 @@ export function CaseStudySection() {
           </div>
         </MotionDiv>
         <MotionDiv delay={0.2}>
-          <div className="relative h-96 w-full lg:h-[500px]">
-            <Image
-              src="/images/aaronprofile.png"
-              alt="Founder of Hard Hat AI, Aaron Lazenby, on a construction site"
-              data-ai-hint="construction manager portrait"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="rounded-lg object-cover shadow-lg object-top"
-            />
+          <div className="relative mx-auto w-full max-w-[400px]">
+            {/* Clean, Editorial Image Style */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] bg-neutral-900 shadow-2xl transition-all duration-700 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
+              {/* Soft gradient background for the container */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10" />
+              <Image
+                src="/images/aaronprofile.png"
+                alt="Aaron Lazenby, Founder of Hard Hat AI"
+                fill
+                className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority
+              />
+            </div>
+            {/* Minimalist ornamental detail - hidden on mobile for cleaner look */}
+            <div className="absolute -bottom-6 -right-6 -z-10 hidden md:block">
+              <div className="h-24 w-24 rounded-full border border-primary/20 opacity-50" />
+            </div>
+            <div className="absolute -top-6 -left-6 -z-10 hidden md:block">
+              <div className="h-32 w-32 rounded-full border border-white/5 opacity-50" />
+            </div>
           </div>
         </MotionDiv>
       </div>

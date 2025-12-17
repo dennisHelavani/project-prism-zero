@@ -33,7 +33,7 @@ const tiers = [
     priceSuffix: "/month",
     description: "Ideal for growing companies needing robust e-commerce features.",
     features: [
-    
+
       "Advanced SEO optimization",
       "E-commerce integration",
       "Unlimited revisions",
@@ -68,8 +68,8 @@ export function PricingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 md:mt-16 max-w-4xl mx-auto">
           {tiers.map((tier) => (
             <Card key={tier.name} className={cn(
-                "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6 transition-transform duration-300 ease-in-out hover:scale-105",
-                {"border-[#FABE2C]": tier.highlighted}
+              "flex flex-col bg-card border-white/10 shadow-e1 rounded-xl p-6 transition-transform duration-300 ease-in-out hover:scale-105",
+              { "border-[#FABE2C]": tier.highlighted }
             )}>
               <CardHeader className="p-0">
                 <div className="flex items-center gap-2">
@@ -77,25 +77,25 @@ export function PricingSection() {
                   <CardTitle className="font-headline text-2xl font-bold">{tier.name}</CardTitle>
                 </div>
                 <div className="flex items-baseline gap-1 pt-4">
-                    <p className="text-4xl font-bold tracking-tight">{tier.price}</p>
-                    <span className="text-sm text-muted-foreground">{tier.priceSuffix}</span>
+                  <p className="text-4xl font-bold tracking-tight">{tier.price}</p>
+                  <span className="text-sm text-muted-foreground">{tier.priceSuffix}</span>
                 </div>
-                 <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
+                <CardDescription className="pt-2 text-left">{tier.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow p-0 pt-6">
-                <CtaButton  href={tier.href} prefetch={false} className="w-full" >
-                 {tier.cta}
+                <CtaButton href={tier.href} prefetch={false} className="w-full" >
+                  {tier.cta}
                 </CtaButton>
                 <div className="mt-6 space-y-3">
-                    <p className="font-semibold">What's included:</p>
-                    <ul className="space-y-2">
-                        {tier.features.map(feature => (
-                             <li key={feature} className="flex items-center gap-2">
-                                <Check className="w-4 h-4 text-green-500" />
-                                <span className="text-sm text-muted-foreground">{feature}</span>
-                            </li>
-                        ))}
-                    </ul>
+                  <p className="font-semibold">What's included:</p>
+                  <ul className="space-y-2">
+                    {tier.features.map(feature => (
+                      <li key={feature} className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-green-500" />
+                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </CardContent>
             </Card>

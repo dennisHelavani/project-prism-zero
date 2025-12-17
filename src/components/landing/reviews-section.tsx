@@ -35,7 +35,7 @@ const reviews = [
     image: "https://picsum.photos/104/104",
     rating: 5,
   },
-   {
+  {
     quote: "The generated documents are top-notch—indispensable for safety planning.",
     name: "Emily White",
     title: "HSE Manager",
@@ -58,7 +58,7 @@ export function ReviewsSection() {
       </MotionDiv>
       <MotionDiv delay={0.2}>
         <div className="mt-12 md:mt-16 flex justify-center">
-           <AnimatedTestimonials
+          <AnimatedTestimonials
             items={reviews}
             direction="right"
             speed="slow"

@@ -7,50 +7,41 @@ import { StarBorder } from '../ui/star-border';
 import Link from 'next/link';
 import { MotionDiv } from '../ui/motion-div';
 import { cn } from '@/lib/utils';
+import { ArrowRight } from 'lucide-react';
+
 
 export function CtaSection() {
   return (
-    <SectionWrapper id="cta-section" className="my-12 md:my-24 relative overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <div
-          className={cn(
-            'absolute inset-0 bg-secondary bg-opacity-50',
-            'bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.2),rgba(255,255,255,0))]'
-          )}
-        />
+    <SectionWrapper id="cta-section" className="relative my-24 overflow-hidden py-24">
+      {/* Subtle Background Glow */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-primary/5 to-transparent blur-3xl opacity-50" />
       </div>
 
       <MotionDiv>
-        {/* 3D grey plate wrapper */}
-        <div className="mx-auto max-w-3xl">
-          <div className="relative rounded-2xl p-[1px] bg-gradient-to-b from-zinc-500/60 to-zinc-900/70 shadow-[0_20px_50px_rgba(0,0,0,0.45)]">
-            {/* inner surface */}
-            <div className="rounded-2xl bg-zinc-900/70 p-8 md:p-10 text-center
-                            shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-1px_0_rgba(0,0,0,0.45)]">
-              {/* subtle outer ring/edge highlight */}
-              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10" />
+        <div className="flex flex-col items-center text-center">
+          <h2 className="max-w-4xl font-headline text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            Ready to <span className="text-primary">build better?</span>
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg text-muted-foreground/80 md:text-xl leading-relaxed">
+            Stop wrestling with formatting and start managing safety. Generate site-specific RAMS and CPPs in minutes, not hours.
+          </p>
+          <div className="mt-10 flex flex-col items-center gap-6">
+            <Link href="#upload">
+              <StarBorder as="button" className="text-xl font-semibold w-64 h-14" color="hsl(var(--primary))" speed="4s">
+                <span className="flex items-center justify-center gap-2">
+                  Start Free Trial <ArrowRight className="w-5 h-5" />
+                </span>
+              </StarBorder>
+            </Link>
 
-              <BlurText
-                as="h2"
-                className="font-headline text-3xl md:text-4xl font-bold text-foreground glowing-text justify-center"
-                text="Ready to cut paperwork time?"
-              />
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                Generate a RAMS or CPP draft with your details and receive a branded PDF by email in about a minute.
-              </p>
 
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-                <CtaButton asChild>
-                  <Link href="#upload">Try with your template</Link>
-                </CtaButton>
-              </div>
-
-              <p className="mt-4 text-xs text-muted-foreground">
-                AI-generated — review before use.
-              </p>
-            </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              AI-generated — review before use.
+            </p>
           </div>
         </div>
+
       </MotionDiv>
     </SectionWrapper>
   );
