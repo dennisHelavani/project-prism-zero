@@ -30,7 +30,7 @@ export function CtaSection() {
             <Link href="#upload">
               <StarBorder as="button" className="text-xl font-semibold w-64 h-14" color="hsl(var(--primary))" speed="4s">
                 <span className="flex items-center justify-center gap-2">
-                  Start Free Trial <ArrowRight className="w-5 h-5" />
+                  Start <ArrowRight className="w-5 h-5" />
                 </span>
               </StarBorder>
             </Link>
