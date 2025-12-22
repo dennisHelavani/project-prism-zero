@@ -1,7 +1,8 @@
 // app/access/forms/page.tsx
 import PageShell from '@/components/layout/page-shell';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import AccessSingleForm from '@/components/landing/access-forms-client';
+import RAMSForm from '@/components/forms/RAMSForm';
+import CPPForm from '@/components/forms/CPPForm';
 
 
 const supabaseAdmin = getSupabaseAdmin();
@@ -71,17 +72,10 @@ export default async function AccessForms({
 
   // Only show the purchased product's form
   const product: 'RAMS' | 'CPP' = data.product === 'RAMS' ? 'RAMS' : 'CPP';
-  const base =
-    product === 'RAMS'
-      ? process.env.NEXT_PUBLIC_TALLY_RAMs_URL!
-      : process.env.NEXT_PUBLIC_TALLY_CPP_URL!;
-
-  const qs = new URLSearchParams({ email: data.email, code });
-  const src = `${base}?${qs.toString()}`;
 
   return (
     <PageShell>
-      <main className="mx-auto max-w-6xl px-4 pt-10 md:pt-12 space-y-6">
+      <main className="mx-auto max-w-6xl px-4 pt-10 md:pt-12 pb-16 space-y-6">
         {/* Centered on mobile, left-aligned on larger screens */}
         <div className="text-center lg:text-left">
           <h1 className="text-2xl font-semibold tracking-tight text-white">Submit your request</h1>
@@ -91,13 +85,11 @@ export default async function AccessForms({
           </p>
         </div>
 
-        <AccessSingleForm
-          email={data.email}
-          code={code}
-          src={src}
-          product={product}
-          expiresAtISO={data.expires_at}
-        />
+        {product === 'RAMS' ? (
+          <RAMSForm email={data.email} code={code} expiresAt={data.expires_at} />
+        ) : (
+          <CPPForm email={data.email} code={code} expiresAt={data.expires_at} />
+        )}
       </main>
     </PageShell>
   );
