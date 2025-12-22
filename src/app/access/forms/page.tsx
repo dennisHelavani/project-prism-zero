@@ -1,9 +1,7 @@
 // app/access/forms/page.tsx
 import PageShell from '@/components/layout/page-shell';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import RAMSForm from '@/components/forms/RAMSForm';
-import CPPForm from '@/components/forms/CPPForm';
-
+import AccessFormsClient from './AccessFormsClient';
 
 const supabaseAdmin = getSupabaseAdmin();
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -34,6 +32,7 @@ export default async function AccessForms({
     );
   }
 
+  // Get the current code's data
   const { data, error } = await supabaseAdmin
     .from('access_links')
     .select('*')
@@ -70,26 +69,37 @@ export default async function AccessForms({
     );
   }
 
-  // Only show the purchased product's form
-  const product: 'RAMS' | 'CPP' = data.product === 'RAMS' ? 'RAMS' : 'CPP';
+  // Get ALL active codes for this email to determine full entitlements
+  const { data: allCodes } = await supabaseAdmin
+    .from('access_links')
+    .select('product')
+    .eq('email', data.email.toLowerCase())
+    .eq('used', false)
+    .gt('expires_at', new Date().toISOString());
+
+  const hasCPP = allCodes?.some((c) => c.product === 'CPP') ?? false;
+  const hasRAMS = allCodes?.some((c) => c.product === 'RAMS') ?? false;
+  const codeProduct: 'RAMS' | 'CPP' = data.product === 'RAMS' ? 'RAMS' : 'CPP';
 
   return (
     <PageShell>
       <main className="mx-auto max-w-6xl px-4 pt-10 md:pt-12 pb-16 space-y-6">
-        {/* Centered on mobile, left-aligned on larger screens */}
+        {/* Header */}
         <div className="text-center lg:text-left">
           <h1 className="text-2xl font-semibold tracking-tight text-white">Submit your request</h1>
           <p className="mt-1 text-sm text-white/65">
-            Product: <b>{product}</b> • Code:{' '}
-            <span className="font-mono tracking-widest">{code}</span>
+            Select your document type and fill out the form below.
           </p>
         </div>
 
-        {product === 'RAMS' ? (
-          <RAMSForm email={data.email} code={code} expiresAt={data.expires_at} />
-        ) : (
-          <CPPForm email={data.email} code={code} expiresAt={data.expires_at} />
-        )}
+        <AccessFormsClient
+          email={data.email}
+          code={code}
+          expiresAt={data.expires_at}
+          codeProduct={codeProduct}
+          hasCPP={hasCPP}
+          hasRAMS={hasRAMS}
+        />
       </main>
     </PageShell>
   );
