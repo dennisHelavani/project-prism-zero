@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { ProductSwitcher, useLastProduct, type Product } from '@/components/forms/ProductSwitcher';
+import { AccessCard } from '@/components/forms/AccessCard';
 import RAMSForm from '@/components/forms/RAMSForm';
 import CPPForm from '@/components/forms/CPPForm';
 
@@ -44,38 +45,10 @@ export default function AccessFormsClient({
 
     const [selected, setSelected] = React.useState<Product>(getInitialProduct);
 
-    // Format expiry date for display
-    let expiryLabel = '';
-    try {
-        const d = new Date(expiresAt);
-        expiryLabel = new Intl.DateTimeFormat(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit',
-        }).format(d);
-    } catch {
-        // parsing failed
-    }
-
     return (
         <div className="space-y-6">
-            {/* Details card */}
-            <div className="rounded-2xl border border-white/10 bg-white/[.04] p-3 text-sm">
-                <p className="text-white/90">
-                    Code: <span className="font-mono tracking-widest">{code}</span>
-                </p>
-                <p className="text-white/60 truncate">Email: {email}</p>
-                <p className="mt-1 text-xs text-white/50">
-                    Your code is single-use
-                    {expiryLabel ? (
-                        <>
-                            {' '}and <b>expires on {expiryLabel}</b>
-                        </>
-                    ) : (
-                        ' and expires soon.'
-                    )}
-                </p>
-            </div>
+            {/* Access Card - Always visible */}
+            <AccessCard code={code} email={email} expiresAt={expiresAt} />
 
             {/* Product Switcher */}
             <ProductSwitcher

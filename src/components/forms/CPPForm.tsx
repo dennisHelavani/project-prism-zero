@@ -14,25 +14,34 @@ import {
 type DeliveriesOption = 'not-applicable' | 'text' | 'upload';
 
 type CPPFormData = {
-    // Header/Approval
+    // Sign-off
     email: string;
     approvedByName: string;
-    writtenBy: string;
-    revision: string;
-    dateStamped: string; // Auto-set on submit
+    dateStamped: string;
 
-    // Company Details
-    companyAddress: string;
+    // Company Details (saved as defaults)
+    companyName: string;
+    companyAddressLine1: string;
+    companyAddressLine2: string;
+    companyCity: string;
+    companyPostcode: string;
+    companyCountry: string;
     companyPhone: string;
     companyEmail: string;
 
-    // Project Details
-    projectName: string;
-    projectNumber: string;
-    f10Ref: string;
-    siteAddress: string;
+    // Project Key Info
+    projectTitle: string;
+    writtenBy: string;
+    revision: string;
     dateStart: string;
     duration: string;
+    projectNumber: string;
+    f10Ref: string;
+    siteAddressLine1: string;
+    siteAddressLine2: string;
+    siteCity: string;
+    sitePostcode: string;
+    siteCountry: string;
     projectTask: string;
 
     // Deliveries
@@ -47,18 +56,27 @@ type CPPFormData = {
 const initialFormData: CPPFormData = {
     email: '',
     approvedByName: '',
-    writtenBy: '',
-    revision: '',
     dateStamped: '',
-    companyAddress: '',
+    companyName: '',
+    companyAddressLine1: '',
+    companyAddressLine2: '',
+    companyCity: '',
+    companyPostcode: '',
+    companyCountry: '',
     companyPhone: '',
     companyEmail: '',
-    projectName: '',
-    projectNumber: '',
-    f10Ref: '',
-    siteAddress: '',
+    projectTitle: '',
+    writtenBy: '',
+    revision: '',
     dateStart: '',
     duration: '',
+    projectNumber: '',
+    f10Ref: '',
+    siteAddressLine1: '',
+    siteAddressLine2: '',
+    siteCity: '',
+    sitePostcode: '',
+    siteCountry: '',
     projectTask: '',
     deliveriesOption: 'not-applicable',
     deliveriesNote: '',
@@ -96,7 +114,12 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                     if (data.defaults) {
                         setFormData((prev) => ({
                             ...prev,
-                            companyAddress: data.defaults.companyAddress || prev.companyAddress,
+                            companyName: data.defaults.companyName || prev.companyName,
+                            companyAddressLine1: data.defaults.companyAddressLine1 || prev.companyAddressLine1,
+                            companyAddressLine2: data.defaults.companyAddressLine2 || prev.companyAddressLine2,
+                            companyCity: data.defaults.companyCity || prev.companyCity,
+                            companyPostcode: data.defaults.companyPostcode || prev.companyPostcode,
+                            companyCountry: data.defaults.companyCountry || prev.companyCountry,
                             companyPhone: data.defaults.companyPhone || prev.companyPhone,
                             companyEmail: data.defaults.companyEmail || prev.companyEmail,
                         }));
@@ -122,14 +145,17 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
     const validate = (): boolean => {
         const newErrors: Partial<Record<keyof CPPFormData, string>> = {};
 
-        if (!formData.projectName.trim()) {
-            newErrors.projectName = 'Project name is required';
+        if (!formData.projectTitle.trim()) {
+            newErrors.projectTitle = 'Project title is required';
         }
         if (!formData.dateStart) {
             newErrors.dateStart = 'Start date is required';
         }
-        if (!formData.siteAddress.trim()) {
-            newErrors.siteAddress = 'Site address is required';
+        if (!formData.siteAddressLine1.trim()) {
+            newErrors.siteAddressLine1 = 'Site address is required';
+        }
+        if (!formData.siteCity.trim()) {
+            newErrors.siteCity = 'Site city is required';
         }
         if (!formData.projectTask.trim()) {
             newErrors.projectTask = 'Project task description is required';
@@ -149,7 +175,6 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
         setIsSubmitting(true);
         setShowWarning(false);
 
-        // Auto-set date stamped
         const dateStamped = new Date().toISOString().split('T')[0];
 
         try {
@@ -158,7 +183,6 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
             formDataToSend.append('code', code ?? '');
             formDataToSend.append('dateStamped', dateStamped);
 
-            // Append all text fields
             Object.entries(formData).forEach(([key, value]) => {
                 if (value instanceof File) {
                     formDataToSend.append(key, value);
@@ -184,7 +208,12 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                     body: JSON.stringify({
                         email,
                         defaults: {
-                            companyAddress: formData.companyAddress,
+                            companyName: formData.companyName,
+                            companyAddressLine1: formData.companyAddressLine1,
+                            companyAddressLine2: formData.companyAddressLine2,
+                            companyCity: formData.companyCity,
+                            companyPostcode: formData.companyPostcode,
+                            companyCountry: formData.companyCountry,
                             companyPhone: formData.companyPhone,
                             companyEmail: formData.companyEmail,
                         },
@@ -195,7 +224,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
             setSubmitSuccess(true);
         } catch (err) {
             console.error('Form submission error:', err);
-            setErrors({ projectName: 'Failed to submit form. Please try again.' });
+            setErrors({ projectTitle: 'Failed to submit form. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
@@ -228,17 +257,8 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                     </p>
                 </div>
 
-                {/* Email (readonly) */}
-                <FormInput
-                    label="Email Address"
-                    type="email"
-                    value={formData.email}
-                    readOnly
-                    className="opacity-60"
-                />
-
-                {/* Approval Info */}
-                <FormSection title="Document Information">
+                {/* Sign-off Section */}
+                <FormSection title="Sign-off">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <FormInput
                             label="Approved By"
@@ -246,6 +266,108 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                             value={formData.approvedByName}
                             onChange={(e) => updateField('approvedByName', e.target.value)}
                         />
+                        <FormInput
+                            label="Date Stamped"
+                            type="text"
+                            value="Auto-generated on submission"
+                            readOnly
+                            className="opacity-60"
+                        />
+                        <FormInput
+                            label="Customer Email"
+                            type="email"
+                            value={formData.email}
+                            readOnly
+                            className="opacity-60"
+                        />
+                    </div>
+                </FormSection>
+
+                {/* Company Details Section */}
+                <FormSection title="Company Details" description="These will be saved for future use">
+                    <FormInput
+                        label="Company Name"
+                        placeholder="Your company name"
+                        value={formData.companyName}
+                        onChange={(e) => updateField('companyName', e.target.value)}
+                    />
+                    <FileUploadField
+                        label="Company Logo"
+                        description="Upload your company logo (optional)"
+                        accept="image/*"
+                        value={formData.companyLogo}
+                        onChange={(file) => updateField('companyLogo', file)}
+                        optional
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <FormInput
+                            label="Address Line 1"
+                            placeholder="Street and house number"
+                            value={formData.companyAddressLine1}
+                            onChange={(e) => updateField('companyAddressLine1', e.target.value)}
+                        />
+                        <FormInput
+                            label="Address Line 2"
+                            placeholder="Optional"
+                            value={formData.companyAddressLine2}
+                            onChange={(e) => updateField('companyAddressLine2', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <FormInput
+                            label="City"
+                            placeholder="City"
+                            value={formData.companyCity}
+                            onChange={(e) => updateField('companyCity', e.target.value)}
+                        />
+                        <FormInput
+                            label="Postcode"
+                            placeholder="Postcode"
+                            value={formData.companyPostcode}
+                            onChange={(e) => updateField('companyPostcode', e.target.value)}
+                        />
+                        <FormInput
+                            label="Country"
+                            placeholder="Country"
+                            value={formData.companyCountry}
+                            onChange={(e) => updateField('companyCountry', e.target.value)}
+                        />
+                        <FormInput
+                            label="Phone"
+                            type="tel"
+                            placeholder="Phone number"
+                            value={formData.companyPhone}
+                            onChange={(e) => updateField('companyPhone', e.target.value)}
+                        />
+                    </div>
+                    <FormInput
+                        label="Company Email"
+                        type="email"
+                        placeholder="Company email address"
+                        value={formData.companyEmail}
+                        onChange={(e) => updateField('companyEmail', e.target.value)}
+                    />
+                </FormSection>
+
+                {/* Project Key Info Section */}
+                <FormSection title="Project Key Info">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormInput
+                            label="Project Title"
+                            placeholder="e.g., 10-Storey Commercial Building"
+                            value={formData.projectTitle}
+                            onChange={(e) => updateField('projectTitle', e.target.value)}
+                            required
+                            error={errors.projectTitle}
+                        />
+                        <FormInput
+                            label="Project Number"
+                            placeholder="Reference number"
+                            value={formData.projectNumber}
+                            onChange={(e) => updateField('projectNumber', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <FormInput
                             label="Written / Reviewed By"
                             placeholder="Name"
@@ -258,70 +380,13 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                             value={formData.revision}
                             onChange={(e) => updateField('revision', e.target.value)}
                         />
-                    </div>
-                    <FormInput
-                        label="Date Stamped"
-                        type="text"
-                        value="Auto-generated on submission"
-                        readOnly
-                        className="opacity-60 mt-4"
-                    />
-                </FormSection>
-
-                {/* Company Details */}
-                <FormSection title="Company Details">
-                    <FileUploadField
-                        label="Company Logo"
-                        description="Upload your company logo (optional)"
-                        accept="image/*"
-                        value={formData.companyLogo}
-                        onChange={(file) => updateField('companyLogo', file)}
-                        optional
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <FormInput
-                            label="Company Address"
-                            placeholder="Full company address"
-                            value={formData.companyAddress}
-                            onChange={(e) => updateField('companyAddress', e.target.value)}
-                        />
-                        <FormInput
-                            label="Phone Number"
-                            type="tel"
-                            placeholder="Company phone"
-                            value={formData.companyPhone}
-                            onChange={(e) => updateField('companyPhone', e.target.value)}
+                            label="F10 Notification Ref"
+                            placeholder="If applicable"
+                            value={formData.f10Ref}
+                            onChange={(e) => updateField('f10Ref', e.target.value)}
                         />
                     </div>
-                    <FormInput
-                        label="Company Email"
-                        type="email"
-                        placeholder="Company email address"
-                        value={formData.companyEmail}
-                        onChange={(e) => updateField('companyEmail', e.target.value)}
-                        className="mt-4"
-                    />
-                </FormSection>
-
-                {/* Project Details Section */}
-                <FormSection title="Project Details">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormInput
-                            label="Project Name / Number (Title)"
-                            placeholder="e.g., 10-Storey Commercial Building"
-                            value={formData.projectName}
-                            onChange={(e) => updateField('projectName', e.target.value)}
-                            required
-                            error={errors.projectName}
-                        />
-                        <FormInput
-                            label="Project Number"
-                            placeholder="Project reference number"
-                            value={formData.projectNumber}
-                            onChange={(e) => updateField('projectNumber', e.target.value)}
-                        />
-                    </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormInput
                             label="Anticipated Commencement Date"
@@ -339,25 +404,51 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormInput
-                            label="F10 Notification Ref"
-                            placeholder="If applicable (optional)"
-                            value={formData.f10Ref}
-                            onChange={(e) => updateField('f10Ref', e.target.value)}
-                        />
-                        <FormInput
-                            label="Site Address"
-                            placeholder="Full site address"
-                            value={formData.siteAddress}
-                            onChange={(e) => updateField('siteAddress', e.target.value)}
-                            required
-                            error={errors.siteAddress}
-                        />
+                    {/* Site Address */}
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                        <p className="text-sm font-medium text-white/80 mb-3">Site Address</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormInput
+                                label="Address Line 1"
+                                placeholder="Street and number"
+                                value={formData.siteAddressLine1}
+                                onChange={(e) => updateField('siteAddressLine1', e.target.value)}
+                                required
+                                error={errors.siteAddressLine1}
+                            />
+                            <FormInput
+                                label="Address Line 2"
+                                placeholder="Optional"
+                                value={formData.siteAddressLine2}
+                                onChange={(e) => updateField('siteAddressLine2', e.target.value)}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <FormInput
+                                label="City"
+                                placeholder="City"
+                                value={formData.siteCity}
+                                onChange={(e) => updateField('siteCity', e.target.value)}
+                                required
+                                error={errors.siteCity}
+                            />
+                            <FormInput
+                                label="Postcode"
+                                placeholder="Postcode"
+                                value={formData.sitePostcode}
+                                onChange={(e) => updateField('sitePostcode', e.target.value)}
+                            />
+                            <FormInput
+                                label="Country"
+                                placeholder="Country"
+                                value={formData.siteCountry}
+                                onChange={(e) => updateField('siteCountry', e.target.value)}
+                            />
+                        </div>
                     </div>
                 </FormSection>
 
-                {/* Project Task / Activity - AI Input */}
+                {/* Project Task / Activity */}
                 <FormSection
                     title="Project Task / Activity"
                     description="This description drives the AI-generated content"
@@ -373,7 +464,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                     />
                 </FormSection>
 
-                {/* Deliveries Option */}
+                {/* Deliveries Section */}
                 <FormSection title="Deliveries">
                     <div className="space-y-4">
                         <div className="flex flex-col gap-3">
@@ -397,7 +488,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                                     onChange={() => updateField('deliveriesOption', 'text')}
                                     className="w-4 h-4 accent-primary"
                                 />
-                                <span className="text-white/90">Describe in text</span>
+                                <span className="text-white/90">Text instructions</span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer">
                                 <input
@@ -408,13 +499,13 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                                     onChange={() => updateField('deliveriesOption', 'upload')}
                                     className="w-4 h-4 accent-primary"
                                 />
-                                <span className="text-white/90">Upload traffic management plan image</span>
+                                <span className="text-white/90">Upload traffic management plan</span>
                             </label>
                         </div>
 
                         {formData.deliveriesOption === 'text' && (
                             <FormTextarea
-                                label="Deliveries Description"
+                                label="Deliveries Instructions"
                                 placeholder="Describe traffic management and deliveries..."
                                 value={formData.deliveriesNote}
                                 onChange={(e) => updateField('deliveriesNote', e.target.value)}

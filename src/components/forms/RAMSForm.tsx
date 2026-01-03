@@ -24,12 +24,20 @@ const PERMITS = [
 type PermitId = (typeof PERMITS)[number]['id'];
 
 type RAMSFormData = {
-    // Project Details
+    // Project basics
     email: string;
-    projectName: string; // Job description / RAMS title
+    ramsTitle: string;
     dateStart: string;
     duration: string;
-    location: string;
+
+    // Location of works (structured)
+    siteAddressLine1: string;
+    siteAddressLine2: string;
+    siteCity: string;
+    sitePostcode: string;
+    siteCountry: string;
+
+    // Deliveries
     deliveriesNote: string;
 
     // Technical Info
@@ -49,10 +57,14 @@ type RAMSFormData = {
 
 const initialFormData: RAMSFormData = {
     email: '',
-    projectName: '',
+    ramsTitle: '',
     dateStart: '',
     duration: '',
-    location: '',
+    siteAddressLine1: '',
+    siteAddressLine2: '',
+    siteCity: '',
+    sitePostcode: '',
+    siteCountry: '',
     deliveriesNote: '',
     technicalInfo: '',
     permits: [],
@@ -127,14 +139,17 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
     const validate = (): boolean => {
         const newErrors: Partial<Record<keyof RAMSFormData, string>> = {};
 
-        if (!formData.projectName.trim()) {
-            newErrors.projectName = 'Job description is required';
+        if (!formData.ramsTitle.trim()) {
+            newErrors.ramsTitle = 'RAMS title is required';
         }
         if (!formData.dateStart) {
             newErrors.dateStart = 'Start date is required';
         }
-        if (!formData.location.trim()) {
-            newErrors.location = 'Location is required';
+        if (!formData.siteAddressLine1.trim()) {
+            newErrors.siteAddressLine1 = 'Site address is required';
+        }
+        if (!formData.siteCity.trim()) {
+            newErrors.siteCity = 'City is required';
         }
         if (!formData.aiTaskDescription.trim()) {
             newErrors.aiTaskDescription = 'Brief description is required for AI generation';
@@ -159,7 +174,6 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
             formDataToSend.append('product', 'RAMS');
             formDataToSend.append('code', code ?? '');
 
-            // Append all text fields
             Object.entries(formData).forEach(([key, value]) => {
                 if (value instanceof File) {
                     formDataToSend.append(key, value);
@@ -179,7 +193,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                 throw new Error('Submission failed');
             }
 
-            // Save profile defaults
+            // Save profile defaults (permits)
             if (email) {
                 await fetch('/api/profile/defaults', {
                     method: 'POST',
@@ -196,7 +210,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
             setSubmitSuccess(true);
         } catch (err) {
             console.error('Form submission error:', err);
-            setErrors({ projectName: 'Failed to submit form. Please try again.' });
+            setErrors({ ramsTitle: 'Failed to submit form. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
@@ -231,24 +245,23 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
 
                 {/* Email (readonly) */}
                 <FormInput
-                    label="Email Address"
+                    label="Customer Email"
                     type="email"
                     value={formData.email}
                     readOnly
                     className="opacity-60"
                 />
 
-                {/* Project Details Section */}
-                <FormSection title="Project / Activity Details">
+                {/* Project Basics */}
+                <FormSection title="Project Basics">
                     <FormInput
-                        label="Job Description / RAMS Title"
+                        label="RAMS Title / Job Description"
                         placeholder="e.g., RAMS 01 – Finsbury Bower - Beam Installation"
-                        value={formData.projectName}
-                        onChange={(e) => updateField('projectName', e.target.value)}
+                        value={formData.ramsTitle}
+                        onChange={(e) => updateField('ramsTitle', e.target.value)}
                         required
-                        error={errors.projectName}
+                        error={errors.ramsTitle}
                     />
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <FormInput
                             label="Anticipated Commencement Date"
@@ -265,16 +278,48 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                             onChange={(e) => updateField('duration', e.target.value)}
                         />
                     </div>
+                </FormSection>
 
-                    <FormInput
-                        label="Location of Works"
-                        placeholder="Site address or area"
-                        value={formData.location}
-                        onChange={(e) => updateField('location', e.target.value)}
-                        required
-                        error={errors.location}
-                        className="mt-4"
-                    />
+                {/* Location of Works (Structured) */}
+                <FormSection title="Location of Works">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormInput
+                            label="Site Address Line 1"
+                            placeholder="Street and number"
+                            value={formData.siteAddressLine1}
+                            onChange={(e) => updateField('siteAddressLine1', e.target.value)}
+                            required
+                            error={errors.siteAddressLine1}
+                        />
+                        <FormInput
+                            label="Site Address Line 2"
+                            placeholder="Optional"
+                            value={formData.siteAddressLine2}
+                            onChange={(e) => updateField('siteAddressLine2', e.target.value)}
+                        />
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <FormInput
+                            label="City"
+                            placeholder="City"
+                            value={formData.siteCity}
+                            onChange={(e) => updateField('siteCity', e.target.value)}
+                            required
+                            error={errors.siteCity}
+                        />
+                        <FormInput
+                            label="Postcode"
+                            placeholder="Postcode"
+                            value={formData.sitePostcode}
+                            onChange={(e) => updateField('sitePostcode', e.target.value)}
+                        />
+                        <FormInput
+                            label="Country"
+                            placeholder="Country"
+                            value={formData.siteCountry}
+                            onChange={(e) => updateField('siteCountry', e.target.value)}
+                        />
+                    </div>
                 </FormSection>
 
                 {/* Deliveries */}
@@ -306,8 +351,8 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     />
                 </FormSection>
 
-                {/* Permits */}
-                <FormSection title="Permits Required">
+                {/* Permits Required */}
+                <FormSection title="Permits Required" description="Select all that apply (saved for future use)">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {PERMITS.map((permit) => (
                             <label
@@ -335,11 +380,11 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
 
                 {/* AI Input */}
                 <FormSection
-                    title="Brief Description for AI"
-                    description="Describe the works, constraints, and key hazards. The more detail, the better the output."
+                    title="AI Input"
+                    description="Describe the works, constraints, and key hazards. The more detail, the better."
                 >
                     <FormTextarea
-                        label="AI Input"
+                        label="Works Description"
                         placeholder="e.g., Write me a risk assessment and method statement for beam installation involving temporary jacks using a crawler crane. Key hazards include working at height, crane operations near live traffic..."
                         value={formData.aiTaskDescription}
                         onChange={(e) => updateField('aiTaskDescription', e.target.value)}

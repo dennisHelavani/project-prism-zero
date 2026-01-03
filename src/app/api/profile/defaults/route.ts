@@ -1,5 +1,6 @@
 // /api/profile/defaults - Save/load user profile defaults by email
 // No auth - just keyed by email address
+// Fails gracefully if profile_defaults table doesn't exist
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest) {
         const email = searchParams.get('email')?.toLowerCase().trim();
 
         if (!email) {
-            return NextResponse.json({ error: 'Email required' }, { status: 400 });
+            return NextResponse.json({ defaults: null });
         }
 
         const supabaseAdmin = getSupabaseAdmin();
@@ -30,18 +31,24 @@ export async function GET(request: NextRequest) {
             .eq('email', email)
             .single();
 
-        if (error && error.code !== 'PGRST116') {
-            // PGRST116 = not found, which is OK
-            console.error('Failed to fetch defaults:', error);
-            return NextResponse.json({ error: 'Failed to fetch defaults' }, { status: 500 });
+        // Handle any error gracefully - table might not exist
+        if (error) {
+            // PGRST116 = not found (expected)
+            // 42P01 = table doesn't exist
+            // Just return null defaults for any error
+            if (error.code !== 'PGRST116') {
+                console.log('Profile defaults fetch (non-critical):', error.code, error.message);
+            }
+            return NextResponse.json({ defaults: null });
         }
 
         return NextResponse.json({
             defaults: data?.defaults || null,
         });
     } catch (error) {
-        console.error('Profile defaults GET error:', error);
-        return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        // Fail gracefully - profile defaults are non-critical
+        console.log('Profile defaults GET (non-critical):', error);
+        return NextResponse.json({ defaults: null });
     }
 }
 
@@ -54,12 +61,12 @@ export async function POST(request: NextRequest) {
         const defaults: ProfileDefaults = body.defaults;
 
         if (!email) {
-            return NextResponse.json({ error: 'Email required' }, { status: 400 });
+            return NextResponse.json({ success: false });
         }
 
         const supabaseAdmin = getSupabaseAdmin();
 
-        // Upsert - insert or update
+        // Upsert - insert or update (fails silently if table doesn't exist)
         const { error } = await supabaseAdmin
             .from('profile_defaults')
             .upsert(
@@ -72,15 +79,15 @@ export async function POST(request: NextRequest) {
             );
 
         if (error) {
-            console.error('Failed to save defaults:', error);
-            // Don't fail silently - but also don't block form submission
-            // Just log and return success to not interrupt UX
-            return NextResponse.json({ success: false, error: 'Failed to save' });
+            // Log but don't fail - this is non-critical functionality
+            console.log('Profile defaults save (non-critical):', error.code, error.message);
+            return NextResponse.json({ success: false });
         }
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error('Profile defaults POST error:', error);
-        return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        // Fail gracefully - profile defaults are non-critical
+        console.log('Profile defaults POST (non-critical):', error);
+        return NextResponse.json({ success: false });
     }
 }
