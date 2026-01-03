@@ -1,6 +1,6 @@
 // /api/profile/defaults - Save/load user profile defaults by email + product
-// Separate storage for CPP and RAMS defaults
-// Fails gracefully if profile_defaults table doesn't exist
+// Uses separate tables: profile_cpp and profile_rams
+// Fails gracefully if tables don't exist
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const email = searchParams.get('email')?.toLowerCase().trim();
-        const product = searchParams.get('product') || 'CPP';
+        const product = searchParams.get('product')?.toUpperCase() || 'CPP';
 
         if (!email) {
             return NextResponse.json({ defaults: null });
@@ -18,19 +18,19 @@ export async function GET(request: NextRequest) {
 
         const supabaseAdmin = getSupabaseAdmin();
 
-        // Use composite key: email + product
-        const key = `${email}:${product}`;
+        // Use product-specific table: profile_cpp or profile_rams
+        const tableName = product === 'RAMS' ? 'profile_rams' : 'profile_cpp';
 
         const { data, error } = await supabaseAdmin
-            .from('profile_defaults')
+            .from(tableName)
             .select('defaults')
-            .eq('key', key)
+            .eq('customer_email', email)
             .single();
 
         // Handle any error gracefully - table might not exist
         if (error) {
             if (error.code !== 'PGRST116') {
-                console.log('Profile defaults fetch (non-critical):', error.code, error.message);
+                console.log(`Profile defaults fetch from ${tableName} (non-critical):`, error.code, error.message);
             }
             return NextResponse.json({ defaults: null });
         }
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const email = body.email?.toLowerCase().trim();
-        const product = body.product || 'CPP';
+        const product = body.product?.toUpperCase() || 'CPP';
         const defaults = body.defaults;
 
         if (!email) {
@@ -59,28 +59,27 @@ export async function POST(request: NextRequest) {
 
         const supabaseAdmin = getSupabaseAdmin();
 
-        // Use composite key: email + product
-        const key = `${email}:${product}`;
+        // Use product-specific table: profile_cpp or profile_rams
+        const tableName = product === 'RAMS' ? 'profile_rams' : 'profile_cpp';
 
-        // Upsert - insert or update (fails silently if table doesn't exist)
+        // Upsert - insert or update on customer_email conflict
         const { error } = await supabaseAdmin
-            .from('profile_defaults')
+            .from(tableName)
             .upsert(
                 {
-                    key,
-                    email,
-                    product,
-                    defaults,
+                    customer_email: email,
+                    defaults: defaults,
                     updated_at: new Date().toISOString(),
                 },
-                { onConflict: 'key' }
+                { onConflict: 'customer_email' }
             );
 
         if (error) {
-            console.log('Profile defaults save (non-critical):', error.code, error.message);
+            console.log(`Profile defaults save to ${tableName} (non-critical):`, error.code, error.message);
             return NextResponse.json({ success: false });
         }
 
+        console.log(`Profile defaults saved to ${tableName} for ${email}`);
         return NextResponse.json({ success: true });
     } catch (error) {
         console.log('Profile defaults POST (non-critical):', error);

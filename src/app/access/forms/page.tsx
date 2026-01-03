@@ -49,15 +49,15 @@ export default async function AccessForms({
     );
   }
 
-  if (data.used) {
-    return (
-      <PageShell>
-        <main className="mx-auto max-w-6xl px-4 pt-12">
-          <Message>This code has already been used.</Message>
-        </main>
-      </PageShell>
-    );
-  }
+  // if (data.used) {
+  //   return (
+  //     <PageShell>
+  //       <main className="mx-auto max-w-6xl px-4 pt-12">
+  //         <Message>This code has already been used.</Message>
+  //       </main>
+  //     </PageShell>
+  //   );
+  // }
 
   if (new Date(data.expires_at).getTime() < Date.now()) {
     return (
