@@ -223,18 +223,16 @@ export default function CPPForm({ email, code }: Props) {
                 formDataToSend.append('CPP_DELIVERIES_IMG', formData.CPP_DELIVERIES_IMG);
             }
 
-            const res = await fetch('/api/forms/submit', {
+            // Use the access/submit endpoint which triggers doc generation
+            const res = await fetch('/api/access/submit', {
                 method: 'POST',
                 body: formDataToSend,
+                redirect: 'manual', // Don't auto-follow redirects
             });
 
-            if (!res.ok) {
-                throw new Error('Submission failed');
-            }
-
-            // Save CPP-specific profile defaults
+            // Save CPP-specific profile defaults (fire and forget)
             if (email) {
-                await fetch('/api/profile/defaults', {
+                fetch('/api/profile/defaults', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -254,7 +252,31 @@ export default function CPPForm({ email, code }: Props) {
                 }).catch((err) => console.error('Failed to save defaults:', err));
             }
 
-            setSubmitSuccess(true);
+            // Handle redirect to thank you page
+            if (res.status === 303 || res.status === 302 || res.status === 307) {
+                const redirectUrl = res.headers.get('Location');
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                    return;
+                }
+            }
+
+            // If response is OK (200), check for redirect in body
+            if (res.ok) {
+                try {
+                    const data = await res.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                        return;
+                    }
+                } catch {
+                    // No JSON response, just show success
+                }
+                setSubmitSuccess(true);
+                return;
+            }
+
+            throw new Error('Submission failed');
         } catch (err) {
             console.error('Form submission error:', err);
             setErrors({ CPP_PROJECT_TITLE: 'Failed to submit form. Please try again.' });

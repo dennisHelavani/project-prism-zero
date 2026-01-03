@@ -56,6 +56,7 @@
     "gray-matter": "^4.0.3",
     "isomorphic-fetch": "^3.0.0",
     "jose": "^6.1.0",
+    "libreoffice": "^0.4.5",
     "lucide-react": "^0.475.0",
     "next": "15.3.3",
     "nodemailer": "^7.0.6",

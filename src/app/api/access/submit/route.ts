@@ -1,11 +1,14 @@
 // /app/api/access/submit/route.ts
-// Handles form submissions - validates code, inserts into submissions table
+// Handles form submissions - validates code, inserts into submissions table, triggers doc generation
 // Codes are REUSABLE until expires_at (no "used" blocking)
 
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 const supabaseAdmin = getSupabaseAdmin();
+
+// Python doc-generator service URL
+const DOC_GENERATOR_URL = process.env.DOC_GENERATOR_URL || 'http://localhost:8000';
 
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -28,11 +31,34 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing or invalid product' }, { status: 400 });
   }
 
-  // Collect all other form fields into placeholders object
-  const placeholders: Record<string, string> = {};
-  for (const [key, value] of form.entries()) {
-    if (key !== 'code' && key !== 'product') {
-      placeholders[key] = String(value ?? '');
+  // Parse placeholders from form data
+  let placeholders: Record<string, string> = {};
+  const placeholdersRaw = form.get('placeholders');
+  if (placeholdersRaw && typeof placeholdersRaw === 'string') {
+    try {
+      placeholders = JSON.parse(placeholdersRaw);
+    } catch {
+      console.log('Failed to parse placeholders JSON, collecting from form fields');
+    }
+  }
+
+  // If placeholders not parsed from JSON, collect from form fields
+  if (Object.keys(placeholders).length === 0) {
+    for (const [key, value] of form.entries()) {
+      if (key !== 'code' && key !== 'product' && key !== 'placeholders' && key !== 'ai_input') {
+        placeholders[key] = String(value ?? '');
+      }
+    }
+  }
+
+  // Parse AI input if present
+  let aiInput: Record<string, string> = {};
+  const aiInputRaw = form.get('ai_input');
+  if (aiInputRaw && typeof aiInputRaw === 'string') {
+    try {
+      aiInput = JSON.parse(aiInputRaw);
+    } catch {
+      console.log('Failed to parse ai_input JSON');
     }
   }
 
@@ -65,13 +91,13 @@ export async function POST(req: Request) {
   // Insert into submissions table - matches exact schema:
   // product, customer_email, placeholders, uploads, ai_input, access_code, outputs
   const submissionPayload = {
-    product: product,                    // text, required
-    customer_email: customerEmail,       // text, required
-    placeholders: placeholders,          // jsonb, default {}
-    uploads: {},                         // jsonb, default {} - files optional
-    ai_input: {},                        // jsonb, default {} - for future AI
-    access_code: code,                   // text, optional
-    outputs: {},                         // jsonb, default {} - doc outputs
+    product: product,
+    customer_email: customerEmail,
+    placeholders: placeholders,
+    uploads: {},
+    ai_input: aiInput,
+    access_code: code,
+    outputs: {}, // Will be populated after generation
   };
 
   console.log('Table: public.submissions');
@@ -85,26 +111,67 @@ export async function POST(req: Request) {
 
   if (insertError) {
     console.log('ERROR: Failed to insert into submissions');
-    console.log('Insert error code:', insertError.code);
-    console.log('Insert error message:', insertError.message);
-    console.log('Insert error details:', insertError.details);
-    console.log('Insert error hint:', insertError.hint);
+    console.log('Insert error:', insertError);
     return NextResponse.json(
-      {
-        error: 'Failed to save submission',
-        details: insertError.message,
-        hint: insertError.hint,
-      },
+      { error: 'Failed to save submission', details: insertError.message },
       { status: 500 }
     );
   }
 
-  console.log('SUCCESS: Submission inserted');
-  console.log('Inserted row ID:', insertedRow?.id);
+  const submissionId = insertedRow?.id;
+  console.log('SUCCESS: Submission inserted, ID:', submissionId);
+
+  // Trigger document generation (fire and forget - non-blocking)
+  // The Python service will update the submission outputs when done
+  if (submissionId) {
+    triggerDocGeneration(submissionId).catch((err) => {
+      console.error('Doc generation trigger failed:', err);
+    });
+  }
+
   console.log('==========================');
 
-  // Only redirect after successful insert
-  const url = new URL('/thanks', process.env.NEXT_PUBLIC_SITE_URL);
+  // Redirect to thank you page with submission ID
+  const url = new URL('/thanks', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
+  url.searchParams.set('id', submissionId);
   url.searchParams.set('product', product);
   return NextResponse.redirect(url, { status: 303 });
+}
+
+/**
+ * Trigger document generation via Python service.
+ * This is fire-and-forget - the Python service updates Supabase when done.
+ */
+async function triggerDocGeneration(submissionId: string): Promise<void> {
+  console.log(`Triggering doc generation for submission: ${submissionId}`);
+
+  try {
+    const res = await fetch(`${DOC_GENERATOR_URL}/generate-from-submission`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ submission_id: submissionId }),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`Doc generation failed: ${res.status} - ${errorText}`);
+
+      // Update submission with error
+      await supabaseAdmin
+        .from('submissions')
+        .update({ outputs: { error: `Generation failed: ${res.status}` } })
+        .eq('id', submissionId);
+    } else {
+      const result = await res.json();
+      console.log('Doc generation result:', result);
+    }
+  } catch (err) {
+    console.error('Failed to call doc generator:', err);
+
+    // Update submission with error
+    await supabaseAdmin
+      .from('submissions')
+      .update({ outputs: { error: 'Failed to connect to doc generator service' } })
+      .eq('id', submissionId);
+  }
 }

@@ -215,7 +215,16 @@ export default function RAMSForm({ email, code }: Props) {
                 RAMS_COMPANY_EMAIL: formData.RAMS_COMPANY_EMAIL,
                 RAMS_START_DATE: formData.RAMS_START_DATE,
                 RAMS_DURATION: formData.RAMS_DURATION,
-                RAMS_PERMITS_LIST: buildPermitsList(),
+
+                // Granular Permits
+                RAMS_PERMIT_BREAK_GROUND: formData.permits.includes('break-ground') ? 'Permit to Break Ground / Dig' : '',
+                RAMS_PERMIT_TO_WORK: formData.permits.includes('hot-works') ? 'Hot Works Permit' : '',
+                RAMS_PERMIT_TO_LIFT: formData.permits.includes('lift') ? 'Permit to Lift' : '',
+                RAMS_PERMIT_WORK_AT_HEIGHT: formData.permits.includes('work-at-height') ? 'Work at Height Permit' : '',
+
+                // Only 'Other' text goes into the generic list
+                RAMS_PERMITS_LIST: formData.permits.includes('other') ? formData.permitsOtherText.trim() : '',
+
                 RAMS_FIRST_AIDERS: formData.RAMS_FIRST_AIDERS,
                 RAMS_FIRE_MARSHALLS: formData.RAMS_FIRE_MARSHALLS,
                 RAMS_DELIVERIES_TEXT: formData.RAMS_DELIVERIES_TEXT,
@@ -241,18 +250,16 @@ export default function RAMSForm({ email, code }: Props) {
                 formDataToSend.append('RAMS_DELIVERIES_IMG', formData.RAMS_DELIVERIES_IMG);
             }
 
-            const res = await fetch('/api/forms/submit', {
+            // Use the access/submit endpoint which triggers doc generation
+            const res = await fetch('/api/access/submit', {
                 method: 'POST',
                 body: formDataToSend,
+                redirect: 'manual', // Don't auto-follow redirects
             });
 
-            if (!res.ok) {
-                throw new Error('Submission failed');
-            }
-
-            // Save RAMS-specific profile defaults
+            // Save RAMS-specific profile defaults (fire and forget)
             if (email) {
-                await fetch('/api/profile/defaults', {
+                fetch('/api/profile/defaults', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -268,7 +275,34 @@ export default function RAMSForm({ email, code }: Props) {
                 }).catch((err) => console.error('Failed to save defaults:', err));
             }
 
-            setSubmitSuccess(true);
+            // Handle redirect to thank you page
+            if (res.status === 303 || res.status === 302 || res.status === 307) {
+                const redirectUrl = res.headers.get('Location');
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                    return;
+                }
+            }
+
+            // If response is OK (200), check for redirect in body
+            if (res.ok) {
+                // The API responded with success, redirect manually
+                const url = new URL(window.location.href);
+                // Try to get submission ID from response if available
+                try {
+                    const data = await res.json();
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                        return;
+                    }
+                } catch {
+                    // No JSON response, just show success
+                }
+                setSubmitSuccess(true);
+                return;
+            }
+
+            throw new Error('Submission failed');
         } catch (err) {
             console.error('Form submission error:', err);
             setErrors({ RAMS_TITLE: 'Failed to submit form. Please try again.' });

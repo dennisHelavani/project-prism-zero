@@ -1,0 +1,26 @@
+{
+    "product": "RAMS",
+    "placeholders": {
+        "RAMS_TITLE": "RAMS Permit Test",
+        "RAMS_COMPANY_NAME": "Acme Construction Ltd",
+        "RAMS_SITE_ADDRESS_LINE1": "456 Development Road",
+        "RAMS_SITE_ADDRESS_LINE2": "",
+        "RAMS_SITE_CITY": "Manchester",
+        "RAMS_SITE_POSTCODE": "M1 2AB",
+        "RAMS_SITE_COUNTRY": "United Kingdom",
+        "RAMS_COMPANY_PHONE": "+44 20 7123 4567",
+        "RAMS_COMPANY_EMAIL": "safety@acmeconstruction.co.uk",
+        "RAMS_START_DATE": "2026-02-15",
+        "RAMS_DURATION": "6 weeks",
+        "RAMS_FIRST_AIDERS": "John Smith",
+        "RAMS_FIRE_MARSHALLS": "Mike Johnson",
+        "RAMS_DELIVERIES_TEXT": "Standard deliveries.",
+        "RAMS_PERMIT_BREAK_GROUND": "Permit to Break Ground / Dig",
+        "RAMS_PERMIT_TO_WORK": "",
+        "RAMS_PERMIT_TO_LIFT": "Permit to Lift",
+        "RAMS_PERMIT_WORK_AT_HEIGHT": "",
+        "RAMS_PERMITS_LIST": "Other: Special confined space permit"
+    },
+    "images": {},
+    "output_basename": "rams_permits_test"
+}
