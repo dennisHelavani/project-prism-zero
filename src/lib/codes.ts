@@ -159,7 +159,7 @@ export function matchesCodeHash(plain: string, hashHex: string) {
 export async function markCodeUsed(codeRowId: string) {
   const { error } = await supabase
     .from('monthly_codes')
-    .update({ used: true })
+    .update({ used: false })
     .eq('id', codeRowId);
   if (error) throw error;
 }
