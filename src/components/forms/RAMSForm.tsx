@@ -12,7 +12,7 @@ import {
 } from './FormFieldsShared';
 import { Checkbox } from '@/components/ui/checkbox';
 
-// Permit options with Other
+// Permit options
 const PERMITS = [
     { id: 'break-ground', label: 'Permit to Break Ground / Dig' },
     { id: 'hot-works', label: 'Hot Works Permit' },
@@ -23,55 +23,68 @@ const PERMITS = [
 
 type PermitId = (typeof PERMITS)[number]['id'];
 
+// Form data keys match template placeholder names exactly
 type RAMSFormData = {
-    // Project basics
+    // Customer
     email: string;
-    ramsTitle: string;
-    dateStart: string;
-    duration: string;
 
-    // Location of works (structured)
-    siteAddressLine1: string;
-    siteAddressLine2: string;
-    siteCity: string;
-    sitePostcode: string;
-    siteCountry: string;
+    // Project Basics
+    RAMS_TITLE: string;
+    RAMS_START_DATE: string;
+    RAMS_DURATION: string;
+
+    // Company Details
+    RAMS_COMPANY_NAME: string;
+    RAMS_COMPANY_PHONE: string;
+    RAMS_COMPANY_EMAIL: string;
+
+    // Site/Location Details
+    RAMS_SITE_ADDRESS_LINE1: string;
+    RAMS_SITE_ADDRESS_LINE2: string;
+    RAMS_SITE_CITY: string;
+    RAMS_SITE_POSTCODE: string;
+    RAMS_SITE_COUNTRY: string;
 
     // Deliveries
-    deliveriesNote: string;
+    RAMS_DELIVERIES_TEXT: string;
 
-    // Technical Info
-    technicalInfo: string;
+    // Emergency Contacts
+    RAMS_FIRST_AIDERS: string;
+    RAMS_FIRE_MARSHALLS: string;
 
     // Permits
     permits: PermitId[];
     permitsOtherText: string;
 
-    // AI Input
+    // AI Input (for generation)
     aiTaskDescription: string;
 
-    // Files
-    companyLogo: File | null;
-    deliveriesImage: File | null;
+    // Files (optional)
+    RAMS_COMPANY_LOGO_IMG: File | null;
+    RAMS_DELIVERIES_IMG: File | null;
 };
 
 const initialFormData: RAMSFormData = {
     email: '',
-    ramsTitle: '',
-    dateStart: '',
-    duration: '',
-    siteAddressLine1: '',
-    siteAddressLine2: '',
-    siteCity: '',
-    sitePostcode: '',
-    siteCountry: '',
-    deliveriesNote: '',
-    technicalInfo: '',
+    RAMS_TITLE: '',
+    RAMS_START_DATE: '',
+    RAMS_DURATION: '',
+    RAMS_COMPANY_NAME: '',
+    RAMS_COMPANY_PHONE: '',
+    RAMS_COMPANY_EMAIL: '',
+    RAMS_SITE_ADDRESS_LINE1: '',
+    RAMS_SITE_ADDRESS_LINE2: '',
+    RAMS_SITE_CITY: '',
+    RAMS_SITE_POSTCODE: '',
+    RAMS_SITE_COUNTRY: '',
+    RAMS_DELIVERIES_TEXT: '',
+    RAMS_FIRST_AIDERS: '',
+    RAMS_FIRE_MARSHALLS: '',
     permits: [],
     permitsOtherText: '',
     aiTaskDescription: '',
-    companyLogo: null,
-    deliveriesImage: null,
+    RAMS_COMPANY_LOGO_IMG: null,
+    RAMS_DELIVERIES_IMG: null,
 };
 
 type Props = {
@@ -80,7 +93,7 @@ type Props = {
     expiresAt?: string;
 };
 
-export default function RAMSForm({ email, code, expiresAt }: Props) {
+export default function RAMSForm({ email, code }: Props) {
     const [formData, setFormData] = React.useState<RAMSFormData>({
         ...initialFormData,
         email: email ?? '',
@@ -91,19 +104,22 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
     const [submitSuccess, setSubmitSuccess] = React.useState(false);
     const [isLoadingDefaults, setIsLoadingDefaults] = React.useState(false);
 
-    // Load profile defaults on mount
+    // Load RAMS-specific profile defaults on mount
     React.useEffect(() => {
         if (!email) return;
 
         const loadDefaults = async () => {
             setIsLoadingDefaults(true);
             try {
-                const res = await fetch(`/api/profile/defaults?email=${encodeURIComponent(email)}`);
+                const res = await fetch(`/api/profile/defaults?email=${encodeURIComponent(email)}&product=RAMS`);
                 if (res.ok) {
                     const data = await res.json();
                     if (data.defaults) {
                         setFormData((prev) => ({
                             ...prev,
+                            RAMS_COMPANY_NAME: data.defaults.RAMS_COMPANY_NAME || prev.RAMS_COMPANY_NAME,
+                            RAMS_COMPANY_PHONE: data.defaults.RAMS_COMPANY_PHONE || prev.RAMS_COMPANY_PHONE,
+                            RAMS_COMPANY_EMAIL: data.defaults.RAMS_COMPANY_EMAIL || prev.RAMS_COMPANY_EMAIL,
                             permits: data.defaults.permits || prev.permits,
                         }));
                     }
@@ -136,23 +152,39 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
         });
     };
 
+    // Build permits list string for template
+    const buildPermitsList = (): string => {
+        const selected: string[] = formData.permits
+            .filter((id) => id !== 'other')
+            .map((id) => PERMITS.find((p) => p.id === id)?.label || id);
+
+        if (formData.permits.includes('other') && formData.permitsOtherText.trim()) {
+            selected.push(formData.permitsOtherText.trim());
+        }
+
+        return selected.join(', ');
+    };
+
     const validate = (): boolean => {
         const newErrors: Partial<Record<keyof RAMSFormData, string>> = {};
 
-        if (!formData.ramsTitle.trim()) {
-            newErrors.ramsTitle = 'RAMS title is required';
+        if (!formData.RAMS_TITLE.trim()) {
+            newErrors.RAMS_TITLE = 'RAMS title is required';
         }
-        if (!formData.dateStart) {
-            newErrors.dateStart = 'Start date is required';
+        if (!formData.RAMS_START_DATE) {
+            newErrors.RAMS_START_DATE = 'Start date is required';
         }
-        if (!formData.siteAddressLine1.trim()) {
-            newErrors.siteAddressLine1 = 'Site address is required';
+        if (!formData.RAMS_DURATION.trim()) {
+            newErrors.RAMS_DURATION = 'Duration is required';
         }
-        if (!formData.siteCity.trim()) {
-            newErrors.siteCity = 'City is required';
+        if (!formData.RAMS_SITE_ADDRESS_LINE1.trim()) {
+            newErrors.RAMS_SITE_ADDRESS_LINE1 = 'Site address is required';
+        }
+        if (!formData.RAMS_SITE_CITY.trim()) {
+            newErrors.RAMS_SITE_CITY = 'City is required';
         }
         if (!formData.aiTaskDescription.trim()) {
-            newErrors.aiTaskDescription = 'Brief description is required for AI generation';
+            newErrors.aiTaskDescription = 'Works description is required for AI generation';
         }
 
         setErrors(newErrors);
@@ -170,19 +202,44 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
         setShowWarning(false);
 
         try {
+            // Build placeholders object with exact keys
+            const placeholders: Record<string, string> = {
+                RAMS_TITLE: formData.RAMS_TITLE,
+                RAMS_COMPANY_NAME: formData.RAMS_COMPANY_NAME,
+                RAMS_SITE_ADDRESS_LINE1: formData.RAMS_SITE_ADDRESS_LINE1,
+                RAMS_SITE_ADDRESS_LINE2: formData.RAMS_SITE_ADDRESS_LINE2,
+                RAMS_SITE_CITY: formData.RAMS_SITE_CITY,
+                RAMS_SITE_POSTCODE: formData.RAMS_SITE_POSTCODE,
+                RAMS_SITE_COUNTRY: formData.RAMS_SITE_COUNTRY,
+                RAMS_COMPANY_PHONE: formData.RAMS_COMPANY_PHONE,
+                RAMS_COMPANY_EMAIL: formData.RAMS_COMPANY_EMAIL,
+                RAMS_START_DATE: formData.RAMS_START_DATE,
+                RAMS_DURATION: formData.RAMS_DURATION,
+                RAMS_PERMITS_LIST: buildPermitsList(),
+                RAMS_FIRST_AIDERS: formData.RAMS_FIRST_AIDERS,
+                RAMS_FIRE_MARSHALLS: formData.RAMS_FIRE_MARSHALLS,
+                RAMS_DELIVERIES_TEXT: formData.RAMS_DELIVERIES_TEXT,
+            };
+
+            // AI input stored separately
+            const aiInput: Record<string, string> = {
+                aiTaskDescription: formData.aiTaskDescription,
+            };
+
             const formDataToSend = new FormData();
             formDataToSend.append('product', 'RAMS');
             formDataToSend.append('code', code ?? '');
+            formDataToSend.append('email', email ?? '');
+            formDataToSend.append('placeholders', JSON.stringify(placeholders));
+            formDataToSend.append('ai_input', JSON.stringify(aiInput));
 
-            Object.entries(formData).forEach(([key, value]) => {
-                if (value instanceof File) {
-                    formDataToSend.append(key, value);
-                } else if (Array.isArray(value)) {
-                    formDataToSend.append(key, JSON.stringify(value));
-                } else if (value !== null && value !== undefined) {
-                    formDataToSend.append(key, String(value));
-                }
-            });
+            // Add optional uploads
+            if (formData.RAMS_COMPANY_LOGO_IMG) {
+                formDataToSend.append('RAMS_COMPANY_LOGO_IMG', formData.RAMS_COMPANY_LOGO_IMG);
+            }
+            if (formData.RAMS_DELIVERIES_IMG) {
+                formDataToSend.append('RAMS_DELIVERIES_IMG', formData.RAMS_DELIVERIES_IMG);
+            }
 
             const res = await fetch('/api/forms/submit', {
                 method: 'POST',
@@ -193,14 +250,18 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                 throw new Error('Submission failed');
             }
 
-            // Save profile defaults (permits)
+            // Save RAMS-specific profile defaults
             if (email) {
                 await fetch('/api/profile/defaults', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email,
+                        product: 'RAMS',
                         defaults: {
+                            RAMS_COMPANY_NAME: formData.RAMS_COMPANY_NAME,
+                            RAMS_COMPANY_PHONE: formData.RAMS_COMPANY_PHONE,
+                            RAMS_COMPANY_EMAIL: formData.RAMS_COMPANY_EMAIL,
                             permits: formData.permits,
                         },
                     }),
@@ -210,7 +271,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
             setSubmitSuccess(true);
         } catch (err) {
             console.error('Form submission error:', err);
-            setErrors({ ramsTitle: 'Failed to submit form. Please try again.' });
+            setErrors({ RAMS_TITLE: 'Failed to submit form. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
@@ -243,7 +304,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     </p>
                 </div>
 
-                {/* Email (readonly) */}
+                {/* Customer Email (readonly) */}
                 <FormInput
                     label="Customer Email"
                     type="email"
@@ -257,67 +318,103 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     <FormInput
                         label="RAMS Title / Job Description"
                         placeholder="e.g., RAMS 01 – Finsbury Bower - Beam Installation"
-                        value={formData.ramsTitle}
-                        onChange={(e) => updateField('ramsTitle', e.target.value)}
+                        value={formData.RAMS_TITLE}
+                        onChange={(e) => updateField('RAMS_TITLE', e.target.value)}
                         required
-                        error={errors.ramsTitle}
+                        error={errors.RAMS_TITLE}
                     />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <FormInput
-                            label="Anticipated Commencement Date"
+                            label="Anticipated Start Date"
                             type="date"
-                            value={formData.dateStart}
-                            onChange={(e) => updateField('dateStart', e.target.value)}
+                            value={formData.RAMS_START_DATE}
+                            onChange={(e) => updateField('RAMS_START_DATE', e.target.value)}
                             required
-                            error={errors.dateStart}
+                            error={errors.RAMS_START_DATE}
                         />
                         <FormInput
                             label="Duration of Works"
                             placeholder="e.g., 3 weeks"
-                            value={formData.duration}
-                            onChange={(e) => updateField('duration', e.target.value)}
+                            value={formData.RAMS_DURATION}
+                            onChange={(e) => updateField('RAMS_DURATION', e.target.value)}
+                            required
+                            error={errors.RAMS_DURATION}
                         />
                     </div>
                 </FormSection>
 
-                {/* Location of Works (Structured) */}
-                <FormSection title="Location of Works">
+                {/* Company Details */}
+                <FormSection title="Company Details">
+                    <FormInput
+                        label="Company Name"
+                        placeholder="Your company name"
+                        value={formData.RAMS_COMPANY_NAME}
+                        onChange={(e) => updateField('RAMS_COMPANY_NAME', e.target.value)}
+                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <FormInput
+                            label="Phone"
+                            type="tel"
+                            placeholder="Company phone"
+                            value={formData.RAMS_COMPANY_PHONE}
+                            onChange={(e) => updateField('RAMS_COMPANY_PHONE', e.target.value)}
+                        />
+                        <FormInput
+                            label="Email"
+                            type="email"
+                            placeholder="Company email"
+                            value={formData.RAMS_COMPANY_EMAIL}
+                            onChange={(e) => updateField('RAMS_COMPANY_EMAIL', e.target.value)}
+                        />
+                    </div>
+                    <FileUploadField
+                        label="Company Logo"
+                        description="Optional - upload your company logo"
+                        accept="image/*"
+                        value={formData.RAMS_COMPANY_LOGO_IMG}
+                        onChange={(file) => updateField('RAMS_COMPANY_LOGO_IMG', file)}
+                        optional
+                    />
+                </FormSection>
+
+                {/* Site Details */}
+                <FormSection title="Site Details">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormInput
                             label="Site Address Line 1"
                             placeholder="Street and number"
-                            value={formData.siteAddressLine1}
-                            onChange={(e) => updateField('siteAddressLine1', e.target.value)}
+                            value={formData.RAMS_SITE_ADDRESS_LINE1}
+                            onChange={(e) => updateField('RAMS_SITE_ADDRESS_LINE1', e.target.value)}
                             required
-                            error={errors.siteAddressLine1}
+                            error={errors.RAMS_SITE_ADDRESS_LINE1}
                         />
                         <FormInput
                             label="Site Address Line 2"
                             placeholder="Optional"
-                            value={formData.siteAddressLine2}
-                            onChange={(e) => updateField('siteAddressLine2', e.target.value)}
+                            value={formData.RAMS_SITE_ADDRESS_LINE2}
+                            onChange={(e) => updateField('RAMS_SITE_ADDRESS_LINE2', e.target.value)}
                         />
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <FormInput
                             label="City"
                             placeholder="City"
-                            value={formData.siteCity}
-                            onChange={(e) => updateField('siteCity', e.target.value)}
+                            value={formData.RAMS_SITE_CITY}
+                            onChange={(e) => updateField('RAMS_SITE_CITY', e.target.value)}
                             required
-                            error={errors.siteCity}
+                            error={errors.RAMS_SITE_CITY}
                         />
                         <FormInput
                             label="Postcode"
                             placeholder="Postcode"
-                            value={formData.sitePostcode}
-                            onChange={(e) => updateField('sitePostcode', e.target.value)}
+                            value={formData.RAMS_SITE_POSTCODE}
+                            onChange={(e) => updateField('RAMS_SITE_POSTCODE', e.target.value)}
                         />
                         <FormInput
                             label="Country"
                             placeholder="Country"
-                            value={formData.siteCountry}
-                            onChange={(e) => updateField('siteCountry', e.target.value)}
+                            value={formData.RAMS_SITE_COUNTRY}
+                            onChange={(e) => updateField('RAMS_SITE_COUNTRY', e.target.value)}
                         />
                     </div>
                 </FormSection>
@@ -327,28 +424,35 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     <FormTextarea
                         label="Deliveries Text"
                         placeholder="Describe deliveries and logistics, or 'As per Client CPP and Induction'"
-                        value={formData.deliveriesNote}
-                        onChange={(e) => updateField('deliveriesNote', e.target.value)}
+                        value={formData.RAMS_DELIVERIES_TEXT}
+                        onChange={(e) => updateField('RAMS_DELIVERIES_TEXT', e.target.value)}
                     />
                     <FileUploadField
-                        label="Deliveries Image (Optional)"
-                        description="Upload a traffic management plan or site layout"
+                        label="Deliveries Image"
+                        description="Optional - upload a traffic management plan or site layout"
                         accept="image/*"
-                        value={formData.deliveriesImage}
-                        onChange={(file) => updateField('deliveriesImage', file)}
+                        value={formData.RAMS_DELIVERIES_IMG}
+                        onChange={(file) => updateField('RAMS_DELIVERIES_IMG', file)}
                         optional
                     />
                 </FormSection>
 
-                {/* Technical Information */}
-                <FormSection title="Technical Information and Reports">
-                    <FormTextarea
-                        label="Technical Information"
-                        placeholder="Include any relevant technical reports, specifications, standards, or reference documents..."
-                        value={formData.technicalInfo}
-                        onChange={(e) => updateField('technicalInfo', e.target.value)}
-                        className="min-h-[100px]"
-                    />
+                {/* Emergency Contacts */}
+                <FormSection title="Emergency Contacts">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormInput
+                            label="First Aiders"
+                            placeholder="Names of first aiders on site"
+                            value={formData.RAMS_FIRST_AIDERS}
+                            onChange={(e) => updateField('RAMS_FIRST_AIDERS', e.target.value)}
+                        />
+                        <FormInput
+                            label="Fire Marshalls"
+                            placeholder="Names of fire marshalls on site"
+                            value={formData.RAMS_FIRE_MARSHALLS}
+                            onChange={(e) => updateField('RAMS_FIRE_MARSHALLS', e.target.value)}
+                        />
+                    </div>
                 </FormSection>
 
                 {/* Permits Required */}
@@ -380,28 +484,17 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
 
                 {/* AI Input */}
                 <FormSection
-                    title="AI Input"
+                    title="Works Description (AI Input)"
                     description="Describe the works, constraints, and key hazards. The more detail, the better."
                 >
                     <FormTextarea
-                        label="Works Description"
+                        label="Description"
                         placeholder="e.g., Write me a risk assessment and method statement for beam installation involving temporary jacks using a crawler crane. Key hazards include working at height, crane operations near live traffic..."
                         value={formData.aiTaskDescription}
                         onChange={(e) => updateField('aiTaskDescription', e.target.value)}
                         required
                         error={errors.aiTaskDescription}
                         className="min-h-[140px]"
-                    />
-                </FormSection>
-
-                {/* Company Logo */}
-                <FormSection title="Branding (Optional)">
-                    <FileUploadField
-                        label="Company Logo"
-                        accept="image/*"
-                        value={formData.companyLogo}
-                        onChange={(file) => updateField('companyLogo', file)}
-                        optional
                     />
                 </FormSection>
 

@@ -1,5 +1,5 @@
 // /api/forms/submit - Form submission endpoint
-// Stores structured JSON payload and marks access code as used
+// Stores structured JSON payload with placeholder keys matching DOCX templates
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
@@ -7,9 +7,9 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 type SubmissionPayload = {
     product: 'CPP' | 'RAMS';
     email: string;
-    placeholders: Record<string, string | string[]>;
+    placeholders: Record<string, string>;
     uploads: Record<string, { name: string; size: number; type: string }>;
-    ai_input: Record<string, string>;
+    ai_input?: Record<string, string>;
     created_at: string;
 };
 
@@ -21,38 +21,39 @@ export async function POST(request: NextRequest) {
         const code = formData.get('code') as string;
         const email = formData.get('email') as string;
 
-        // Build structured payload
-        const placeholders: Record<string, string | string[]> = {};
+        // Parse the pre-built placeholders JSON
+        let placeholders: Record<string, string> = {};
+        const placeholdersStr = formData.get('placeholders');
+        if (placeholdersStr && typeof placeholdersStr === 'string') {
+            try {
+                placeholders = JSON.parse(placeholdersStr);
+            } catch {
+                console.error('Failed to parse placeholders JSON');
+            }
+        }
+
+        // Parse AI input if present
+        let aiInput: Record<string, string> = {};
+        const aiInputStr = formData.get('ai_input');
+        if (aiInputStr && typeof aiInputStr === 'string') {
+            try {
+                aiInput = JSON.parse(aiInputStr);
+            } catch {
+                console.error('Failed to parse ai_input JSON');
+            }
+        }
+
+        // Collect file uploads (optional)
         const uploads: Record<string, { name: string; size: number; type: string }> = {};
-        const aiInput: Record<string, string> = {};
-
-        // AI input fields
-        const aiFields = ['projectTask', 'aiTaskDescription'];
-
         formData.forEach((value, key) => {
-            if (key === 'product' || key === 'code') return;
-
-            if (value instanceof File) {
-                if (value.size > 0) {
+            if (value instanceof File && value.size > 0) {
+                // Skip non-file fields
+                if (!['product', 'code', 'email', 'placeholders', 'ai_input'].includes(key)) {
                     uploads[key] = {
                         name: value.name,
                         size: value.size,
                         type: value.type,
                     };
-                }
-            } else if (aiFields.includes(key)) {
-                aiInput[key] = value;
-            } else {
-                // Try to parse JSON arrays (like permits)
-                try {
-                    const parsed = JSON.parse(value);
-                    if (Array.isArray(parsed)) {
-                        placeholders[key] = parsed;
-                    } else {
-                        placeholders[key] = value;
-                    }
-                } catch {
-                    placeholders[key] = value;
                 }
             }
         });
@@ -62,9 +63,13 @@ export async function POST(request: NextRequest) {
             email: email || '',
             placeholders,
             uploads,
-            ai_input: aiInput,
             created_at: new Date().toISOString(),
         };
+
+        // Only include ai_input if not empty
+        if (Object.keys(aiInput).length > 0) {
+            submission.ai_input = aiInput;
+        }
 
         console.log('=== Form Submission ===');
         console.log(JSON.stringify(submission, null, 2));
@@ -80,13 +85,11 @@ export async function POST(request: NextRequest) {
 
             if (updateError) {
                 console.error('Failed to mark code as used:', updateError);
-                // Don't fail the request, just log it
             } else {
                 console.log('Access code marked as used:', code);
             }
 
             // Store submission in database (if submissions table exists)
-            // This will gracefully fail if table doesn't exist yet
             try {
                 await supabaseAdmin
                     .from('submissions')
@@ -101,11 +104,6 @@ export async function POST(request: NextRequest) {
                 console.log('Note: submissions table may not exist yet, skipping DB storage');
             }
         }
-
-        // TODO: In a future phase, this is where you would:
-        // 1. Queue AI generation job
-        // 2. Generate DOCX/PDF from templates
-        // 3. Email documents to user
 
         return NextResponse.json({
             success: true,
