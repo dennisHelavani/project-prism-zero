@@ -9,11 +9,9 @@ import {
     FormInput,
     FormTextarea,
     FileUploadField,
-    PermitsCheckboxGroup,
-    PPECheckboxGroup,
-    type PermitId,
-    type PPEId,
 } from './FormFieldsShared';
+
+type DeliveriesOption = 'not-applicable' | 'text' | 'upload';
 
 type CPPFormData = {
     // Header/Approval
@@ -21,31 +19,25 @@ type CPPFormData = {
     approvedByName: string;
     writtenBy: string;
     revision: string;
+    dateStamped: string; // Auto-set on submit
+
+    // Company Details
+    companyAddress: string;
+    companyPhone: string;
+    companyEmail: string;
 
     // Project Details
     projectName: string;
     projectNumber: string;
-    clientName: string;
-    principalDesigner: string;
-    principalContractor: string;
     f10Ref: string;
     siteAddress: string;
     dateStart: string;
     duration: string;
     projectTask: string;
+
+    // Deliveries
+    deliveriesOption: DeliveriesOption;
     deliveriesNote: string;
-
-    // Permits & PPE
-    permits: PermitId[];
-    ppe: PPEId[];
-
-    // Emergency Contacts
-    projectManager: string;
-    siteManager: string;
-    supervisor: string;
-    firstAiders: string;
-    fireMarshalls: string;
-    otherRoles: string;
 
     // Files
     companyLogo: File | null;
@@ -57,25 +49,19 @@ const initialFormData: CPPFormData = {
     approvedByName: '',
     writtenBy: '',
     revision: '',
+    dateStamped: '',
+    companyAddress: '',
+    companyPhone: '',
+    companyEmail: '',
     projectName: '',
     projectNumber: '',
-    clientName: '',
-    principalDesigner: '',
-    principalContractor: '',
     f10Ref: '',
     siteAddress: '',
     dateStart: '',
     duration: '',
     projectTask: '',
+    deliveriesOption: 'not-applicable',
     deliveriesNote: '',
-    permits: [],
-    ppe: [],
-    projectManager: '',
-    siteManager: '',
-    supervisor: '',
-    firstAiders: '',
-    fireMarshalls: '',
-    otherRoles: '',
     companyLogo: null,
     deliveriesImage: null,
 };
@@ -95,6 +81,36 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [showWarning, setShowWarning] = React.useState(false);
     const [submitSuccess, setSubmitSuccess] = React.useState(false);
+    const [isLoadingDefaults, setIsLoadingDefaults] = React.useState(false);
+
+    // Load profile defaults on mount
+    React.useEffect(() => {
+        if (!email) return;
+
+        const loadDefaults = async () => {
+            setIsLoadingDefaults(true);
+            try {
+                const res = await fetch(`/api/profile/defaults?email=${encodeURIComponent(email)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.defaults) {
+                        setFormData((prev) => ({
+                            ...prev,
+                            companyAddress: data.defaults.companyAddress || prev.companyAddress,
+                            companyPhone: data.defaults.companyPhone || prev.companyPhone,
+                            companyEmail: data.defaults.companyEmail || prev.companyEmail,
+                        }));
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load defaults:', err);
+            } finally {
+                setIsLoadingDefaults(false);
+            }
+        };
+
+        loadDefaults();
+    }, [email]);
 
     const updateField = <K extends keyof CPPFormData>(key: K, value: CPPFormData[K]) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
@@ -133,18 +149,20 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
         setIsSubmitting(true);
         setShowWarning(false);
 
+        // Auto-set date stamped
+        const dateStamped = new Date().toISOString().split('T')[0];
+
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('product', 'CPP');
             formDataToSend.append('code', code ?? '');
+            formDataToSend.append('dateStamped', dateStamped);
 
             // Append all text fields
             Object.entries(formData).forEach(([key, value]) => {
                 if (value instanceof File) {
                     formDataToSend.append(key, value);
-                } else if (Array.isArray(value)) {
-                    formDataToSend.append(key, JSON.stringify(value));
-                } else if (value !== null) {
+                } else if (value !== null && value !== undefined) {
                     formDataToSend.append(key, String(value));
                 }
             });
@@ -156,6 +174,22 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
 
             if (!res.ok) {
                 throw new Error('Submission failed');
+            }
+
+            // Save profile defaults
+            if (email) {
+                await fetch('/api/profile/defaults', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        defaults: {
+                            companyAddress: formData.companyAddress,
+                            companyPhone: formData.companyPhone,
+                            companyEmail: formData.companyEmail,
+                        },
+                    }),
+                }).catch((err) => console.error('Failed to save defaults:', err));
             }
 
             setSubmitSuccess(true);
@@ -176,8 +210,8 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                     </div>
                     <h2 className="text-2xl font-bold text-white">Done!</h2>
                     <p className="text-white/70">
-                        Your CPP are on their way!<br />
-                        You'll receive them via email shortly.
+                        Your CPP is on the way!<br />
+                        You'll receive it via email shortly.
                     </p>
                 </div>
             </FormCard>
@@ -190,7 +224,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                 <div className="text-center space-y-2">
                     <h2 className="text-xl font-bold text-white">Construction Phase Plan Generator</h2>
                     <p className="text-sm text-white/60">
-                        Fill in the project details below. An AI will generate your Construction Phase Plan.
+                        Fill in the key information below. AI will generate the rest of your CPP document.
                     </p>
                 </div>
 
@@ -225,10 +259,17 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                             onChange={(e) => updateField('revision', e.target.value)}
                         />
                     </div>
+                    <FormInput
+                        label="Date Stamped"
+                        type="text"
+                        value="Auto-generated on submission"
+                        readOnly
+                        className="opacity-60 mt-4"
+                    />
                 </FormSection>
 
-                {/* Company Logo */}
-                <FormSection title="Branding">
+                {/* Company Details */}
+                <FormSection title="Company Details">
                     <FileUploadField
                         label="Company Logo"
                         description="Upload your company logo (optional)"
@@ -237,13 +278,36 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                         onChange={(file) => updateField('companyLogo', file)}
                         optional
                     />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <FormInput
+                            label="Company Address"
+                            placeholder="Full company address"
+                            value={formData.companyAddress}
+                            onChange={(e) => updateField('companyAddress', e.target.value)}
+                        />
+                        <FormInput
+                            label="Phone Number"
+                            type="tel"
+                            placeholder="Company phone"
+                            value={formData.companyPhone}
+                            onChange={(e) => updateField('companyPhone', e.target.value)}
+                        />
+                    </div>
+                    <FormInput
+                        label="Company Email"
+                        type="email"
+                        placeholder="Company email address"
+                        value={formData.companyEmail}
+                        onChange={(e) => updateField('companyEmail', e.target.value)}
+                        className="mt-4"
+                    />
                 </FormSection>
 
                 {/* Project Details Section */}
                 <FormSection title="Project Details">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormInput
-                            label="Project Name"
+                            label="Project Name / Number (Title)"
                             placeholder="e.g., 10-Storey Commercial Building"
                             value={formData.projectName}
                             onChange={(e) => updateField('projectName', e.target.value)}
@@ -258,47 +322,9 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <FormInput
-                            label="Client"
-                            placeholder="Client name"
-                            value={formData.clientName}
-                            onChange={(e) => updateField('clientName', e.target.value)}
-                        />
-                        <FormInput
-                            label="Principal Designer"
-                            placeholder="Name"
-                            value={formData.principalDesigner}
-                            onChange={(e) => updateField('principalDesigner', e.target.value)}
-                        />
-                        <FormInput
-                            label="Principal Contractor"
-                            placeholder="Name"
-                            value={formData.principalContractor}
-                            onChange={(e) => updateField('principalContractor', e.target.value)}
-                        />
-                    </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormInput
-                            label="F10 Notification Ref"
-                            placeholder="If applicable"
-                            value={formData.f10Ref}
-                            onChange={(e) => updateField('f10Ref', e.target.value)}
-                        />
-                        <FormInput
-                            label="Site Address"
-                            placeholder="Full site address"
-                            value={formData.siteAddress}
-                            onChange={(e) => updateField('siteAddress', e.target.value)}
-                            required
-                            error={errors.siteAddress}
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormInput
-                            label="Planned Start Date"
+                            label="Anticipated Commencement Date"
                             type="date"
                             value={formData.dateStart}
                             onChange={(e) => updateField('dateStart', e.target.value)}
@@ -312,97 +338,108 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                             onChange={(e) => updateField('duration', e.target.value)}
                         />
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormInput
+                            label="F10 Notification Ref"
+                            placeholder="If applicable (optional)"
+                            value={formData.f10Ref}
+                            onChange={(e) => updateField('f10Ref', e.target.value)}
+                        />
+                        <FormInput
+                            label="Site Address"
+                            placeholder="Full site address"
+                            value={formData.siteAddress}
+                            onChange={(e) => updateField('siteAddress', e.target.value)}
+                            required
+                            error={errors.siteAddress}
+                        />
+                    </div>
                 </FormSection>
 
-                {/* Project Task / Activity */}
+                {/* Project Task / Activity - AI Input */}
                 <FormSection
                     title="Project Task / Activity"
-                    description="Describe the main activities for the Construction Phase Plan"
+                    description="This description drives the AI-generated content"
                 >
                     <FormTextarea
                         label="Description"
-                        placeholder="e.g., 10-Storey Commercial Building with Cat A + Cat B interfaces..."
+                        placeholder="e.g., 10-Storey Commercial Building with Cat A + Cat B interfaces. Include any key constraints or hazards..."
                         value={formData.projectTask}
                         onChange={(e) => updateField('projectTask', e.target.value)}
                         required
                         error={errors.projectTask}
-                        className="min-h-[100px]"
+                        className="min-h-[120px]"
                     />
                 </FormSection>
 
-                {/* Deliveries / TMP */}
-                <FormSection title="Deliveries / Traffic Management">
-                    <FileUploadField
-                        label="Traffic Management Plan Image"
-                        description="Upload an image, or describe below"
-                        accept="image/*"
-                        value={formData.deliveriesImage}
-                        onChange={(file) => updateField('deliveriesImage', file)}
-                        optional
-                    />
-                    <FormInput
-                        label="Or describe traffic management"
-                        placeholder="Not applicable for this project"
-                        value={formData.deliveriesNote}
-                        onChange={(e) => updateField('deliveriesNote', e.target.value)}
-                    />
-                </FormSection>
+                {/* Deliveries Option */}
+                <FormSection title="Deliveries">
+                    <div className="space-y-4">
+                        <div className="flex flex-col gap-3">
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="deliveriesOption"
+                                    value="not-applicable"
+                                    checked={formData.deliveriesOption === 'not-applicable'}
+                                    onChange={() => updateField('deliveriesOption', 'not-applicable')}
+                                    className="w-4 h-4 accent-primary"
+                                />
+                                <span className="text-white/90">Not applicable</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="deliveriesOption"
+                                    value="text"
+                                    checked={formData.deliveriesOption === 'text'}
+                                    onChange={() => updateField('deliveriesOption', 'text')}
+                                    className="w-4 h-4 accent-primary"
+                                />
+                                <span className="text-white/90">Describe in text</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="deliveriesOption"
+                                    value="upload"
+                                    checked={formData.deliveriesOption === 'upload'}
+                                    onChange={() => updateField('deliveriesOption', 'upload')}
+                                    className="w-4 h-4 accent-primary"
+                                />
+                                <span className="text-white/90">Upload traffic management plan image</span>
+                            </label>
+                        </div>
 
-                {/* Permits */}
-                <PermitsCheckboxGroup
-                    value={formData.permits}
-                    onChange={(v) => updateField('permits', v)}
-                />
+                        {formData.deliveriesOption === 'text' && (
+                            <FormTextarea
+                                label="Deliveries Description"
+                                placeholder="Describe traffic management and deliveries..."
+                                value={formData.deliveriesNote}
+                                onChange={(e) => updateField('deliveriesNote', e.target.value)}
+                            />
+                        )}
 
-                {/* PPE */}
-                <PPECheckboxGroup
-                    value={formData.ppe}
-                    onChange={(v) => updateField('ppe', v)}
-                />
-
-                {/* Emergency Contacts */}
-                <FormSection title="Emergency Contacts">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormInput
-                            label="Project Manager"
-                            placeholder="Name"
-                            value={formData.projectManager}
-                            onChange={(e) => updateField('projectManager', e.target.value)}
-                        />
-                        <FormInput
-                            label="Site Manager"
-                            placeholder="Name"
-                            value={formData.siteManager}
-                            onChange={(e) => updateField('siteManager', e.target.value)}
-                        />
+                        {formData.deliveriesOption === 'upload' && (
+                            <FileUploadField
+                                label="Traffic Management Plan"
+                                description="Upload an image of your traffic management plan"
+                                accept="image/*"
+                                value={formData.deliveriesImage}
+                                onChange={(file) => updateField('deliveriesImage', file)}
+                            />
+                        )}
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <FormInput
-                            label="Supervisor"
-                            placeholder="Name"
-                            value={formData.supervisor}
-                            onChange={(e) => updateField('supervisor', e.target.value)}
-                        />
-                        <FormInput
-                            label="First Aiders"
-                            placeholder="Names"
-                            value={formData.firstAiders}
-                            onChange={(e) => updateField('firstAiders', e.target.value)}
-                        />
-                        <FormInput
-                            label="Fire Marshalls"
-                            placeholder="Names"
-                            value={formData.fireMarshalls}
-                            onChange={(e) => updateField('fireMarshalls', e.target.value)}
-                        />
-                    </div>
-                    <FormTextarea
-                        label="Other Roles"
-                        placeholder="Any other relevant contacts or roles"
-                        value={formData.otherRoles}
-                        onChange={(e) => updateField('otherRoles', e.target.value)}
-                    />
                 </FormSection>
+
+                {/* Pre-submit warning */}
+                <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-amber-200">
+                        You can't return once you submit. Please double check your answers before proceeding.
+                    </p>
+                </div>
 
                 {/* Warning Modal */}
                 {showWarning && (
@@ -413,7 +450,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                                 <h3 className="font-semibold">Confirm Submission</h3>
                             </div>
                             <p className="text-white/70 text-sm">
-                                You can't return once you select submit. Please double check your answers before proceeding.
+                                You can't return once you submit. Are you sure all details are correct?
                             </p>
                             <div className="flex gap-3 pt-2">
                                 <Button
@@ -447,7 +484,7 @@ export default function CPPForm({ email, code, expiresAt }: Props) {
                         type="button"
                         onClick={handlePreSubmit}
                         className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isLoadingDefaults}
                     >
                         {isSubmitting ? (
                             <>

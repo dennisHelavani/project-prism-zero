@@ -9,34 +9,42 @@ import {
     FormInput,
     FormTextarea,
     FileUploadField,
-    PermitsCheckboxGroup,
-    type PermitId,
 } from './FormFieldsShared';
+import { Checkbox } from '@/components/ui/checkbox';
+
+// Permit options with Other
+const PERMITS = [
+    { id: 'break-ground', label: 'Permit to Break Ground / Dig' },
+    { id: 'hot-works', label: 'Hot Works Permit' },
+    { id: 'lift', label: 'Permit to Lift' },
+    { id: 'work-at-height', label: 'Work at Height Permit' },
+    { id: 'other', label: 'Other' },
+] as const;
+
+type PermitId = (typeof PERMITS)[number]['id'];
 
 type RAMSFormData = {
     // Project Details
     email: string;
-    projectName: string;
+    projectName: string; // Job description / RAMS title
     dateStart: string;
     duration: string;
     location: string;
-    aiTaskDescription: string;
     deliveriesNote: string;
+
+    // Technical Info
+    technicalInfo: string;
 
     // Permits
     permits: PermitId[];
+    permitsOtherText: string;
 
-    // Contacts
-    clientName: string;
-    managerName: string;
-    supervisorName: string;
-    emergencyArrangements: string;
-    occupationalHealth: string;
+    // AI Input
+    aiTaskDescription: string;
 
     // Files
     companyLogo: File | null;
-    clientLogo: File | null;
-    trafficManagementPlan: File | null;
+    deliveriesImage: File | null;
 };
 
 const initialFormData: RAMSFormData = {
@@ -45,17 +53,13 @@ const initialFormData: RAMSFormData = {
     dateStart: '',
     duration: '',
     location: '',
-    aiTaskDescription: '',
     deliveriesNote: '',
+    technicalInfo: '',
     permits: [],
-    clientName: '',
-    managerName: '',
-    supervisorName: '',
-    emergencyArrangements: '',
-    occupationalHealth: '',
+    permitsOtherText: '',
+    aiTaskDescription: '',
     companyLogo: null,
-    clientLogo: null,
-    trafficManagementPlan: null,
+    deliveriesImage: null,
 };
 
 type Props = {
@@ -73,6 +77,34 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [showWarning, setShowWarning] = React.useState(false);
     const [submitSuccess, setSubmitSuccess] = React.useState(false);
+    const [isLoadingDefaults, setIsLoadingDefaults] = React.useState(false);
+
+    // Load profile defaults on mount
+    React.useEffect(() => {
+        if (!email) return;
+
+        const loadDefaults = async () => {
+            setIsLoadingDefaults(true);
+            try {
+                const res = await fetch(`/api/profile/defaults?email=${encodeURIComponent(email)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.defaults) {
+                        setFormData((prev) => ({
+                            ...prev,
+                            permits: data.defaults.permits || prev.permits,
+                        }));
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load defaults:', err);
+            } finally {
+                setIsLoadingDefaults(false);
+            }
+        };
+
+        loadDefaults();
+    }, [email]);
 
     const updateField = <K extends keyof RAMSFormData>(key: K, value: RAMSFormData[K]) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
@@ -81,11 +113,22 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
         }
     };
 
+    const togglePermit = (permitId: PermitId) => {
+        setFormData((prev) => {
+            const current = prev.permits;
+            if (current.includes(permitId)) {
+                return { ...prev, permits: current.filter((p) => p !== permitId) };
+            } else {
+                return { ...prev, permits: [...current, permitId] };
+            }
+        });
+    };
+
     const validate = (): boolean => {
         const newErrors: Partial<Record<keyof RAMSFormData, string>> = {};
 
         if (!formData.projectName.trim()) {
-            newErrors.projectName = 'Project name is required';
+            newErrors.projectName = 'Job description is required';
         }
         if (!formData.dateStart) {
             newErrors.dateStart = 'Start date is required';
@@ -94,7 +137,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
             newErrors.location = 'Location is required';
         }
         if (!formData.aiTaskDescription.trim()) {
-            newErrors.aiTaskDescription = 'Task description is required for AI generation';
+            newErrors.aiTaskDescription = 'Brief description is required for AI generation';
         }
 
         setErrors(newErrors);
@@ -122,7 +165,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     formDataToSend.append(key, value);
                 } else if (Array.isArray(value)) {
                     formDataToSend.append(key, JSON.stringify(value));
-                } else if (value !== null) {
+                } else if (value !== null && value !== undefined) {
                     formDataToSend.append(key, String(value));
                 }
             });
@@ -134,6 +177,20 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
 
             if (!res.ok) {
                 throw new Error('Submission failed');
+            }
+
+            // Save profile defaults
+            if (email) {
+                await fetch('/api/profile/defaults', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        defaults: {
+                            permits: formData.permits,
+                        },
+                    }),
+                }).catch((err) => console.error('Failed to save defaults:', err));
             }
 
             setSubmitSuccess(true);
@@ -154,8 +211,8 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     </div>
                     <h2 className="text-2xl font-bold text-white">Done!</h2>
                     <p className="text-white/70">
-                        Your RAMS are on their way!<br />
-                        You'll receive them via email shortly.
+                        Your RAMS is on the way!<br />
+                        You'll receive it via email shortly.
                     </p>
                 </div>
             </FormCard>
@@ -168,7 +225,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                 <div className="text-center space-y-2">
                     <h2 className="text-xl font-bold text-white">RAMS Generator</h2>
                     <p className="text-sm text-white/60">
-                        Fill in the project details below. An AI will generate your Risk Assessment & Method Statement.
+                        Fill in the project details below. AI will generate your Risk Assessment & Method Statement.
                     </p>
                 </div>
 
@@ -183,51 +240,107 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
 
                 {/* Project Details Section */}
                 <FormSection title="Project / Activity Details">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormInput
+                        label="Job Description / RAMS Title"
+                        placeholder="e.g., RAMS 01 – Finsbury Bower - Beam Installation"
+                        value={formData.projectName}
+                        onChange={(e) => updateField('projectName', e.target.value)}
+                        required
+                        error={errors.projectName}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <FormInput
-                            label="Project / Activity Name"
-                            placeholder="e.g., RAMS 01 – Finsbury Bower - Beam Installation"
-                            value={formData.projectName}
-                            onChange={(e) => updateField('projectName', e.target.value)}
-                            required
-                            error={errors.projectName}
-                        />
-                        <FormInput
-                            label="Planned Start Date"
+                            label="Anticipated Commencement Date"
                             type="date"
                             value={formData.dateStart}
                             onChange={(e) => updateField('dateStart', e.target.value)}
                             required
                             error={errors.dateStart}
                         />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormInput
                             label="Duration of Works"
                             placeholder="e.g., 3 weeks"
                             value={formData.duration}
                             onChange={(e) => updateField('duration', e.target.value)}
                         />
-                        <FormInput
-                            label="Location of Work"
-                            placeholder="Site address or area"
-                            value={formData.location}
-                            onChange={(e) => updateField('location', e.target.value)}
-                            required
-                            error={errors.location}
-                        />
                     </div>
+
+                    <FormInput
+                        label="Location of Works"
+                        placeholder="Site address or area"
+                        value={formData.location}
+                        onChange={(e) => updateField('location', e.target.value)}
+                        required
+                        error={errors.location}
+                        className="mt-4"
+                    />
                 </FormSection>
 
-                {/* AI Task Description */}
+                {/* Deliveries */}
+                <FormSection title="Deliveries">
+                    <FormTextarea
+                        label="Deliveries Text"
+                        placeholder="Describe deliveries and logistics, or 'As per Client CPP and Induction'"
+                        value={formData.deliveriesNote}
+                        onChange={(e) => updateField('deliveriesNote', e.target.value)}
+                    />
+                    <FileUploadField
+                        label="Deliveries Image (Optional)"
+                        description="Upload a traffic management plan or site layout"
+                        accept="image/*"
+                        value={formData.deliveriesImage}
+                        onChange={(file) => updateField('deliveriesImage', file)}
+                        optional
+                    />
+                </FormSection>
+
+                {/* Technical Information */}
+                <FormSection title="Technical Information and Reports">
+                    <FormTextarea
+                        label="Technical Information"
+                        placeholder="Include any relevant technical reports, specifications, standards, or reference documents..."
+                        value={formData.technicalInfo}
+                        onChange={(e) => updateField('technicalInfo', e.target.value)}
+                        className="min-h-[100px]"
+                    />
+                </FormSection>
+
+                {/* Permits */}
+                <FormSection title="Permits Required">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {PERMITS.map((permit) => (
+                            <label
+                                key={permit.id}
+                                className="flex items-center gap-3 p-3 rounded-lg border border-white/10 bg-white/[.02] hover:bg-white/[.05] cursor-pointer transition-colors"
+                            >
+                                <Checkbox
+                                    checked={formData.permits.includes(permit.id)}
+                                    onCheckedChange={() => togglePermit(permit.id)}
+                                />
+                                <span className="text-sm text-white/90">{permit.label}</span>
+                            </label>
+                        ))}
+                    </div>
+                    {formData.permits.includes('other') && (
+                        <FormInput
+                            label="Specify Other Permits"
+                            placeholder="Describe other permits required..."
+                            value={formData.permitsOtherText}
+                            onChange={(e) => updateField('permitsOtherText', e.target.value)}
+                            className="mt-4"
+                        />
+                    )}
+                </FormSection>
+
+                {/* AI Input */}
                 <FormSection
-                    title="Task Description for AI"
-                    description="Describe the task including specific tools and equipment. The more detail, the better the output."
+                    title="Brief Description for AI"
+                    description="Describe the works, constraints, and key hazards. The more detail, the better the output."
                 >
                     <FormTextarea
-                        label="Task Description"
-                        placeholder="e.g., Write me a risk assessment and method statement for Beam installation involving temporary jacks using a crawler crane..."
+                        label="AI Input"
+                        placeholder="e.g., Write me a risk assessment and method statement for beam installation involving temporary jacks using a crawler crane. Key hazards include working at height, crane operations near live traffic..."
                         value={formData.aiTaskDescription}
                         onChange={(e) => updateField('aiTaskDescription', e.target.value)}
                         required
@@ -236,85 +349,24 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                     />
                 </FormSection>
 
-                {/* Deliveries / TMP */}
-                <FormSection title="Traffic Management">
+                {/* Company Logo */}
+                <FormSection title="Branding (Optional)">
                     <FileUploadField
-                        label="Traffic Management Plan"
-                        description="Upload an image of the TMP, or leave empty to use 'as per Client CPP and Induction'"
+                        label="Company Logo"
                         accept="image/*"
-                        value={formData.trafficManagementPlan}
-                        onChange={(file) => updateField('trafficManagementPlan', file)}
+                        value={formData.companyLogo}
+                        onChange={(file) => updateField('companyLogo', file)}
                         optional
                     />
-                    <FormInput
-                        label="Or describe deliveries"
-                        placeholder="As per Client CPP and Induction"
-                        value={formData.deliveriesNote}
-                        onChange={(e) => updateField('deliveriesNote', e.target.value)}
-                    />
                 </FormSection>
 
-                {/* Permits */}
-                <PermitsCheckboxGroup
-                    value={formData.permits}
-                    onChange={(v) => updateField('permits', v)}
-                />
-
-                {/* Contacts */}
-                <FormSection title="Client & Emergency Contacts">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormInput
-                            label="Client Name"
-                            placeholder="Client company or person"
-                            value={formData.clientName}
-                            onChange={(e) => updateField('clientName', e.target.value)}
-                        />
-                        <FormInput
-                            label="Manager"
-                            placeholder="Name"
-                            value={formData.managerName}
-                            onChange={(e) => updateField('managerName', e.target.value)}
-                        />
-                    </div>
-                    <FormInput
-                        label="Supervisor"
-                        placeholder="Name"
-                        value={formData.supervisorName}
-                        onChange={(e) => updateField('supervisorName', e.target.value)}
-                    />
-                    <FormTextarea
-                        label="Emergency Arrangements"
-                        placeholder="Include specific if known, or 'as per Client CPP and Induction'"
-                        value={formData.emergencyArrangements}
-                        onChange={(e) => updateField('emergencyArrangements', e.target.value)}
-                    />
-                    <FormTextarea
-                        label="Occupational Health Notes"
-                        placeholder="Include specific if known, or 'as per Client CPP and Induction'"
-                        value={formData.occupationalHealth}
-                        onChange={(e) => updateField('occupationalHealth', e.target.value)}
-                    />
-                </FormSection>
-
-                {/* Logos */}
-                <FormSection title="Branding (Optional)">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FileUploadField
-                            label="Company Logo"
-                            accept="image/*"
-                            value={formData.companyLogo}
-                            onChange={(file) => updateField('companyLogo', file)}
-                            optional
-                        />
-                        <FileUploadField
-                            label="Client Logo"
-                            accept="image/*"
-                            value={formData.clientLogo}
-                            onChange={(file) => updateField('clientLogo', file)}
-                            optional
-                        />
-                    </div>
-                </FormSection>
+                {/* Pre-submit warning */}
+                <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-amber-200">
+                        You can't return once you submit. Please double check your answers before proceeding.
+                    </p>
+                </div>
 
                 {/* Warning Modal */}
                 {showWarning && (
@@ -325,7 +377,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                                 <h3 className="font-semibold">Confirm Submission</h3>
                             </div>
                             <p className="text-white/70 text-sm">
-                                You can't return once you select submit. Please double check your answers before proceeding.
+                                You can't return once you submit. Are you sure all details are correct?
                             </p>
                             <div className="flex gap-3 pt-2">
                                 <Button
@@ -359,7 +411,7 @@ export default function RAMSForm({ email, code, expiresAt }: Props) {
                         type="button"
                         onClick={handlePreSubmit}
                         className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isLoadingDefaults}
                     >
                         {isSubmitting ? (
                             <>
