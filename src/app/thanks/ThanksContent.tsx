@@ -109,9 +109,10 @@ export default function ThanksContent() {
 
         // Get filename from Content-Disposition header or use default
         const contentDisposition = res.headers.get('Content-Disposition');
-        let filename = `${product}_document.${format}`;
+        let filename = `${product}-document.${format}`;
         if (contentDisposition) {
-            const match = contentDisposition.match(/filename="?(.+)"?/);
+            // Match filename with or without quotes
+            const match = contentDisposition.match(/filename="?([^";\s]+)"?/);
             if (match) filename = match[1];
         }
 
@@ -131,9 +132,9 @@ export default function ThanksContent() {
     if (!submissionId) {
         return (
             <div className="text-center p-8 max-w-md">
-                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                <CheckCircle className="w-16 h-16 text-[#FABE2C] mx-auto mb-4" />
                 <h1 className="text-3xl font-bold text-white mb-2">Thank You!</h1>
-                <p className="text-slate-300">
+                <p className="text-muted-foreground">
                     Your {product} submission has been received.
                 </p>
             </div>
@@ -141,18 +142,18 @@ export default function ThanksContent() {
     }
 
     return (
-        <div className="text-center p-8 max-w-md bg-slate-800/50 rounded-xl border border-slate-700">
+        <div className="text-center p-8 max-w-md bg-card rounded-xl border border-border">
 
             {/* Pending / Generating State */}
             {(status === 'pending' || status === 'generating') && (
                 <>
-                    <Loader2 className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-spin" />
+                    <Loader2 className="w-16 h-16 text-[#FABE2C] mx-auto mb-4 animate-spin" />
                     <h1 className="text-3xl font-bold text-white mb-2">Generating Your Documents</h1>
-                    <p className="text-slate-300 mb-4">
+                    <p className="text-muted-foreground mb-4">
                         Your {product} documents are being prepared. This may take a few moments...
                     </p>
-                    <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
-                        <span className="inline-block w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                    <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
+                        <span className="inline-block w-2 h-2 bg-[#FABE2C] rounded-full animate-pulse" />
                         Processing...
                     </div>
                 </>
@@ -161,19 +162,19 @@ export default function ThanksContent() {
             {/* Ready State */}
             {status === 'ready' && downloadReady && (
                 <>
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <CheckCircle className="w-16 h-16 text-[#FABE2C] mx-auto mb-4" />
                     <h1 className="text-3xl font-bold text-white mb-2">Documents Ready!</h1>
-                    <p className="text-slate-300 mb-6">
+                    <p className="text-muted-foreground mb-6">
                         Your {product} documents have been generated successfully.
                     </p>
 
                     {/* Split Button Download */}
                     <div className="relative inline-flex" ref={dropdownRef}>
-                        {/* Main Download Button (PDF preferred, fallback to DOCX) */}
+                        {/* Main Download Button */}
                         <Button
                             onClick={() => handleDownload(hasPdf ? 'pdf' : 'docx')}
                             disabled={isDownloading !== null}
-                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded-r-none border-r border-green-700"
+                            className="bg-[#FABE2C] hover:bg-[#FFD700] text-black font-semibold px-6 py-3 text-lg rounded-r-none border-r border-[#e6a825]"
                         >
                             {isDownloading ? (
                                 <>
@@ -192,18 +193,18 @@ export default function ThanksContent() {
                         <Button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                             disabled={isDownloading !== null}
-                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-3 rounded-l-none"
+                            className="bg-[#FABE2C] hover:bg-[#FFD700] text-black px-3 py-3 rounded-l-none"
                         >
                             <ChevronDown className={`w-5 h-5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
                         </Button>
 
                         {/* Dropdown Menu */}
                         {dropdownOpen && (
-                            <div className="absolute top-full right-0 mt-2 w-48 bg-slate-700 rounded-lg shadow-xl border border-slate-600 overflow-hidden z-10">
+                            <div className="absolute top-full right-0 mt-2 w-48 bg-card rounded-lg shadow-xl border border-border overflow-hidden z-10">
                                 {hasDocx && (
                                     <button
                                         onClick={() => handleDownload('docx')}
-                                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-slate-600 transition-colors"
+                                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-secondary transition-colors"
                                     >
                                         <FileText className="w-5 h-5 text-blue-400" />
                                         Download DOCX
@@ -212,7 +213,7 @@ export default function ThanksContent() {
                                 {hasPdf && (
                                     <button
                                         onClick={() => handleDownload('pdf')}
-                                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-slate-600 transition-colors"
+                                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-secondary transition-colors"
                                     >
                                         <File className="w-5 h-5 text-red-400" />
                                         Download PDF
@@ -220,12 +221,12 @@ export default function ThanksContent() {
                                 )}
                                 {hasDocx && hasPdf && (
                                     <>
-                                        <div className="border-t border-slate-600" />
+                                        <div className="border-t border-border" />
                                         <button
                                             onClick={() => handleDownload('all')}
-                                            className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-slate-600 transition-colors"
+                                            className="w-full flex items-center gap-3 px-4 py-3 text-left text-white hover:bg-secondary transition-colors"
                                         >
-                                            <Download className="w-5 h-5 text-green-400" />
+                                            <Download className="w-5 h-5 text-[#FABE2C]" />
                                             Download All
                                         </button>
                                     </>
@@ -235,9 +236,22 @@ export default function ThanksContent() {
                     </div>
 
                     {/* Format availability note */}
-                    <p className="text-slate-400 text-sm mt-4">
+                    <p className="text-muted-foreground text-sm mt-4">
                         Available formats: {hasDocx && 'DOCX'}{hasDocx && hasPdf && ' • '}{hasPdf && 'PDF'}
                     </p>
+
+                    {/* Generate Another Button */}
+                    <div className="mt-8 pt-6 border-t border-border">
+                        <a
+                            href="/access"
+                            className="inline-flex items-center gap-2 text-muted-foreground hover:text-white transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Generate Another Document
+                        </a>
+                    </div>
                 </>
             )}
 
@@ -246,10 +260,10 @@ export default function ThanksContent() {
                 <>
                     <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
                     <h1 className="text-3xl font-bold text-white mb-2">Generation Failed</h1>
-                    <p className="text-slate-300 mb-4">
+                    <p className="text-muted-foreground mb-4">
                         {error || 'Something went wrong while generating your document.'}
                     </p>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-muted-foreground text-sm">
                         Please contact support if this issue persists.
                     </p>
                 </>

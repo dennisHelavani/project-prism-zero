@@ -6,11 +6,17 @@ Uses httpx for REST API calls (simpler than supabase-py for our use case).
 import os
 import logging
 from typing import Dict, Any, Optional
+from pathlib import Path
 import httpx
+
+# Load .env file from the doc-generator directory
+from dotenv import load_dotenv
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 logger = logging.getLogger(__name__)
 
-# Environment configuration
+# Environment configuration  
 SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
 SUPABASE_SERVICE_ROLE_KEY = os.environ.get('SUPABASE_SERVICE_ROLE_KEY', '')
 
