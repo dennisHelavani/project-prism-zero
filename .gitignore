@@ -50,3 +50,9 @@ firestore-debug.log
 .env.*
 # …but keep the shareable template
 !.env.example
+
+
+
+doc-generator/venv/
+
+doc-generator/output/
