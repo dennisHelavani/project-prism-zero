@@ -169,6 +169,16 @@ export function FileUploadField({
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
+
+        // Check file size (5MB = 5 * 1024 * 1024 bytes)
+        if (file && file.size > 5 * 1024 * 1024) {
+            alert('File size must be less than 5MB');
+            if (inputRef.current) {
+                inputRef.current.value = '';
+            }
+            return;
+        }
+
         onChange(file);
     };
 
@@ -210,7 +220,7 @@ export function FileUploadField({
                     <Upload className="w-8 h-8 text-white/40" />
                     <span className="text-sm text-white/60">Click to upload</span>
                     <span className="text-xs text-white/40">
-                        {accept === 'image/*' ? 'PNG, JPG, GIF up to 10MB' : 'Any file up to 10MB'}
+                        {accept === 'image/*' ? 'PNG, JPG, GIF up to 10MB' : 'PNG or JPG, max 10MB'}
                     </span>
                 </button>
             ) : (

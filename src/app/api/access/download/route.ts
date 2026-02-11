@@ -56,9 +56,9 @@ export async function GET(req: NextRequest) {
         // Get the file buffer
         const fileBuffer = await fileRes.arrayBuffer();
 
-        // Generate filename
+        // Generate filename - clean format without underscore before extension
         const extension = format === 'pdf' ? 'pdf' : 'docx';
-        const filename = `${data.product}_${submissionId.slice(0, 8)}.${extension}`;
+        const filename = `${data.product}-${submissionId.slice(0, 8)}.${extension}`;
 
         // Content type based on format
         const contentType = format === 'pdf'

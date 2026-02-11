@@ -97,8 +97,8 @@ LibreOffice is not installed or not in PATH. Install it and ensure the binary is
 ### "Template not found"
 
 Ensure the template file exists in the templates directory and matches the product name:
-- `CPP_TEMPLATE_WORKING_v1.docx` for CPP
-- `RAMS_TEMPLATE_WORKING_v1.docx` for RAMS
+- `CPP_TEMPLATE_WORKING_v1 copy.docx` for CPP
+- `RAMS_TEMPLATE_WORKING_v1 copy.docx` for RAMS
 
 ### "PDF conversion failed"
 
