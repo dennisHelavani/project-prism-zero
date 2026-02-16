@@ -58,3 +58,20 @@ doc-generator/venv/
 doc-generator/output/
 doc-generator/tmp/
 tmp/
+
+
+# Python virtualenvs
+venv/
+.venv/
+**/venv/
+**/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+
+# Outputs
+doc-generator/output/
