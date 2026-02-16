@@ -9,4 +9,3 @@ debug_log.txt
 sample_payloads/
 test_*.py
 README.md
-.gitignore
