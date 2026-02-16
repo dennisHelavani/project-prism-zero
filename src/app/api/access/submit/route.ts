@@ -8,7 +8,7 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 const supabaseAdmin = getSupabaseAdmin();
 
 // Python doc-generator service URL
-const DOC_GENERATOR_URL = process.env.DOCGEN_UR || 'http://localhost:8000';
+const DOC_GENERATOR_URL = process.env.DOCGEN_URL || 'http://localhost:8000';
 
 export async function POST(req: Request) {
   const form = await req.formData();
