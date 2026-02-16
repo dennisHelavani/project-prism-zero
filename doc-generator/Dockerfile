@@ -17,4 +17,5 @@ COPY . .
 RUN mkdir -p /app/output
 
 ENV PORT=8080
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "pwd && ls -la /app && echo '---' && python -c \"import os; print('cwd', os.getcwd()); print('files', os.listdir('.'))\""]
+
