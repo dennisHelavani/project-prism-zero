@@ -56,3 +56,5 @@ firestore-debug.log
 doc-generator/venv/
 
 doc-generator/output/
+doc-generator/tmp/
+tmp/
