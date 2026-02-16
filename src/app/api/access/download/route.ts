@@ -9,6 +9,13 @@ const supabaseAdmin = getSupabaseAdmin();
 // Python doc-generator service URL
 const DOC_GENERATOR_URL = process.env.DOCGEN_URL || 'http://localhost:8000';
 
+if (!process.env.DOCGEN_URL) {
+    console.warn(
+        '⚠️  DOCGEN_URL is NOT set — falling back to http://localhost:8000. ' +
+        'This WILL fail in production. Set DOCGEN_URL in your environment variables.'
+    );
+}
+
 export async function GET(req: NextRequest) {
     const submissionId = req.nextUrl.searchParams.get('id');
     const format = req.nextUrl.searchParams.get('format') || 'docx'; // 'pdf' or 'docx'
@@ -46,10 +53,13 @@ export async function GET(req: NextRequest) {
 
         // Fetch file from Python service
         const downloadUrl = `${DOC_GENERATOR_URL}/download/${submissionId}?format=${format}`;
+        console.log(`[docgen-download] GET ${downloadUrl}`);
         const fileRes = await fetch(downloadUrl);
+        console.log(`[docgen-download] Response: ${fileRes.status} ${fileRes.statusText}`);
 
         if (!fileRes.ok) {
-            console.error('Failed to fetch file from Python service:', fileRes.status);
+            const errBody = await fileRes.text().catch(() => '(could not read body)');
+            console.error(`[docgen-download] FAILED: ${fileRes.status} - ${errBody.slice(0, 500)}`);
             return NextResponse.json({ error: 'Failed to fetch document' }, { status: 500 });
         }
 

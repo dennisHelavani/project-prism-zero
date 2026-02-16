@@ -14,7 +14,7 @@ import tempfile
 import shutil
 from datetime import datetime
 from typing import Optional, Dict
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 
 from generator import generate_docx, TemplateNotFoundError
@@ -34,6 +34,9 @@ app = FastAPI(
     description="DOCX/PDF generation service for CPP and RAMS documents",
     version="1.0.0"
 )
+
+# Auth key – if set, callers must send X-DOCGEN-KEY header
+DOCGEN_KEY = os.environ.get('DOCGEN_KEY', '')
 
 # Environment configuration
 TEMPLATE_DIR = os.environ.get('TEMPLATE_DIR', os.path.join(os.path.dirname(__file__), 'templates'))
@@ -95,6 +98,7 @@ class GenerateResponse(BaseModel):
 class GenerateFromSubmissionResponse(BaseModel):
     docx_path: str
     pdf_path: Optional[str] = None
+    updated_submission_id: Optional[str] = None
 
 def _process_cpp_blue_flags(placeholders: dict):
     """
@@ -384,7 +388,10 @@ def download_images_from_urls(uploads: Dict[str, str], temp_dir: str) -> Dict[st
 
 
 @app.post("/generate-from-submission", response_model=GenerateFromSubmissionResponse)
-def generate_from_submission(request: GenerateFromSubmissionRequest):
+def generate_from_submission(
+    request: GenerateFromSubmissionRequest,
+    x_docgen_key: Optional[str] = Header(default=None),
+):
     """
     Generate DOCX and PDF from a Supabase submission ID.
     
@@ -394,6 +401,10 @@ def generate_from_submission(request: GenerateFromSubmissionRequest):
     Returns:
         GenerateFromSubmissionResponse with paths and updated submission ID
     """
+    # Auth check
+    if DOCGEN_KEY and x_docgen_key != DOCGEN_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
     logger.info(f"Generate from submission: id={request.submission_id}")
     
     # Fetch submission from Supabase

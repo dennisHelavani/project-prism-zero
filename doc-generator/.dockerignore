@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+output/
+tmp/
+debug_log.txt
+.env
+.DS_Store
+sample_payloads/
+test_*.py
+README.md
+.gitignore
