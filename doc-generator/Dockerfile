@@ -17,5 +17,9 @@ COPY . .
 RUN mkdir -p /app/output
 
 ENV PORT=8080
-CMD ["sh", "-c", "pwd && ls -la /app && echo '---' && python -c \"import os; print('cwd', os.getcwd()); print('files', os.listdir('.'))\""]
+
+ENV PYTHONPATH=/app
+
+CMD ["sh", "-c", "echo 'PWD:' && pwd && echo '\nLS /app:' && ls -la /app && echo '\nLS .:' && ls -la . && echo '\nPYTHONPATH:' && python -c \"import sys; print(sys.path)\""]
+
 

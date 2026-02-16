@@ -1,3 +1,3 @@
-import sys, os
-sys.path.append(os.path.dirname(__file__))
+import sys
+sys.path.insert(0, "/app")
 from app import app
