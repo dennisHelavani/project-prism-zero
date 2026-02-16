@@ -20,6 +20,7 @@ ENV PORT=8080
 
 ENV PYTHONPATH=/app
 
-CMD ["sh", "-c", "echo 'PWD:' && pwd && echo '\nLS /app:' && ls -la /app && echo '\nLS .:' && ls -la . && echo '\nPYTHONPATH:' && python -c \"import sys; print(sys.path)\""]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
+
 
 
