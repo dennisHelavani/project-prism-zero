@@ -42,11 +42,14 @@ def convert_to_pdf(docx_path: str, output_dir: str) -> str:
 
     # Create a unique temporary profile directory per invocation
     # to avoid LibreOffice lock contention on concurrent requests.
-    user_install_dir = tempfile.mkdtemp(prefix="lo_profile_")
+    # Use /tmp so it works in containers where HOME may not be writable.
+    user_install_dir = tempfile.mkdtemp(prefix="lo_profile_", dir="/tmp")
 
     cmd = [
         LIBREOFFICE_BIN,
         "--headless",
+        "--invisible",
+        "--nodefault",
         "--nologo",
         "--nofirststartwizard",
         f"-env:UserInstallation=file://{user_install_dir}",
@@ -54,6 +57,17 @@ def convert_to_pdf(docx_path: str, output_dir: str) -> str:
         "--outdir", output_dir,
         docx_path,
     ]
+
+    # Build a clean environment that prevents any X11/display probing.
+    # Even with --headless, some LO builds still probe DISPLAY unless
+    # SAL_USE_VCLPLUGIN is set and DISPLAY is unset.
+    env = os.environ.copy()
+    env["SAL_USE_VCLPLUGIN"] = "gen"
+    env["HOME"] = "/tmp"
+    env["TMPDIR"] = "/tmp"
+    env["XDG_CACHE_HOME"] = "/tmp"
+    env["XDG_CONFIG_HOME"] = "/tmp"
+    env.pop("DISPLAY", None)  # Remove DISPLAY to prevent X11 probing
 
     logger.info(f"Running LibreOffice conversion: {' '.join(cmd)}")
 
@@ -63,6 +77,7 @@ def convert_to_pdf(docx_path: str, output_dir: str) -> str:
             capture_output=True,
             text=True,
             timeout=180,  # 3 minutes for large documents
+            env=env,
         )
 
         if result.returncode != 0:
