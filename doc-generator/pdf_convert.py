@@ -1,23 +1,19 @@
 """
-PDF conversion.
-- Primary (local dev): LibreOffice headless mode via 'soffice'
-- Production fallback: Remote DocGen service (FastAPI + LibreOffice in Docker)
+PDF conversion — LOCAL ONLY via LibreOffice headless.
+No remote service dependency.
 """
 
 import os
 import subprocess
 import logging
-import requests
+import tempfile
+import shutil
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 # LibreOffice binary path (can be overridden via environment variable)
 LIBREOFFICE_BIN = os.environ.get("LIBREOFFICE_BIN", "soffice")
-
-# Remote DocGen service (DigitalOcean)
-DOCGEN_URL = os.environ.get("DOCGEN_URL", "").rstrip("/")
-DOCGEN_KEY = os.environ.get("DOCGEN_KEY", "")
 
 
 class LibreOfficeError(Exception):
@@ -27,34 +23,33 @@ class LibreOfficeError(Exception):
 
 def convert_to_pdf(docx_path: str, output_dir: str) -> str:
     """
-    Convert a DOCX file to PDF.
+    Convert a DOCX file to PDF using local LibreOffice.
 
-    Behavior:
-    - If DOCGEN_URL is set -> use remote DocGen conversion (recommended for production).
-    - Else -> use local LibreOffice conversion via soffice (good for local dev).
+    Args:
+        docx_path: Path to input DOCX file.
+        output_dir: Directory for the output PDF.
+
+    Returns:
+        Absolute path to the generated PDF.
+
+    Raises:
+        LibreOfficeError on any failure.
     """
     if not os.path.exists(docx_path):
         raise LibreOfficeError(f"DOCX file not found: {docx_path}")
 
     os.makedirs(output_dir, exist_ok=True)
 
-    # Prefer remote DocGen when configured
-    if DOCGEN_URL:
-        logger.info("Using remote DocGen for PDF conversion")
-        return _convert_to_pdf_via_docgen(docx_path, output_dir)
+    # Create a unique temporary profile directory per invocation
+    # to avoid LibreOffice lock contention on concurrent requests.
+    user_install_dir = tempfile.mkdtemp(prefix="lo_profile_")
 
-    # Otherwise try local LibreOffice
-    logger.info("Using local LibreOffice for PDF conversion")
-    return _convert_to_pdf_via_libreoffice(docx_path, output_dir)
-
-
-def _convert_to_pdf_via_libreoffice(docx_path: str, output_dir: str) -> str:
-    """Convert using local LibreOffice."""
     cmd = [
         LIBREOFFICE_BIN,
         "--headless",
         "--nologo",
         "--nofirststartwizard",
+        f"-env:UserInstallation=file://{user_install_dir}",
         "--convert-to", "pdf",
         "--outdir", output_dir,
         docx_path,
@@ -67,68 +62,43 @@ def _convert_to_pdf_via_libreoffice(docx_path: str, output_dir: str) -> str:
             cmd,
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=180,  # 3 minutes for large documents
         )
 
         if result.returncode != 0:
             error_msg = result.stderr or result.stdout or "Unknown error"
-            logger.error(f"LibreOffice conversion failed: {error_msg}")
+            logger.error(f"LibreOffice conversion failed (exit {result.returncode}): {error_msg}")
             raise LibreOfficeError(f"LibreOffice conversion failed: {error_msg}")
 
-        logger.info(f"LibreOffice output: {result.stdout.strip()}")
+        logger.info(f"LibreOffice stdout: {result.stdout.strip()}")
+        if result.stderr.strip():
+            logger.warning(f"LibreOffice stderr: {result.stderr.strip()}")
 
     except FileNotFoundError:
         raise LibreOfficeError(
             f"LibreOffice not found at '{LIBREOFFICE_BIN}'. "
-            "Install LibreOffice or set LIBREOFFICE_BIN."
+            "Install LibreOffice or set LIBREOFFICE_BIN env var."
         )
     except subprocess.TimeoutExpired:
-        raise LibreOfficeError("LibreOffice conversion timed out after 120 seconds")
+        raise LibreOfficeError("LibreOffice conversion timed out after 180 seconds")
+    finally:
+        # Always clean up the temporary profile directory
+        try:
+            shutil.rmtree(user_install_dir, ignore_errors=True)
+        except Exception:
+            pass
 
+    # Locate the generated PDF
     pdf_path = _expected_pdf_path(docx_path, output_dir)
     if not os.path.exists(pdf_path):
-        # LibreOffice sometimes outputs slightly differently; try to find any PDF in output_dir
+        # LibreOffice sometimes outputs a slightly different name; find newest PDF
         candidates = list(Path(output_dir).glob("*.pdf"))
         if not candidates:
-            raise LibreOfficeError(f"PDF file was not created: {pdf_path}")
+            raise LibreOfficeError(f"PDF file was not created. Expected: {pdf_path}")
         pdf_path = str(max(candidates, key=lambda p: p.stat().st_mtime))
 
-    logger.info(f"PDF created successfully: {pdf_path}")
-    return pdf_path
-
-
-def _convert_to_pdf_via_docgen(docx_path: str, output_dir: str) -> str:
-    """Convert by uploading DOCX to remote DocGen and saving returned PDF."""
-    if not DOCGEN_URL:
-        raise LibreOfficeError("DOCGEN_URL is not set")
-    if not DOCGEN_KEY:
-        raise LibreOfficeError("DOCGEN_KEY is not set (required for remote conversion)")
-
-    endpoint = f"{DOCGEN_URL}/convert/docx-to-pdf"
-    logger.info(f"Calling DocGen endpoint: {endpoint}")
-
-    try:
-        with open(docx_path, "rb") as f:
-            files = {"file": (os.path.basename(docx_path), f, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")}
-            headers = {"X-DOCGEN-KEY": DOCGEN_KEY}
-            resp = requests.post(endpoint, files=files, headers=headers, timeout=180)
-    except requests.RequestException as e:
-        raise LibreOfficeError(f"DocGen request failed: {e}")
-
-    if resp.status_code != 200:
-        raise LibreOfficeError(f"DocGen failed ({resp.status_code}): {resp.text[:500]}")
-
-    pdf_path = _expected_pdf_path(docx_path, output_dir)
-    # Ensure .pdf extension
-    pdf_path = os.path.splitext(pdf_path)[0] + ".pdf"
-
-    with open(pdf_path, "wb") as out:
-        out.write(resp.content)
-
-    if not os.path.exists(pdf_path) or os.path.getsize(pdf_path) == 0:
-        raise LibreOfficeError(f"DocGen returned empty PDF: {pdf_path}")
-
-    logger.info(f"PDF created via DocGen: {pdf_path}")
+    file_size = os.path.getsize(pdf_path)
+    logger.info(f"PDF created successfully: {pdf_path} ({file_size:,} bytes)")
     return pdf_path
 
 
@@ -145,7 +115,7 @@ def check_libreoffice_installed() -> bool:
             [LIBREOFFICE_BIN, "--version"],
             capture_output=True,
             text=True,
-            timeout=10
+            timeout=10,
         )
         if result.returncode == 0:
             logger.info(f"LibreOffice found: {result.stdout.strip()}")
@@ -158,13 +128,10 @@ def check_libreoffice_installed() -> bool:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    if DOCGEN_URL:
-        print(f"✓ DOCGEN_URL set -> remote conversion mode enabled: {DOCGEN_URL}")
-    else:
-        print("• DOCGEN_URL not set -> will use local LibreOffice if available")
+    print("PDF conversion mode: LOCAL LibreOffice only (no remote service)")
 
     if check_libreoffice_installed():
-        print("✓ Local LibreOffice is installed and accessible")
+        print(f"✓ Local LibreOffice is installed and accessible ({LIBREOFFICE_BIN})")
     else:
-        print("✗ Local LibreOffice is NOT installed or not accessible")
+        print(f"✗ Local LibreOffice is NOT installed or not accessible")
         print(f"  Tried: {LIBREOFFICE_BIN}")

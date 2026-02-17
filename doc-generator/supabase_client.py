@@ -127,6 +127,73 @@ def update_submission_outputs(submission_id: str, outputs: Dict[str, Any]) -> bo
         raise
 
 
+def upload_file_to_storage(
+    local_path: str,
+    storage_path: str,
+    bucket: str = "generated-documents",
+) -> str:
+    """
+    Upload a local file to Supabase Storage and return its public URL.
+
+    Args:
+        local_path: Absolute path to the local file.
+        storage_path: Target path inside the bucket (e.g. "submission-id/file.pdf").
+        bucket: Supabase Storage bucket name (default: "generated-documents").
+
+    Returns:
+        Public URL string for the uploaded object.
+
+    Raises:
+        Exception if upload fails.
+    """
+    if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
+        raise ValueError("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY")
+
+    if not os.path.exists(local_path):
+        raise FileNotFoundError(f"File not found: {local_path}")
+
+    base_url = SUPABASE_URL.rstrip("/")
+    upload_url = f"{base_url}/storage/v1/object/{bucket}/{storage_path}"
+
+    # Determine content type
+    ext = os.path.splitext(local_path)[1].lower()
+    content_types = {
+        ".pdf": "application/pdf",
+        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    }
+    content_type = content_types.get(ext, "application/octet-stream")
+
+    file_size = os.path.getsize(local_path)
+    logger.info(f"Uploading {local_path} ({file_size:,} bytes) to {bucket}/{storage_path}")
+
+    headers = {
+        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+        "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+        "Content-Type": content_type,
+        "x-upsert": "true",  # Overwrite if exists (re-runs)
+    }
+
+    try:
+        with open(local_path, "rb") as f:
+            response = httpx.post(upload_url, headers=headers, content=f.read(), timeout=120)
+
+        if response.status_code not in (200, 201):
+            logger.error(f"Storage upload failed ({response.status_code}): {response.text[:500]}")
+            raise Exception(f"Storage upload failed: {response.status_code} - {response.text[:200]}")
+
+        # Build public URL
+        public_url = f"{base_url}/storage/v1/object/public/{bucket}/{storage_path}"
+        logger.info(f"Upload complete: {public_url}")
+        return public_url
+
+    except httpx.HTTPStatusError as e:
+        logger.error(f"HTTP error uploading to storage: {e.response.status_code}")
+        raise Exception(f"Storage upload HTTP error: {e.response.status_code}")
+    except Exception as e:
+        logger.error(f"Error uploading to storage: {e}")
+        raise
+
+
 if __name__ == "__main__":
     # Simple test
     logging.basicConfig(level=logging.INFO)
@@ -141,3 +208,4 @@ if __name__ == "__main__":
         print("\n✗ Missing configuration. Set environment variables:")
         print("  export SUPABASE_URL='https://xxx.supabase.co'")
         print("  export SUPABASE_SERVICE_ROLE_KEY='your-service-role-key'")
+
