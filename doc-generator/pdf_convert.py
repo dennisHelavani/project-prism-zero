@@ -69,6 +69,10 @@ def convert_to_pdf(docx_path: str, output_dir: str) -> str:
     env["XDG_CONFIG_HOME"] = "/tmp"
     env.pop("DISPLAY", None)  # Remove DISPLAY to prevent X11 probing
 
+    logger.info(
+        f"LO env: SAL_USE_VCLPLUGIN={env.get('SAL_USE_VCLPLUGIN')} "
+        f"HOME={env.get('HOME')} DISPLAY={env.get('DISPLAY')}"
+    )
     logger.info(f"Running LibreOffice conversion: {' '.join(cmd)}")
 
     try:
