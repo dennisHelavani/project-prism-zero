@@ -661,6 +661,41 @@ def _replace_in_paragraph(
                             run.add_picture(image_path, width=Inches(2.0))
                     except Exception as e:
                         logger.warning(f"Failed to insert image {image_path}: {e}")
+                    
+                    # After inserting a cover logo, remove trailing empty paragraphs
+                    # to compensate for the image height (~1.4" ≈ 8 lines at 12pt).
+                    # Without this, the image pushes content off the front page.
+                    COVER_LOGOS = {
+                        "CPP_LOGO_COVER_MIDDLE_IMG": 8,
+                        "RAMS_COVER_PAGE_LOGO_IMG": 8,
+                        "RAMS_CLIENT_PAGE_LOGO_IMG": 8,
+                    }
+                    if placeholder_key in COVER_LOGOS:
+                        lines_to_remove = COVER_LOGOS[placeholder_key]
+                        parent_elem = paragraph._element.getparent()
+                        if parent_elem is not None:
+                            siblings = list(parent_elem)
+                            my_idx = siblings.index(paragraph._element)
+                            removed = 0
+                            for offset in range(1, lines_to_remove + 5):  # look a bit further
+                                check_idx = my_idx + 1  # always check next (since we remove in place)
+                                if check_idx >= len(siblings):
+                                    break
+                                sib = siblings[check_idx]
+                                # Only remove if it's an empty paragraph (no text, no images)
+                                ns = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
+                                texts = sib.findall('.//w:t', ns)
+                                drawings = sib.findall('.//{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}inline')
+                                sib_text = ''.join(t.text or '' for t in texts).strip()
+                                if not sib_text and not drawings and sib.tag.endswith('}p'):
+                                    parent_elem.remove(sib)
+                                    siblings = list(parent_elem)  # refresh after removal
+                                    removed += 1
+                                    if removed >= lines_to_remove:
+                                        break
+                                else:
+                                    break  # stop at first non-empty paragraph
+                            logger.info(f"Removed {removed} empty paragraphs after {placeholder_key} image insertion")
                 else:
                     # Image path doesn't exist, remove placeholder
                     logger.warning(f"Image not found for {placeholder_key}: {image_path}")
