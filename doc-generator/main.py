@@ -19,7 +19,7 @@ from pydantic import BaseModel
 
 from generator import generate_docx, TemplateNotFoundError
 from pdf_convert import convert_to_pdf, LibreOfficeError
-from supabase_client import get_submission, update_submission_outputs
+from supabase_client import get_submission, update_submission_outputs, upload_file_to_storage
 from ai_generator import generate_cpp_ai_content, generate_rams_ai_content
 
 # Configure logging
@@ -696,10 +696,27 @@ def generate_from_submission(
         pdf_path = convert_to_pdf(docx_path, OUTPUT_DIR)
         logger.info(f"PDF generated successfully: {pdf_path}")
         
-        # Update submission with outputs
+        # Upload to Supabase Storage (ephemeral container — local files won't survive restarts)
+        storage_prefix = f"{request.submission_id}"
+        try:
+            docx_url = upload_file_to_storage(docx_path, f"{storage_prefix}/{os.path.basename(docx_path)}")
+        except Exception as upload_err:
+            logger.error(f"Failed to upload DOCX to storage: {upload_err}")
+            docx_url = None
+
+        try:
+            pdf_url = upload_file_to_storage(pdf_path, f"{storage_prefix}/{os.path.basename(pdf_path)}")
+        except Exception as upload_err:
+            logger.error(f"Failed to upload PDF to storage: {upload_err}")
+            pdf_url = None
+
+        # Update submission with outputs (URLs are the source of truth)
         outputs = {
+            "docx_url": docx_url,
+            "pdf_url": pdf_url,
             "docx_path": docx_path,
             "pdf_path": pdf_path,
+            "status": "complete",
             "generated_at": datetime.now().isoformat()
         }
         
@@ -719,10 +736,20 @@ def generate_from_submission(
     except LibreOfficeError as e:
         logger.warning(f"PDF conversion failed (continuing with DOCX only): {e}")
         
-        # Update submission with DOCX only and error message
+        # Upload DOCX to storage even if PDF failed
+        storage_prefix = f"{request.submission_id}"
+        docx_url = None
+        try:
+            docx_url = upload_file_to_storage(docx_path, f"{storage_prefix}/{os.path.basename(docx_path)}")
+        except Exception as upload_err:
+            logger.error(f"Failed to upload DOCX to storage after PDF error: {upload_err}")
+
         outputs = {
+            "docx_url": docx_url,
+            "pdf_url": None,
             "docx_path": docx_path,
             "pdf_path": None,
+            "status": "complete_no_pdf",
             "pdf_error": str(e),
             "generated_at": datetime.now().isoformat()
         }
