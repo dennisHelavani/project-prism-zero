@@ -3,6 +3,7 @@ FROM python:3.11-slim
 # System deps: LibreOffice + font system + common fonts + curl (for healthcheck)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libreoffice \
+    libreoffice-writer \
     fontconfig \
     fonts-dejavu \
     fonts-liberation \
