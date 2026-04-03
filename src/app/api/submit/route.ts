@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { getSiteOrigin } from '@/lib/url';
 
-
-
-const supabaseAdmin = getSupabaseAdmin();
 export async function POST(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   const form = await req.formData();
   const token = String(form.get('token') ?? '');
   const prompt = String(form.get('prompt') ?? '').trim();
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
 
   // TODO: kick off your generation job here (queue, background worker, etc.)
   // For now, just redirect to a thank-you
-  const url = new URL('/thanks', process.env.NEXT_PUBLIC_SITE_URL);
+  const url = new URL(`${getSiteOrigin()}/thanks`);
   url.searchParams.set('prompt', prompt.slice(0, 100));
   return NextResponse.redirect(url, { status: 303 });
 }

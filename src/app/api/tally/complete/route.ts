@@ -1,16 +1,15 @@
 // /app/api/tally/complete/route.ts
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { getSiteOrigin } from '@/lib/url';
 
-
-
-const supabaseAdmin = getSupabaseAdmin();
 export async function GET(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   const url = new URL(req.url);
   const code = (url.searchParams.get('code') || '').toUpperCase();
 
   if (!code) {
-    const back = new URL('/access', process.env.NEXT_PUBLIC_SITE_URL);
+    const back = new URL(`${getSiteOrigin()}/access`);
     back.searchParams.set('error', 'missing_code');
     return NextResponse.redirect(back, { status: 303 });
   }
@@ -22,20 +21,20 @@ export async function GET(req: Request) {
     .single();
 
   if (error || !data) {
-    const back = new URL('/access', process.env.NEXT_PUBLIC_SITE_URL);
+    const back = new URL(`${getSiteOrigin()}/access`);
     back.searchParams.set('error', 'invalid_code');
     return NextResponse.redirect(back, { status: 303 });
   }
 
   if (data.used || new Date(data.expires_at).getTime() < Date.now()) {
-    const back = new URL('/access', process.env.NEXT_PUBLIC_SITE_URL);
+    const back = new URL(`${getSiteOrigin()}/access`);
     back.searchParams.set('error', data.used ? 'already_used' : 'expired');
     return NextResponse.redirect(back, { status: 303 });
   }
 
   await supabaseAdmin.from('access_links').update({ used: true }).eq('code', code);
 
-  const done = new URL('/thanks', process.env.NEXT_PUBLIC_SITE_URL);
+  const done = new URL(`${getSiteOrigin()}/thanks`);
   done.searchParams.set('code', code);
   return NextResponse.redirect(done, { status: 303 });
 }

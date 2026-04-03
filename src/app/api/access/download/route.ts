@@ -4,7 +4,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-const supabaseAdmin = getSupabaseAdmin();
 
 // Python doc-generator service URL
 const DOC_GENERATOR_URL = process.env.DOCGEN_URL || 'http://localhost:8000';
@@ -17,6 +16,7 @@ if (!process.env.DOCGEN_URL) {
 }
 
 export async function GET(req: NextRequest) {
+    const supabaseAdmin = getSupabaseAdmin();
     const submissionId = req.nextUrl.searchParams.get('id');
     const format = req.nextUrl.searchParams.get('format') || 'docx'; // 'pdf' or 'docx'
 
