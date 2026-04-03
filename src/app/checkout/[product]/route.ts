@@ -1,6 +1,7 @@
 // app/checkout/[product]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { getSiteOrigin } from '@/lib/url';
 
 type Product = 'RAMS' | 'CPP';
 
@@ -36,8 +37,8 @@ export async function GET(
       line_items: [{ price: priceId, quantity: 1 }],
       allow_promotion_codes: true,
       metadata: { product: resolvedProduct },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing?canceled=1`,
+      success_url: `${getSiteOrigin()}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getSiteOrigin()}/pricing?canceled=1`,
     });
 
     return NextResponse.redirect(session.url as string, { status: 303 });

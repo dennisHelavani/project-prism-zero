@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { monthKey } from '@/lib/codes';
 
-
-const supabaseAdmin = getSupabaseAdmin();
 export async function POST(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   const { email } = await req.json().catch(() => ({}));
   if (!email) {
     return NextResponse.json({ ok: false, error: 'email_required' }, { status: 400 });

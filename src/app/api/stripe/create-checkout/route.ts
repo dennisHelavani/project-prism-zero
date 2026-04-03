@@ -1,13 +1,14 @@
 // src/app/api/stripe/create-checkout/route.ts
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { getSiteOrigin } from '@/lib/url';
 
 type Product = 'RAMS' | 'CPP';
 
 const priceFor = (p: Product) =>
   p === 'RAMS' ? process.env.STRIPE_PRICE_RAMs_ONEOFF : process.env.STRIPE_PRICE_CPP_ONEOFF;
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:9002';
+const BASE_URL = getSiteOrigin();
 
 export const runtime = 'nodejs';
 

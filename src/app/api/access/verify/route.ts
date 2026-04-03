@@ -1,16 +1,18 @@
 // /app/api/access/verify/route.ts
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { getSiteOrigin } from '@/lib/url';
 
-const supabaseAdmin = getSupabaseAdmin();
+
 
 function redirectToError(reason: string) {
-  const url = new URL('/access/error', process.env.NEXT_PUBLIC_SITE_URL);
+  const url = new URL(`${getSiteOrigin()}/access/error`);
   url.searchParams.set('reason', reason);
   return NextResponse.redirect(url, { status: 303 });
 }
 
 export async function POST(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   try {
     const form = await req.formData();
     const email = String(form.get('email') ?? '').trim().toLowerCase();
@@ -45,7 +47,7 @@ export async function POST(req: Request) {
       .eq('id', data.id);
 
     // Success - redirect to forms page
-    const url = new URL('/access/forms', process.env.NEXT_PUBLIC_SITE_URL);
+    const url = new URL(`${getSiteOrigin()}/access/forms`);
     url.searchParams.set('code', code);
     url.searchParams.set('email', email);
     return NextResponse.redirect(url, { status: 303 });

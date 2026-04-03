@@ -608,15 +608,22 @@ def generate_from_submission(
                 # local_images already has RAMS_DELIVERIES_IMG from upload
                     
             else:
-                # Case D: No data or "Use Client CPP" → default text + default image
-                logger.info("RAMS: Case D - Using DEFAULT image AND text")
+                # Case D: No data or "Use Client CPP"
                 placeholders["RAMS_DELIVERIES_DEFAULT"] = default_text
                 placeholders["RAMS_DELIVERIES_CLIENT_TEXT"] = ""
-                if os.path.exists(default_img_path):
-                    local_images["RAMS_DELIVERIES_IMG"] = default_img_path
-                    logger.info(f"RAMS: Default image set: {default_img_path}")
+                if uses_client_cpp:
+                    # User explicitly chose "Use Client CPP & Instructions" → text only, NO image
+                    logger.info("RAMS: Case D (Use Client CPP) - DEFAULT text only, NO image")
+                    if "RAMS_DELIVERIES_IMG" in local_images:
+                        del local_images["RAMS_DELIVERIES_IMG"]
                 else:
-                    logger.warning(f"RAMS: Default image not found: {default_img_path}")
+                    # Completely blank submission → default text + default image
+                    logger.info("RAMS: Case D (blank) - Using DEFAULT image AND text")
+                    if os.path.exists(default_img_path):
+                        local_images["RAMS_DELIVERIES_IMG"] = default_img_path
+                        logger.info(f"RAMS: Default image set: {default_img_path}")
+                    else:
+                        logger.warning(f"RAMS: Default image not found: {default_img_path}")
             
             logger.info(f"RAMS Deliveries Final: IMG={local_images.get('RAMS_DELIVERIES_IMG', 'NONE')[:50]}, DEFAULT='{placeholders.get('RAMS_DELIVERIES_DEFAULT', '')}', CLIENT_TEXT='{placeholders.get('RAMS_DELIVERIES_CLIENT_TEXT', '')[:30] if placeholders.get('RAMS_DELIVERIES_CLIENT_TEXT') else ''}'")
         
@@ -662,15 +669,22 @@ def generate_from_submission(
                 # local_images already has RAMS_FIRE_PLAN_IMG from upload
                     
             else:
-                # Case D: No data or "Use Client Fire Plan" → default text + default image
-                logger.info("RAMS Fire Plan: Case D - Using DEFAULT image AND text")
+                # Case D: No data or "Use Client Fire Plan"
                 placeholders["RAMS_FIRE_PLAN_DEFAULT_TEXT"] = default_fire_plan_text
                 placeholders["RAMS_FIRE_PLAN_CLIENTS_TEXT"] = ""
-                if os.path.exists(default_fire_plan_img_path):
-                    local_images["RAMS_FIRE_PLAN_IMG"] = default_fire_plan_img_path
-                    logger.info(f"RAMS Fire Plan: Default image set: {default_fire_plan_img_path}")
+                if uses_client_fire_plan:
+                    # User explicitly chose "Use Client Fire Plan" → text only, NO image
+                    logger.info("RAMS Fire Plan: Case D (Use Client Plan) - DEFAULT text only, NO image")
+                    if "RAMS_FIRE_PLAN_IMG" in local_images:
+                        del local_images["RAMS_FIRE_PLAN_IMG"]
                 else:
-                    logger.warning(f"RAMS Fire Plan: Default image not found: {default_fire_plan_img_path}")
+                    # Completely blank submission → default text + default image
+                    logger.info("RAMS Fire Plan: Case D (blank) - Using DEFAULT image AND text")
+                    if os.path.exists(default_fire_plan_img_path):
+                        local_images["RAMS_FIRE_PLAN_IMG"] = default_fire_plan_img_path
+                        logger.info(f"RAMS Fire Plan: Default image set: {default_fire_plan_img_path}")
+                    else:
+                        logger.warning(f"RAMS Fire Plan: Default image not found: {default_fire_plan_img_path}")
             
             logger.info(f"RAMS Fire Plan Final: IMG={local_images.get('RAMS_FIRE_PLAN_IMG', 'NONE')[:50] if local_images.get('RAMS_FIRE_PLAN_IMG') else 'NONE'}, DEFAULT='{placeholders.get('RAMS_FIRE_PLAN_DEFAULT_TEXT', '')}', CLIENT_TEXT='{placeholders.get('RAMS_FIRE_PLAN_CLIENTS_TEXT', '')[:30] if placeholders.get('RAMS_FIRE_PLAN_CLIENTS_TEXT') else ''}'")
         

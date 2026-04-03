@@ -1,6 +1,7 @@
 // /app/api/stripe/checkout/route.ts
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { getSiteOrigin } from '@/lib/url';
 
 type Product = 'RAMS' | 'CPP';
 
@@ -35,8 +36,8 @@ export async function POST(req: Request) {
       // Fallback product hint for the webhook
       metadata: { product: chosen },
       // Include the session id so /success can render details
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing?canceled=1`,
+      success_url: `${getSiteOrigin()}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getSiteOrigin()}/pricing?canceled=1`,
     });
 
     return NextResponse.json({ url: session.url });

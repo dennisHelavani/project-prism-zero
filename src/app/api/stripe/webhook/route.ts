@@ -3,10 +3,10 @@ import { headers as nextHeaders } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { getSiteOrigin } from '@/lib/url';
 
 
 
-const supabaseAdmin = getSupabaseAdmin();
 // ---- Resend (HTTP) ----
 async function sendEmailViaResendHTTP(params: {
   to: string;
@@ -69,6 +69,7 @@ function formatDateOnly(iso: string) {
 }
 
 export async function POST(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   const raw = await req.text();
   const headerList = await nextHeaders();
   const sig = (headerList.get('stripe-signature') || '').trim();
@@ -137,7 +138,7 @@ export async function POST(req: Request) {
       console.log('[WB] Code inserted:', code);
 
       // Email the CODE with a polished dark theme + explicit expiry date
-      const accessUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/access`;
+      const accessUrl = `${getSiteOrigin()}/access`;
       const expiryLabel = formatDateOnly(expires) || 'soon';
       const subject = `Your ${product} access code`;
 

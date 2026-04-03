@@ -3,7 +3,6 @@ import PageShell from '@/components/layout/page-shell';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import AccessFormsClient from './AccessFormsClient';
 
-const supabaseAdmin = getSupabaseAdmin();
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export default async function AccessForms({
@@ -11,6 +10,7 @@ export default async function AccessForms({
 }: {
   searchParams: SearchParams;
 }) {
+  const supabaseAdmin = getSupabaseAdmin();
   const sp = await searchParams; // Next 15 requires awaiting
   const code = typeof sp.code === 'string' ? sp.code.toUpperCase() : '';
 

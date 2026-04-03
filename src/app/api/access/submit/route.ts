@@ -5,7 +5,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-const supabaseAdmin = getSupabaseAdmin();
 
 // IMPORTANT: do NOT default to localhost in production.
 // If DOCGEN_URL is missing, we want a loud failure + clear logs.
@@ -13,6 +12,7 @@ const DOC_GENERATOR_URL = (process.env.DOCGEN_URL || '').replace(/\/$/, '');
 const DOCGEN_KEY = process.env.DOCGEN_KEY || '';
 
 export async function POST(req: Request) {
+  const supabaseAdmin = getSupabaseAdmin();
   const form = await req.formData();
 
   const code = String(form.get('code') ?? '').trim().toUpperCase();
@@ -182,6 +182,7 @@ export async function POST(req: Request) {
 }
 
 async function triggerDocGeneration(submissionId: string): Promise<void> {
+  const supabaseAdmin = getSupabaseAdmin();
   console.log(`Triggering doc generation for submission: ${submissionId}`);
 
   // Hard fail loudly if production env vars are missing
